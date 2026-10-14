@@ -1,0 +1,25 @@
+import Image from "next/image";
+import { Play } from "lucide-react";
+import { profile } from "@/data/portfolio";
+import { Reveal } from "./reveal";
+
+export function Hero({ onContact }: { onContact: () => void }) {
+  const [firstRole, ...remainingRoles] = profile.role.split(/\s*&\s*/);
+
+  return (
+    <section className="reference-hero" id="beranda" aria-labelledby="hero-title">
+      <div className="reference-hero-inner">
+        <div className="reference-hero-copy">
+          <Reveal><p className="reference-greeting">Hi, I&apos;m <mark>{profile.name}</mark></p></Reveal>
+          <Reveal delay={0.08}><h1 id="hero-title" className="reference-title"><span>{firstRole}</span>{remainingRoles.map((role) => <span key={role}>&amp; {role}</span>)}</h1></Reveal>
+          <Reveal delay={0.16}><div className="reference-biography"><p>{profile.bio}</p><p>{profile.about[0]}</p></div></Reveal>
+          <Reveal delay={0.22} className="reference-hero-actions"><a className="profile-pill" href="#tentang">See My Profile<span className="profile-play"><Play size={18} fill="currentColor" strokeWidth={0} /></span></a><button className="hire-pill" onClick={onContact}>Hire Me</button></Reveal>
+        </div>
+        <Reveal className="reference-hero-portrait" delay={0.16}>
+          <div className="reference-portrait-backdrop" aria-hidden="true"><span className="portrait-ring ring-top" /><span className="portrait-ring ring-bottom" /></div>
+          <div className="reference-profile-photo"><Image src={profile.portrait} alt={`Foto profil ${profile.name}`} fill priority sizes="(max-width: 900px) 80vw, 470px" /></div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}

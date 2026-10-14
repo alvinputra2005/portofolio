@@ -1,6 +1,6 @@
 # Portofolio Alvin
 
-Website portofolio responsif dengan Next.js 16 App Router, TypeScript, Tailwind CSS 4, Motion, dan Lucide. Font Montserrat dan Inter disajikan lokal melalui Fontsource. Desain terinspirasi dari [Vegliano Celo](https://veglianocelo.framer.website/).
+Website portofolio responsif dengan Next.js 16 App Router, TypeScript, Tailwind CSS 4, Motion, dan Lucide. Font Montserrat untuk judul/navbar dan Poppins untuk teks disajikan lokal melalui Fontsource. Desain terinspirasi dari [Vegliano Celo](https://veglianocelo.framer.website/).
 
 ## Menjalankan proyek
 
@@ -53,6 +53,8 @@ Konten proyek dan pengalaman saat ini adalah **contoh**, bukan klaim riwayat nya
 - Sesuaikan `siteSettings.title`, `siteSettings.description`, dan `siteSettings.year` di file data yang sama. Layout menggunakan pengaturan ini untuk metadata halaman.
 
 Antarmuka menyediakan tab filter proyek, menu responsif, dan dialog HTML native untuk detail proyek serta kontak. Animasi menghormati preferensi pengurangan gerakan perangkat. Kontak belum memiliki backend pengiriman pesan; alamat email masih kosong sampai diisi pada data profil.
+
+Beranda dan navbar dipisahkan ke `src/components/hero.tsx` dan `src/components/site-header.tsx`. Styling keduanya ada di `src/app/reference-home.css`; pola gelombang ringan ada di `public/images/hero-pattern.svg`. Navbar menyediakan home, penanda bagian aktif, hover kuning, serta menu mobile yang menutup lewat Escape, klik di luar, atau pemilihan tautan.
 
 ## Deployment
 

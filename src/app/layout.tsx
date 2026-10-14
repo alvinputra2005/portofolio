@@ -1,7 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/inter";
 import "@fontsource-variable/montserrat";
+import "@fontsource/poppins/latin-400.css";
+import "@fontsource/poppins/latin-500.css";
+import "@fontsource/poppins/latin-600.css";
+import "@fontsource/poppins/latin-700.css";
 import "./globals.css";
+import "./reference-home.css";
 import { siteSettings } from "@/data/portfolio";
 
 export const metadata: Metadata = {

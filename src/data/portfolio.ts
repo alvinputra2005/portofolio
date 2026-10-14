@@ -235,10 +235,10 @@ export const services: Service[] = [
 ];
 
 export const navigation = [
-  { label: "Karya", href: "#karya" },
-  { label: "Tentang", href: "#tentang" },
-  { label: "Pengalaman", href: "#pengalaman" },
-  { label: "Kontak", href: "#kontak" },
+  { label: "Project", href: "#karya" },
+  { label: "About Me", href: "#tentang" },
+  { label: "Social Media", href: "#sosial" },
+  { label: "Contact", href: "#kontak" },
 ];
 
 export const siteSettings = {

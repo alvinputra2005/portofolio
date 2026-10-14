@@ -3,11 +3,13 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Download, Github, Instagram, Linkedin, Mail, MapPin, Menu, PenTool, Plus, Sparkles, Video, X } from "lucide-react";
-import { experiences, navigation, profile, projectCategories, projects, services, siteSettings, type Project } from "@/data/portfolio";
+import { ArrowDownRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Download, Github, Instagram, Linkedin, Mail, MapPin, PenTool, Plus, Sparkles, Video } from "lucide-react";
+import { experiences, profile, projectCategories, projects, services, siteSettings, type Project } from "@/data/portfolio";
 import { Reveal } from "./reveal";
 import { Dialog } from "./dialog";
 import { ProjectArt } from "./project-art";
+import { SiteHeader } from "./site-header";
+import { Hero } from "./hero";
 
 const socialIcons = { instagram: Instagram, linkedin: Linkedin, github: Github };
 const serviceIcons = { pen: PenTool, video: Video, camera: Camera, code: Code2 };
@@ -17,8 +19,7 @@ function SectionLabel({ number, children }: { number: string; children: React.Re
 }
 
 export function Portfolio() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("#beranda");
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("Semua");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
@@ -33,18 +34,6 @@ export function Portfolio() {
     document.querySelectorAll("main > section[id]").forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setMenuOpen(false);
-        document.getElementById("menu-toggle")?.focus();
-      }
-    }
-    document.addEventListener("keydown", closeOnEscape);
-    return () => document.removeEventListener("keydown", closeOnEscape);
-  }, [menuOpen]);
 
   useEffect(() => {
     if (!copied) return;
@@ -67,42 +56,10 @@ export function Portfolio() {
   return (
     <MotionConfig reducedMotion="user">
       <a className="skip-link" href="#main">Langsung ke konten</a>
-      <header className="site-header">
-        <div className="container header-inner">
-          <a className="wordmark" href="#beranda" aria-label={`${profile.name}, kembali ke beranda`}>{profile.name.toLowerCase()}<span>.</span></a>
-          <nav className="desktop-nav" aria-label="Navigasi utama">
-            {navigation.map((link) => <a key={link.href} href={link.href} className={activeSection === link.href ? "active" : ""} aria-current={activeSection === link.href ? "location" : undefined}>{link.label}</a>)}
-          </nav>
-          <a className="header-cta" href="#kontak">Let&apos;s talk <ArrowUpRight size={16} /></a>
-          <button id="menu-toggle" className="menu-toggle icon-button" aria-label={menuOpen ? "Tutup menu" : "Buka menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={23} /> : <Menu size={23} />}</button>
-        </div>
-        <AnimatePresence>
-          {menuOpen && <motion.nav id="mobile-navigation" className="mobile-nav" aria-label="Navigasi mobile" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}>
-            {navigation.map((link) => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}<ArrowUpRight size={18} /></a>)}
-          </motion.nav>}
-        </AnimatePresence>
-      </header>
+      <SiteHeader activeSection={activeSection} onNavigate={setActiveSection} />
 
       <main id="main">
-        <section className="hero container" id="beranda" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <Reveal><div className="hero-eyebrow"><span className="blue-dot" /> INDEPENDENT CREATIVE PORTFOLIO</div></Reveal>
-            <Reveal delay={0.08}><p className="hero-intro">Halo, aku {profile.name} <span className="wave">↗</span></p><h1 id="hero-title">Creative mind.<br />Thoughtful<br /><span className="accent-word">design<span className="heading-star">✳</span></span></h1></Reveal>
-            <Reveal delay={0.16}><p className="hero-description">{profile.bio}</p><div className="hero-actions"><a className="button button-primary" href="#karya">Jelajahi karya <ArrowUpRight size={18} /></a><a className="text-link" href="#tentang">Kenali aku <ArrowRight size={17} /></a></div></Reveal>
-            <Reveal delay={0.22}><div className="hero-location"><MapPin size={15} /><span>Based in {profile.location}</span><span className="small-separator" /><span>Creating without limits.</span></div></Reveal>
-          </div>
-          <Reveal className="hero-visual" delay={0.16}>
-            <div className="portrait-frame">
-              <div className="portrait-topline"><span>A LITTLE INTRODUCTION</span><span>01 — {siteSettings.year}</span></div>
-              <div className="portrait-image"><Image src={profile.portrait} alt={`Foto profil ${profile.name}`} fill priority sizes="(max-width: 760px) 90vw, 42vw" className="profile-photo" /></div>
-              <div className="portrait-name"><span>{profile.name}<span className="portrait-name-dot">.</span></span><span className="role-caption">{profile.role}</span></div>
-              <span className="portrait-cross cross-one">+</span><span className="portrait-cross cross-two">+</span>
-            </div>
-            <div className="portrait-stamp" aria-hidden="true"><Sparkles size={22} strokeWidth={1.2} /><span>MADE WITH<br />A CREATIVE MIND</span></div>
-            {profile.available && <div className="availability"><span className="status-dot" />Terbuka untuk kolaborasi<ArrowUpRight size={14} /></div>}
-          </Reveal>
-          <div className="hero-bottom"><a href="#karya" className="scroll-hint"><span className="scroll-circle"><ArrowDown size={16} /></span>SCROLL TO EXPLORE</a><span className="hero-index">DESIGN. CREATE. CONNECT.</span></div>
-        </section>
+        <Hero onContact={() => setContactOpen(true)} />
 
         <div className="discipline-strip" aria-label="Bidang kreatif"><div className="container discipline-inner">{["Graphic Design", "Content Creation", "Visual Storytelling", "Digital Experiences"].map((item) => <span key={item}>{item}<span className="discipline-star" aria-hidden="true">✳</span></span>)}</div></div>
 
@@ -135,7 +92,7 @@ export function Portfolio() {
 
         <section className="experience-section" id="pengalaman" aria-labelledby="experience-title"><div className="container experience-layout"><Reveal className="experience-intro"><SectionLabel number="04">THE JOURNEY</SectionLabel><h2 id="experience-title">Learning.<br />Making.<br /><span className="muted-heading">Growing.</span></h2><p>Setiap kesempatan menjadi ruang<br />untuk belajar dan berkembang.</p><span className="experience-star" aria-hidden="true">✳</span></Reveal><div className="experience-list">{experiences.map((experience, index) => <Reveal key={experience.id} delay={index * 0.05}><article className="experience-row"><div className="experience-meta"><span>{experience.period}</span><span className="experience-type">{experience.type}</span></div><h3>{experience.role}</h3><span className="experience-company">{experience.company}</span><p>{experience.description}</p><span className="experience-number">0{index + 1}</span></article></Reveal>)}<p className="experience-placeholder">Ruang untuk perjalanan dan pengalamanmu.</p></div></div></section>
 
-        <section className="section container social-section" aria-labelledby="social-title"><Reveal><div className="social-heading"><div><SectionLabel number="05">BEYOND THE PORTFOLIO</SectionLabel><h2 id="social-title">Let&apos;s stay <span className="muted-heading">connected.</span></h2></div><p>Ide, proses, dan hal menarik lainnya.</p></div></Reveal><div className="social-links-grid">{profile.socialLinks.map((social) => { const Icon = socialIcons[social.icon]; const content = <><span className="social-link-icon"><Icon size={22} strokeWidth={1.4} /></span><div><h3>{social.label}</h3><span>{social.href ? "Ikuti perjalanan kreatifku" : "Profil akan segera hadir"}</span></div><ArrowUpRight className="social-link-arrow" size={20} /></>; return <Reveal key={social.label}>{social.href ? <a className="social-link-card" href={social.href} target="_blank" rel="noreferrer">{content}</a> : <button className="social-link-card" onClick={() => setContactOpen(true)} aria-label={`${social.label}, profil belum ditambahkan`}>{content}</button>}</Reveal>; })}</div></section>
+        <section className="section container social-section" id="sosial" aria-labelledby="social-title"><Reveal><div className="social-heading"><div><SectionLabel number="05">BEYOND THE PORTFOLIO</SectionLabel><h2 id="social-title">Let&apos;s stay <span className="muted-heading">connected.</span></h2></div><p>Ide, proses, dan hal menarik lainnya.</p></div></Reveal><div className="social-links-grid">{profile.socialLinks.map((social) => { const Icon = socialIcons[social.icon]; const content = <><span className="social-link-icon"><Icon size={22} strokeWidth={1.4} /></span><div><h3>{social.label}</h3><span>{social.href ? "Ikuti perjalanan kreatifku" : "Profil akan segera hadir"}</span></div><ArrowUpRight className="social-link-arrow" size={20} /></>; return <Reveal key={social.label}>{social.href ? <a className="social-link-card" href={social.href} target="_blank" rel="noreferrer">{content}</a> : <button className="social-link-card" onClick={() => setContactOpen(true)} aria-label={`${social.label}, profil belum ditambahkan`}>{content}</button>}</Reveal>; })}</div></section>
 
         <section className="contact-section" id="kontak" aria-labelledby="contact-title"><div className="container"><Reveal><div className="contact-top"><span className="contact-eyebrow"><span className="status-dot" /> GOOD THINGS START WITH A CONVERSATION</span><span>HAVE AN IDEA IN MIND?</span></div><div className="contact-main"><h2 id="contact-title">Let&apos;s make<br />something <span>great.</span></h2><button className="contact-orb" aria-label="Buka informasi kontak" onClick={() => setContactOpen(true)}><ArrowUpRight size={56} strokeWidth={1.2} /></button></div><div className="contact-bottom"><p>Proyek baru, ide menarik, atau sekadar menyapa.<br />Aku senang mendengar ceritamu.</p><button className="contact-link" onClick={() => setContactOpen(true)}>Mulai percakapan <ArrowUpRight size={18} /></button></div></Reveal></div></section>
       </main>
