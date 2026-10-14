@@ -80,7 +80,7 @@ try {
       await page.keyboard.press("Escape");
       assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "false");
       await page.getByRole("button", { name: "Buka menu", exact: true }).click();
-      await page.getByRole("heading", { level: 1 }).click();
+      await page.mouse.click(5, 400);
       assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "false");
       if (width === 768) {
         await page.getByRole("button", { name: "Buka menu", exact: true }).click();
