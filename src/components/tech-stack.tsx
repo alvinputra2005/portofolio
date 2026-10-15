@@ -1,51 +1,62 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { Pause, Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./language-provider";
 
 const webStack = [
-  ["Laravel", "laravel"], ["React", "react"], ["Tailwind CSS", "tailwindcss"],
-  ["Bootstrap", "bootstrap"], ["Next.js", "nextjs"], ["Redis", "redis"],
-  ["Node.js", "nodejs"], ["Express.js", "express"], ["REST API", null], ["Flask", "flask"],
+  ["Laravel", "laravel"], ["React", "react"], ["Bootstrap", "bootstrap"],
+  ["Next.js", "nextjs"], ["Node.js", "nodejs"], ["Flask", "flask"],
 ] as const;
 const dataAndTools = [
   ["Python", "python"], ["PyTorch", "pytorch"], ["scikit-learn", "scikitlearn"],
-  ["NumPy", "numpy"], ["pandas", "pandas"], ["TensorFlow", "tensorflow"],
+  ["TensorFlow", "tensorflow"],
   ["Jupyter", "jupyter"], ["Matplotlib", "matplotlib"], ["VS Code", "vscode"],
-  ["Google Colab", "googlecolab"], ["Google AI Studio", "aistudio"],
-  ["draw.io", "drawio"], ["Figma", "figma"], ["Canva", "canva"],
+  ["Google Colab", "googlecolab"], ["Figma", "figma"], ["Canva", "canva"],
 ] as const;
-type StackItems = readonly (readonly [string, string | null])[];
+type StackItems = readonly (readonly [string, string])[];
 
 function StackRow({ items, label }: { items: StackItems; label: string }) {
-  return <div className="tech-stack-window" role="group" aria-label={label} tabIndex={0}>
-    <div className="tech-stack-track" style={{ animationDuration: `${items.length * 5}s` }}>
-      {[0, 1].map(copy => <ul key={copy} className="tech-stack-group" aria-hidden={copy === 1 ? true : undefined}>
-        {items.map(([name, icon]) => <li className="tech-stack-item" key={name}>
-          {icon ? <Image src={`/images/tech/${icon}.${icon === "aistudio" ? "png" : "svg"}`} width={30} height={30} alt="" loading="eager" unoptimized /> : <span className="tech-stack-api" aria-hidden="true">API</span>}
-          <span>{name}</span>
-        </li>)}
-      </ul>)}
+  const viewport = useRef<HTMLDivElement>(null);
+  const cycle = useRef<HTMLUListElement>(null);
+  const [repetitions, setRepetitions] = useState(2);
+
+  useEffect(() => {
+    const update = () => {
+      if (!viewport.current || !cycle.current) return;
+      const cycleWidth = cycle.current.getBoundingClientRect().width;
+      if (cycleWidth) setRepetitions(Math.max(1, Math.ceil(viewport.current.clientWidth / cycleWidth)));
+    };
+    const observer = new ResizeObserver(update);
+    if (viewport.current) observer.observe(viewport.current);
+    if (cycle.current) observer.observe(cycle.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return <div ref={viewport} className="tech-stack-window" role="group" aria-label={label} tabIndex={0}>
+    <div className="tech-stack-track" style={{ animationDuration: `${items.length * 4 * repetitions}s` }}>
+      {[0, 1].map(copy => <div key={copy} className="tech-stack-sequence" aria-hidden={copy === 1 ? true : undefined}>
+        {Array.from({ length: repetitions }, (_, repeat) => <ul key={repeat} ref={copy === 0 && repeat === 0 ? cycle : undefined} className="tech-stack-group" aria-hidden={copy === 1 || repeat > 0 ? true : undefined}>
+          {items.map(([name, icon]) => <li className="tech-stack-item" key={name}>
+            <Image src={`/images/tech/${icon}.svg`} width={30} height={30} alt="" loading="eager" unoptimized />
+            <span>{name}</span>
+          </li>)}
+        </ul>)}
+      </div>)}
     </div>
   </div>;
 }
 
 export function TechStack() {
   const { locale } = useLanguage();
-  const [paused, setPaused] = useState(false);
   const indonesian = locale === "id";
-  return <section className={`discipline-strip tech-stack-section${paused ? " is-paused" : ""}`} aria-labelledby="tech-stack-title">
+  return <section className="discipline-strip tech-stack-section" aria-labelledby="tech-stack-title">
     <div className="container">
       <div className="tech-stack-heading">
-        <div><p>{indonesian ? "KODE, DATA & DESAIN" : "CODE, DATA & DESIGN"}</p><h2 id="tech-stack-title">Creative tech stack<span>.</span></h2></div>
-        <button type="button" className="tech-stack-toggle" aria-pressed={paused} onClick={() => setPaused(!paused)} aria-label={indonesian ? (paused ? "Jalankan animasi logo" : "Jeda animasi logo") : (paused ? "Play logo animation" : "Pause logo animation")}>
-          {paused ? <Play size={14} /> : <Pause size={14} />}<span>{indonesian ? (paused ? "Jalankan" : "Jeda") : (paused ? "Play" : "Pause")}</span>
-        </button>
+        <h2 id="tech-stack-title">Creative tech stack<span>.</span></h2>
       </div>
       <div className="tech-stack-lanes">
-        <StackRow items={webStack} label={indonesian ? "Pengembangan web dan API" : "Web development and APIs"} />
+        <StackRow items={webStack} label={indonesian ? "Pengembangan web" : "Web development"} />
         <StackRow items={dataAndTools} label={indonesian ? "Data science dan tools kreatif" : "Data science and creative tools"} />
       </div>
     </div>
