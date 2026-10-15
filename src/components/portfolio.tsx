@@ -11,6 +11,7 @@ import { Dialog } from "./dialog";
 import { ProjectArt } from "./project-art";
 import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
+import { TechStack } from "./tech-stack";
 import { useLanguage } from "./language-provider";
 
 const serviceIcons = { pen: PenTool, video: Video, camera: Camera, code: Code2 };
@@ -52,9 +53,6 @@ export function Portfolio() {
   }
 
   const visibleProjects = category === "Semua" ? projects : projects.filter(project => project.category === category);
-  const disciplines = locale === "id"
-    ? ["Desain Grafis", "Kreasi Konten", "Cerita Visual", "Pengalaman Digital"]
-    : ["Graphic Design", "Content Creation", "Visual Storytelling", "Digital Experiences"];
 
   return (
     <MotionConfig reducedMotion="user">
@@ -63,9 +61,7 @@ export function Portfolio() {
       <main id="main">
         <Hero onContact={() => setContactOpen(true)} />
 
-        <div className="discipline-strip" aria-label={copy.disciplines}>
-          <div className="container discipline-inner">{disciplines.map(item => <span key={item}>{item}<span className="discipline-star" aria-hidden="true">✳</span></span>)}</div>
-        </div>
+        <TechStack />
 
         <section className="section container work-section" id="karya" aria-labelledby="work-title">
           <Reveal>

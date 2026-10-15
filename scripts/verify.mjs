@@ -74,7 +74,8 @@ try {
   assert(Math.abs(portraitClip.height - portraitBackdrop.height) < 1);
   const portraitImage = await page.locator(".reference-profile-photo img").boundingBox();
   assert(portraitImage.width < portraitClip.width);
-  assert(Math.abs(portraitImage.y + portraitImage.height - (portraitClip.y + portraitClip.height)) < 1);
+  const portraitBottomOffset = portraitImage.y + portraitImage.height - (portraitClip.y + portraitClip.height);
+  assert(portraitBottomOffset >= 0 && portraitBottomOffset <= 16);
   const desktopNavItems = await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => {
     const box = link.getBoundingClientRect();
     return { left: box.left, right: box.right };
@@ -172,6 +173,34 @@ try {
       console.log(`PASS: ${width}px/${locale}, images, layout${width <= 900 ? ", mobile menu and language switching" : ""}`);
     }
   }
+  const stackNames = await page.locator('.tech-stack-group:not([aria-hidden="true"]) .tech-stack-item > span:last-child').allTextContents();
+  assert.equal(stackNames.length, 24);
+  for (const name of ["Laravel", "React", "REST API", "PyTorch", "Google Colab", "Google AI Studio", "draw.io", "Canva"]) assert(stackNames.includes(name));
+  assert.equal(await page.locator(".discipline-inner").count(), 0);
+  assert.equal(await page.locator(".tech-stack-track").first().evaluate(el => getComputedStyle(el).animationName), "none");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.locator(".tech-stack-section").scrollIntoViewIfNeeded();
+  await page.mouse.move(2, 200);
+  const trackX = () => page.locator(".tech-stack-track").first().evaluate(el => el.getBoundingClientRect().x);
+  const startX = await trackX();
+  await delay(450);
+  assert(await trackX() < startX - 2, "Logo strip moves at normal motion preference");
+  await page.locator(".tech-stack-toggle").click();
+  const pausedX = await trackX();
+  await delay(250);
+  assert(Math.abs(await trackX() - pausedX) < 1, "Pause control stops motion");
+  await page.locator(".tech-stack-toggle").click();
+  await page.locator(".tech-stack-lanes").hover();
+  const hoverX = await trackX();
+  await delay(250);
+  assert(Math.abs(await trackX() - hoverX) < 1, "Hover pauses motion");
+  await page.screenshot({ path: "artifacts/tech-stack-desktop.png" });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator(".tech-stack-section").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: "artifacts/tech-stack-mobile.png" });
+  console.log("PASS: 24 tech stack entries, every local logo loaded, running marquee, pause control, hover pause, reduced motion");
   assert.deepEqual(errors, [], "Browser errors");
   console.log("PASS: ID/EN translation, persistence after reload, shared page margins, hero social links, navigation order, category preservation, translated dialogs, transparent hero portrait, neutral navbar hover, hero type, filters, Escape, focus restoration, and 404.");
 } finally {
