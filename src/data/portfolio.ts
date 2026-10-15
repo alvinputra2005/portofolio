@@ -5,7 +5,7 @@
 export type SocialLink = {
   label: string;
   href: string | null;
-  icon: "instagram" | "linkedin" | "github";
+  icon: "whatsapp" | "instagram" | "email" | "github" | "linkedin";
 };
 
 export type Profile = {
@@ -38,9 +38,11 @@ export const profile: Profile = {
     "Portofolio ini menjadi ruang untuk memperkenalkan pendekatan kreatif saya. Profil, pengalaman, dan koleksi karya dapat disesuaikan seiring perjalanan berikutnya.",
   ],
   socialLinks: [
+    { label: "WhatsApp", href: null, icon: "whatsapp" },
     { label: "Instagram", href: null, icon: "instagram" },
-    { label: "LinkedIn", href: null, icon: "linkedin" },
+    { label: "Email", href: null, icon: "email" },
     { label: "GitHub", href: null, icon: "github" },
+    { label: "LinkedIn", href: null, icon: "linkedin" },
   ],
   cvUrl: null, // Isi path PDF CV, misalnya /documents/cv-alvin.pdf.
 };
@@ -237,9 +239,10 @@ export const services: Service[] = [
 ];
 
 export const navigation = [
-  { label: "Project", href: "#karya" },
-  { label: "About Me", href: "#tentang" },
-  { label: "Social Media", href: "#sosial" },
+  { label: "About", href: "#tentang" },
+  { label: "Projects", href: "#karya" },
+  { label: "Experience", href: "#pengalaman" },
+  { label: "Achievements", href: "#pencapaian" },
   { label: "Contact", href: "#kontak" },
 ];
 

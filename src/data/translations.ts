@@ -8,7 +8,7 @@ export const messages = {
     hello: "Halo, aku", viewProfile: "Lihat Profilku", hire: "Hubungi Aku", portraitAlt: "Foto profil", all: "Semua", disciplines: "Bidang kreatif",
     workLabel: "KARYA PILIHAN", workTitle: "Ide yang menjadi", workTitleMuted: "karya bermakna.", workIntro: "Ruang untuk ide, eksplorasi, dan karya.", workIntroSecond: "Setiap detail punya ceritanya sendiri.", filterLabel: "Filter kategori karya", explorations: "EKSPLORASI", viewProject: "Lihat detail", placeholderCaption: "Pilihan konsep sementara. Karya asli akan hadir di sini.",
     aboutLabel: "SEKILAS TENTANG AKU", aboutTitle: "Seorang pribadi.", aboutTitleSecond: "Sudut pandang.", aboutTitleAccent: "Sedikit berbeda.", photoLabel: "SOSOK DI BALIK KARYA", curiousNote: "Selalu ingin tahu.", designThinker: "Pemikir desain", curiousCreator: "Kreator penuh rasa ingin tahu", viewCv: "Lihat CV", getToKnow: "Kenalan lebih jauh",
-    servicesLabel: "YANG BISA KUBANTU", servicesTitle: "Beragam keahlian.", servicesTitleMuted: "Satu arah kreatif.", servicesIntro: "Dari ide pertama sampai sentuhan akhir.", servicesIntroSecond: "Mari buat sesuatu yang berarti.", ideaToExpression: "DARI IDE MENJADI KARYA",
+    servicesLabel: "PENCAPAIAN & KEAHLIAN", servicesTitle: "Beragam keahlian.", servicesTitleMuted: "Satu arah kreatif.", servicesIntro: "Dari ide pertama sampai sentuhan akhir.", servicesIntroSecond: "Mari buat sesuatu yang berarti.", ideaToExpression: "DARI IDE MENJADI KARYA",
     journeyLabel: "PERJALANAN KREATIF", journeyFirst: "Belajar.", journeySecond: "Berkarya.", journeyThird: "Bertumbuh.", journeyIntro: "Setiap kesempatan menjadi ruang", journeyIntroSecond: "untuk belajar dan berkembang.", experiencePlaceholder: "Ruang untuk perjalanan dan pengalamanmu.",
     socialLabel: "DI BALIK PORTOFOLIO", socialTitle: "Mari tetap", socialTitleMuted: "terhubung.", socialIntro: "Ide, proses, dan hal menarik lainnya.", socialFollow: "Ikuti perjalanan kreatifku", socialComing: "Profil akan segera hadir", socialUnavailable: "profil belum ditambahkan",
     contactEyebrow: "HAL BAIK DIMULAI DARI SEBUAH PERCAKAPAN", contactIdea: "PUNYA IDE MENARIK?", contactFirst: "Yuk, buat", contactSecond: "sesuatu yang", contactAccent: "berarti.", openContact: "Buka informasi kontak", contactIntro: "Proyek baru, ide menarik, atau sekadar menyapa.", contactIntroSecond: "Aku senang mendengar ceritamu.", startConversation: "Mulai percakapan", footer: "Dibuat dengan sepenuh hati.", backTop: "Kembali ke atas",
@@ -19,7 +19,7 @@ export const messages = {
     hello: "Hi, I'm", viewProfile: "See My Profile", hire: "Hire Me", portraitAlt: "Portrait of", all: "All", disciplines: "Creative disciplines",
     workLabel: "SELECTED WORK", workTitle: "Ideas made", workTitleMuted: "into something.", workIntro: "A space for ideas, exploration, and creativity.", workIntroSecond: "Every detail has a story to tell.", filterLabel: "Filter projects by category", explorations: "EXPLORATIONS", viewProject: "View details", placeholderCaption: "Concept placeholders for now. Original work is coming soon.",
     aboutLabel: "A LITTLE ABOUT ME", aboutTitle: "A person.", aboutTitleSecond: "A perspective.", aboutTitleAccent: "A little different.", photoLabel: "THE PERSON BEHIND THE WORK", curiousNote: "Always curious.", designThinker: "Design thinker", curiousCreator: "Curious creator", viewCv: "View CV", getToKnow: "Get to know me",
-    servicesLabel: "WHAT I CAN HELP WITH", servicesTitle: "Different skills.", servicesTitleMuted: "One creative direction.", servicesIntro: "From the first idea to the finishing touches.", servicesIntroSecond: "Let's make something meaningful.", ideaToExpression: "IDEA TO EXPRESSION",
+    servicesLabel: "ACHIEVEMENTS & SKILLS", servicesTitle: "Different skills.", servicesTitleMuted: "One creative direction.", servicesIntro: "From the first idea to the finishing touches.", servicesIntroSecond: "Let's make something meaningful.", ideaToExpression: "IDEA TO EXPRESSION",
     journeyLabel: "THE JOURNEY", journeyFirst: "Learning.", journeySecond: "Making.", journeyThird: "Growing.", journeyIntro: "Every opportunity is a space", journeyIntroSecond: "to learn and grow.", experiencePlaceholder: "A space for your journey and experience.",
     socialLabel: "BEYOND THE PORTFOLIO", socialTitle: "Let's stay", socialTitleMuted: "connected.", socialIntro: "Ideas, process, and other interesting things.", socialFollow: "Follow my creative journey", socialComing: "Profile coming soon", socialUnavailable: "profile not added yet",
     contactEyebrow: "GOOD THINGS START WITH A CONVERSATION", contactIdea: "HAVE AN IDEA IN MIND?", contactFirst: "Let's make", contactSecond: "something", contactAccent: "great.", openContact: "Open contact information", contactIntro: "A new project, an interesting idea, or just a hello.", contactIntroSecond: "I'd love to hear your story.", startConversation: "Start a conversation", footer: "Crafted with intention.", backTop: "Back to top",
@@ -28,8 +28,8 @@ export const messages = {
 } as const;
 
 export const navigationLabels = {
-  id: { "#karya": "Karya", "#tentang": "Tentang", "#sosial": "Media Sosial", "#kontak": "Kontak" },
-  en: { "#karya": "Project", "#tentang": "About Me", "#sosial": "Social Media", "#kontak": "Contact" },
+  id: { "#tentang": "Tentang", "#karya": "Proyek", "#pengalaman": "Pengalaman", "#pencapaian": "Pencapaian", "#kontak": "Kontak" },
+  en: { "#tentang": "About", "#karya": "Projects", "#pengalaman": "Experience", "#pencapaian": "Achievements", "#kontak": "Contact" },
 } as const;
 
 export function categoryLabel(category: ProjectCategory | "Semua", locale: Locale): string {

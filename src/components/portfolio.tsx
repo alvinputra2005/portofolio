@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowDownRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Download, Github, Instagram, Linkedin, Mail, MapPin, PenTool, Plus, Sparkles, Video } from "lucide-react";
+import { ArrowDownRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Download, Mail, MapPin, PenTool, Plus, Sparkles, Video } from "lucide-react";
 import { projectCategories, siteSettings } from "@/data/portfolio";
 import { categoryLabel, getLocalizedPortfolio } from "@/data/translations";
 import { Reveal } from "./reveal";
@@ -13,7 +13,6 @@ import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
 import { useLanguage } from "./language-provider";
 
-const socialIcons = { instagram: Instagram, linkedin: Linkedin, github: Github };
 const serviceIcons = { pen: PenTool, video: Video, camera: Camera, code: Code2 };
 
 function SectionLabel({ number, children }: { number: string; children: React.ReactNode }) {
@@ -108,7 +107,7 @@ export function Portfolio() {
           </div>
         </section>
 
-        <section className="section container service-section" aria-labelledby="service-title">
+        <section className="section container service-section" id="pencapaian" aria-labelledby="service-title">
           <Reveal>
             <SectionLabel number="03">{copy.servicesLabel}</SectionLabel>
             <div className="section-heading"><h2 id="service-title">{copy.servicesTitle}<br /><span className="muted-heading">{copy.servicesTitleMuted}</span></h2><p>{copy.servicesIntro}<br />{copy.servicesIntroSecond}</p></div>
@@ -124,15 +123,6 @@ export function Portfolio() {
             <Reveal className="experience-intro"><SectionLabel number="04">{copy.journeyLabel}</SectionLabel><h2 id="experience-title">{copy.journeyFirst}<br />{copy.journeySecond}<br /><span className="muted-heading">{copy.journeyThird}</span></h2><p>{copy.journeyIntro}<br />{copy.journeyIntroSecond}</p><span className="experience-star" aria-hidden="true">✳</span></Reveal>
             <div className="experience-list">{experiences.map((experience, index) => <Reveal key={experience.id} delay={index * .05}><article className="experience-row"><div className="experience-meta"><span>{experience.period}</span><span className="experience-type">{experience.type}</span></div><h3>{experience.role}</h3><span className="experience-company">{experience.company}</span><p>{experience.description}</p><span className="experience-number">0{index + 1}</span></article></Reveal>)}<p className="experience-placeholder">{copy.experiencePlaceholder}</p></div>
           </div>
-        </section>
-
-        <section className="section container social-section" id="sosial" aria-labelledby="social-title">
-          <Reveal><div className="social-heading"><div><SectionLabel number="05">{copy.socialLabel}</SectionLabel><h2 id="social-title">{copy.socialTitle} <span className="muted-heading">{copy.socialTitleMuted}</span></h2></div><p>{copy.socialIntro}</p></div></Reveal>
-          <div className="social-links-grid">{profile.socialLinks.map(social => {
-            const Icon = socialIcons[social.icon];
-            const content = <><span className="social-link-icon"><Icon size={22} strokeWidth={1.4} /></span><div><h3>{social.label}</h3><span>{social.href ? copy.socialFollow : copy.socialComing}</span></div><ArrowUpRight className="social-link-arrow" size={20} /></>;
-            return <Reveal key={social.label}>{social.href ? <a className="social-link-card" href={social.href} target="_blank" rel="noreferrer">{content}</a> : <button className="social-link-card" onClick={() => setContactOpen(true)} aria-label={`${social.label}, ${copy.socialUnavailable}`}>{content}</button>}</Reveal>;
-          })}</div>
         </section>
 
         <section className="contact-section" id="kontak" aria-labelledby="contact-title">

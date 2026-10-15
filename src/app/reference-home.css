@@ -71,7 +71,10 @@
 .reference-greeting mark { background: linear-gradient(90deg, #ffc400, #ffe600); color: #000; padding: 3px 7px 4px; border-radius: 7px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .reference-title { font-size: clamp(30px, 2.65vw, 40px); font-weight: 700; line-height: 1.3; letter-spacing: -.7px; margin-top: 12px; background: linear-gradient(100deg, #005a91 0%, #168ad0 60%, #38b4ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .reference-title span { display: block; }
-.reference-biography { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 500; line-height: 1.75; color: #30343a; max-width: 650px; margin-top: 29px; }
+.reference-socials { display: flex; align-items: center; gap: 9px; margin-top: 18px; }
+.reference-socials a,.reference-socials button { display: grid; place-items: center; width: 35px; height: 35px; padding: 0; border: 1px solid rgb(0 90 145 / 18%); border-radius: 50%; background: rgb(255 255 255 / 72%); color: #00699f; box-shadow: 0 4px 13px rgb(0 73 112 / 7%); transition: color .2s, background .2s, border-color .2s, transform .2s; }
+.reference-socials a:hover,.reference-socials button:hover { color: #003b5d; background: #ffe000; border-color: #ffe000; transform: translateY(-2px); }
+.reference-biography { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 500; line-height: 1.75; color: #30343a; max-width: 650px; margin-top: 22px; }
 .reference-biography p + p { margin-top: 24px; }
 .reference-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; margin-top: 32px; padding-top: 0; }
 .profile-pill { display: inline-flex; align-items: center; justify-content: center; gap: 13px; background: linear-gradient(105deg, #0080bf, #003b5d); border-radius: 999px; padding: 6px 10px 6px 25px; min-height: 46px; color: white; font-family: "Poppins", sans-serif; font-size: 17px; font-weight: 500; letter-spacing: -.3px; transition: box-shadow .2s, transform .2s; }
@@ -80,7 +83,7 @@
 .profile-pill:hover .profile-play { transform: rotate(-15deg); }
 .hire-pill { min-height: 43px; padding: 4px 25px; background: transparent; border: 2px solid #0a0a0a; border-radius: 999px; color: #050505; font-family: "Poppins", sans-serif; font-size: 17px; font-weight: 400; line-height: 1.35; transition: background .2s, transform .2s; }
 .hire-pill:hover { background: #ffe000; transform: translateY(-3px); }
-.reference-hero-portrait { position: relative; justify-self: center; width: min(100%, 370px); aspect-ratio: .79; }
+.reference-hero-portrait { position: relative; justify-self: end; width: min(100%, 370px); margin-right: 14px; aspect-ratio: .79; }
 .reference-portrait-backdrop { position: absolute; inset: 15px -14px 15px 14px; border-radius: 17px; background: linear-gradient(#4fc1ff, #0084c5 57%, #003958); overflow: hidden; }
 .portrait-ring { position: absolute; border: 22px solid #ffdf00; width: 148px; height: 148px; border-radius: 50%; }
 .ring-top { top: 32px; left: -38px; }.ring-bottom { bottom: 50px; right: -52px; }
@@ -107,7 +110,30 @@
 @media (max-width: 650px) {
   .reference-hero-inner { width: calc(100% - 44px); grid-template-columns: 1fr; gap: 35px; padding-block: 106px 49px; }
   .reference-hero { background-size: auto 100%; background-position: 44% center; }
-  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 14px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 24px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { margin-top: 26px; padding-top: 0; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { width: min(100% - 64px, 310px); aspect-ratio: .79; }.reference-profile-photo { right: 6px; }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
+  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 14px; }.reference-socials { margin-top: 16px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 21px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { margin-top: 26px; padding-top: 0; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { justify-self: center; width: min(100% - 64px, 310px); margin-right: 0; aspect-ratio: .79; }.reference-profile-photo { right: 6px; }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
+}
+
+/* One shared page grid: the left edge follows the hero copy, while the
+   right edge meets the language divider in the desktop navbar. */
+:root {
+  --portfolio-page-left: max(28px, 6.7vw);
+  --portfolio-page-right: calc(max(28px, calc((100vw - 1284px) / 2)) + 69px);
+}
+.container,.reference-hero-inner {
+  width: auto;
+  margin-left: var(--portfolio-page-left);
+  margin-right: var(--portfolio-page-right);
+}
+@media (max-width: 900px) {
+  :root { --portfolio-page-left: 32px; --portfolio-page-right: 32px; }
+  .reference-hero-portrait { margin-right: 10px; }
+}
+@media (max-width: 650px) {
+  :root { --portfolio-page-left: 22px; --portfolio-page-right: 22px; }
+  .reference-hero-portrait { margin-right: 0; }
+}
+@media (max-width: 380px) {
+  :root { --portfolio-page-left: 18px; --portfolio-page-right: 18px; }
 }
 @media (max-width: 380px) {
   .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-actions { gap: 7px; }.language-toggle { min-width: 60px; margin-left: 0; padding-left: 10px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 19px; }.reference-title { font-size: 27px; }.reference-biography { font-size: 13px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }

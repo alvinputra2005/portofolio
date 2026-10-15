@@ -38,6 +38,9 @@ try {
   assert.equal(await page.locator("html").getAttribute("lang"), "id");
   assert.equal(await page.locator(".reference-header img").count(), 0);
   assert.match(await page.locator("h1").innerText(), /Desainer Kreatif/);
+  assert.deepEqual(await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => link.getAttribute("href"))), ["#tentang", "#karya", "#pengalaman", "#pencapaian", "#kontak"]);
+  assert.equal(await page.locator(".reference-socials a, .reference-socials button").count(), 5);
+  assert.equal(await page.locator("#sosial").count(), 0);
   const heroStyles = await page.locator(".reference-hero").evaluate(element => ({
     background: getComputedStyle(element).backgroundImage,
     headingFont: getComputedStyle(element.querySelector("h1")).fontFamily,
@@ -53,6 +56,17 @@ try {
   assert.equal(heroStyles.photoBackground, "rgba(0, 0, 0, 0)");
   assert.match(heroStyles.photo, /alvin-profile\.webp/);
   assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
+
+  const alignedContainers = await page.locator(".reference-hero-inner, .work-section, .about-layout, .service-section, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
+    const box = element.getBoundingClientRect();
+    return { left: box.left, right: box.right };
+  }));
+  assert(alignedContainers.every(box => Math.abs(box.left - alignedContainers[0].left) < 1));
+  assert(alignedContainers.every(box => Math.abs(box.right - alignedContainers[0].right) < 1));
+  const languageDividerX = (await page.locator(".language-toggle").boundingBox()).x;
+  assert(Math.abs(alignedContainers[0].right - languageDividerX) < 1);
+  const portraitBackdrop = await page.locator(".reference-portrait-backdrop").boundingBox();
+  assert(Math.abs(portraitBackdrop.x + portraitBackdrop.width - alignedContainers[0].right) < 1);
 
   const initialNavbar = await page.locator(".reference-navbar").boundingBox();
   assert.equal(initialNavbar.y, 0);
@@ -146,7 +160,7 @@ try {
     }
   }
   assert.deepEqual(errors, [], "Browser errors");
-  console.log("PASS: ID/EN translation, persistence after reload, document language, category preservation, translated dialogs, original portrait card, hero type, navbar, filters, Escape, focus restoration, and 404.");
+  console.log("PASS: ID/EN translation, persistence after reload, shared page margins, hero social links, navigation order, category preservation, translated dialogs, original portrait card, hero type, filters, Escape, focus restoration, and 404.");
 } finally {
   if (browser) await browser.close();
   preview.kill();
