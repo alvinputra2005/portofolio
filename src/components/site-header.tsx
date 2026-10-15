@@ -48,7 +48,7 @@ export function SiteHeader({ activeSection, onNavigate }: { activeSection: strin
       <div className="reference-navbar">
         <div className="navbar-identity">
           <a className="navbar-home" href="#beranda" aria-label="Kembali ke beranda" aria-current={activeSection === "#beranda" ? "location" : undefined} onClick={() => navigate("#beranda")}>
-            <svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true"><path d="m3 17 13-13a3 3 0 0 1 4 0l13 13" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 16.5 18 5.5l11 11V31a2 2 0 0 1-2 2h-6V23h-6v10H9a2 2 0 0 1-2-2z" fill="currentColor"/></svg>
+            <svg width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden="true"><path d="m3 17 13-13a3 3 0 0 1 4 0l13 13" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 16.5 18 5.5l11 11V31a2 2 0 0 1-2 2h-6V23h-6v10H9a2 2 0 0 1-2-2z" fill="currentColor"/></svg>
           </a>
           <a className="navbar-brand" href="#beranda" aria-label={`${profile.name}, beranda`} onClick={() => navigate("#beranda")}>
             <span className="navbar-avatar"><Image src={profile.portrait} alt="" fill sizes="44px" /></span>

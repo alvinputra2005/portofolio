@@ -33,9 +33,16 @@ try {
   assert.match(heroStyles.headingFont, /Montserrat/);
   assert.match(heroStyles.bodyFont, /Poppins/);
   const initialNavbar = await page.locator(".reference-navbar").boundingBox();
+  assert.equal(initialNavbar.y, 0);
+  assert.equal(initialNavbar.x, 0);
+  assert.equal(initialNavbar.width, 1440);
+  assert.equal(await page.locator(".reference-navbar").evaluate((element) => getComputedStyle(element).borderRadius), "0px");
+  await page.locator(".navbar-home").hover();
+  assert.equal(await page.locator(".navbar-home").evaluate((element) => getComputedStyle(element).color), "rgb(255, 255, 255)");
   assert.equal(await page.locator(".reference-header").evaluate((element) => getComputedStyle(element).backgroundColor), "rgba(0, 0, 0, 0)");
   await page.evaluate(() => window.scrollTo(0, 80));
-  await page.waitForFunction((initialWidth) => document.querySelector(".reference-navbar").getBoundingClientRect().width < initialWidth * .99, initialNavbar.width);
+  await page.waitForFunction((initialHeight) => document.querySelector(".reference-navbar").getBoundingClientRect().height < initialHeight, initialNavbar.height);
+  assert.equal((await page.locator(".reference-navbar").boundingBox()).y, 0);
   await page.screenshot({ path: "artifacts/navbar-scrolled.png" });
   assert.equal(await page.locator(".pill-desktop-nav a").count(), 4);
   await page.locator(".pill-desktop-nav").getByRole("link", { name: "Project", exact: true }).click();
