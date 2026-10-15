@@ -15,7 +15,8 @@ Use case: background-extraction. Edit target: the provided real portrait photogr
 - Sumber: `../../Dokumentasi/Foto Alvin Terbaru.png`.
 - File sumber sudah memiliki kanal alpha transparan; tidak diproses dengan Imagegen.
 - PNG web: `../public/images/alvin-hero-latest.png`.
-- Aset web aktif: `../public/images/alvin-hero-latest.webp` (WebP kualitas 92 dengan alpha dipertahankan).
-- Penyesuaian: ruang transparan kosong dipangkas secara otomatis tanpa mengubah isi foto.
+- Aset transparan penuh: `../public/images/alvin-hero-latest.webp`.
+- Aset web aktif: `../public/images/alvin-hero-framed.webp` (WebP kualitas 92 dengan alpha dipertahankan).
+- Penyesuaian: ruang transparan kosong dipangkas dan framing diperpanjang sampai kantong jas terlihat, tanpa mengubah isi foto.
 - Penggunaan: hero memakai foto ini di atas kartu biru; foto pada bagian Tentang tetap memakai foto profil sebelumnya.
 

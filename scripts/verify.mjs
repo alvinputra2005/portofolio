@@ -54,7 +54,7 @@ try {
   assert(heroStyles.headingWeight >= 600);
   assert.match(heroStyles.bodyFont, /Poppins/);
   assert.equal(heroStyles.photoBackground, "rgba(0, 0, 0, 0)");
-  assert.match(heroStyles.photo, /alvin-hero-latest\.webp/);
+  assert.match(heroStyles.photo, /alvin-hero-framed\.webp/);
   assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
 
   const alignedContainers = await page.locator(".reference-hero-inner, .work-section, .about-layout, .service-section, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
