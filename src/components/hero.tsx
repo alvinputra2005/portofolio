@@ -42,7 +42,7 @@ export function Hero({ onContact }: { onContact: () => void }) {
         </div>
         <Reveal className="reference-hero-portrait" delay={0.16}>
           <div className="reference-portrait-backdrop" aria-hidden="true"><span className="portrait-ring ring-top" /><span className="portrait-ring ring-bottom" /></div>
-          <div className="reference-profile-photo"><Image src={profile.portrait} alt={`${copy.portraitAlt} ${profile.name}`} fill priority sizes="(max-width: 900px) 80vw, 470px" /></div>
+          <div className="reference-profile-photo"><Image src={profile.heroPortrait} alt={`${copy.portraitAlt} ${profile.name}`} fill priority sizes="(max-width: 900px) 80vw, 470px" /></div>
         </Reveal>
       </div>
     </section>

@@ -54,7 +54,7 @@ try {
   assert(heroStyles.headingWeight >= 600);
   assert.match(heroStyles.bodyFont, /Poppins/);
   assert.equal(heroStyles.photoBackground, "rgba(0, 0, 0, 0)");
-  assert.match(heroStyles.photo, /alvin-profile\.webp/);
+  assert.match(heroStyles.photo, /alvin-hero-latest\.webp/);
   assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
 
   const alignedContainers = await page.locator(".reference-hero-inner, .work-section, .about-layout, .service-section, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
@@ -90,7 +90,7 @@ try {
   await page.locator('.pill-desktop-nav a[href="#karya"]').hover();
   await page.waitForFunction(() => {
     const style = getComputedStyle(document.querySelector('.pill-desktop-nav a[href="#karya"]'));
-    return style.color === "rgb(0, 59, 93)" && style.backgroundColor === "rgb(255, 224, 0)";
+    return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgba(255, 255, 255, 0.19)";
   });
   await page.getByRole("button", { name: "Video", exact: true }).click();
   await page.waitForFunction(() => document.querySelectorAll(".project-card").length === 1);
@@ -160,7 +160,7 @@ try {
     }
   }
   assert.deepEqual(errors, [], "Browser errors");
-  console.log("PASS: ID/EN translation, persistence after reload, shared page margins, hero social links, navigation order, category preservation, translated dialogs, original portrait card, hero type, filters, Escape, focus restoration, and 404.");
+  console.log("PASS: ID/EN translation, persistence after reload, shared page margins, hero social links, navigation order, category preservation, translated dialogs, transparent hero portrait, neutral navbar hover, hero type, filters, Escape, focus restoration, and 404.");
 } finally {
   if (browser) await browser.close();
   preview.kill();

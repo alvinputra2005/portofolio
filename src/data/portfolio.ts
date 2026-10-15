@@ -28,7 +28,7 @@ export const profile: Profile = {
   initials: "A",
   role: "Desainer Kreatif & Kreator Digital",
   portrait: "/images/alvin-profile.webp",
-  heroPortrait: "/images/alvin-hero-cutout.webp",
+  heroPortrait: "/images/alvin-hero-latest.webp",
   email: null, // Isi alamat email Anda untuk mengaktifkan tautan kontak.
   available: true,
   location: "Indonesia",
