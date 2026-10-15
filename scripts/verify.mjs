@@ -24,6 +24,8 @@ try {
   await page.goto(url, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
   await page.getByRole("heading", { level: 1 }).waitFor();
+  assert.equal(await page.locator(".reference-header img").count(), 0);
+  assert.doesNotMatch(await page.locator(".reference-header").innerText(), /Alvin/);
   const heroStyles = await page.locator(".reference-hero").evaluate((element) => ({
     background: getComputedStyle(element).backgroundImage,
     headingFont: getComputedStyle(element.querySelector("h1")).fontFamily,
@@ -51,7 +53,7 @@ try {
   await projectLink.hover();
   await page.waitForFunction(() => {
     const style = getComputedStyle(document.querySelector('.pill-desktop-nav a[href="#karya"]'));
-    return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgb(255, 204, 0)";
+    return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgba(255, 255, 255, 0.12)";
   });
   await page.screenshot({ path: "artifacts/navbar-active.png" });
   await page.locator(".pill-desktop-nav").getByRole("link", { name: "Social Media", exact: true }).click();
@@ -100,7 +102,7 @@ try {
         const link = document.querySelector('#mobile-navigation a[href="#tentang"]');
         if (!link || link.getAttribute("aria-current") !== "location") return false;
         const style = getComputedStyle(link);
-        return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgb(255, 204, 0)";
+        return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgba(255, 255, 255, 0.12)";
       });
       await page.keyboard.press("Escape");
       assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "false");
@@ -127,7 +129,7 @@ try {
     console.log(`PASS: ${width}px, images, layout${width <= 900 ? ", mobile navigation" : ""}`);
   }
   assert.deepEqual(errors, [], "Browser errors");
-  console.log("PASS: transparent header, floating scroll navbar, yellow active buttons with white text, hover, patterned hero, fonts, home, Hire Me, category filter, dialogs, Escape, focus restoration, 404, no browser errors.");
+  console.log("PASS: navbar without photo/name, neutral active buttons, compact top navbar, hover, patterned hero, fonts, home, Hire Me, category filter, dialogs, Escape, focus restoration, 404, no browser errors.");
 } finally {
   if (browser) await browser.close();
   preview.kill();

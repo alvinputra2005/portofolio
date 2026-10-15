@@ -35,18 +35,12 @@
   border-color: rgb(255 255 255 / 35%);
   box-shadow: 0 12px 30px rgb(0 46 73 / 22%), 0 3px 8px rgb(0 46 73 / 8%);
 }
-.navbar-identity { display: flex; align-items: center; gap: 17px; min-width: 0; }
 .navbar-home { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 42px; color: white; border-radius: 6px; transition: background .2s, transform .2s; }
 .navbar-home:hover { color: white; background: #ffffff12; transform: translateY(-2px); }
-.navbar-brand { display: flex; align-items: center; gap: 13px; font-size: 18px; font-weight: 700; letter-spacing: -.5px; border-radius: 25px; min-width: 0; }
-.navbar-brand > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.navbar-avatar { position: relative; width: 43px; height: 43px; border-radius: 50%; overflow: hidden; background: #eaf4fb; flex-shrink: 0; transition: box-shadow .2s; }
-.navbar-avatar img { object-fit: cover; object-position: center 27%; transform: scale(1.65); transform-origin: center 27%; }
-.navbar-brand:hover .navbar-avatar { box-shadow: 0 0 0 3px #ffe000; }
 .pill-desktop-nav { display: flex; align-items: center; gap: 18px; }
 .pill-desktop-nav a { position: relative; padding: 12px 15px; font-size: 16px; font-weight: 600; letter-spacing: -.45px; border-radius: 999px; white-space: nowrap; transition: color .2s, background .2s, transform .2s; }
 .pill-desktop-nav a:hover { color: #ffe000; background: #ffffff0f; transform: translateY(-1px); }
-.pill-desktop-nav a.active { background: #ffcc00; color: white; text-shadow: 0 1px 2px rgb(98 67 0 / 36%); box-shadow: 0 2px 9px #003b5d14; }
+.pill-desktop-nav a.active { background: rgb(255 255 255 / 12%); color: white; }
 .reference-navbar :focus-visible, .pill-mobile-nav :focus-visible { outline: 2px solid #ffe000; outline-offset: 3px; }
 .pill-menu-toggle { display: none; width: 43px; height: 43px; align-items: center; justify-content: center; border: 0; border-radius: 50%; color: white; background: transparent; flex-shrink: 0; transition: background .2s; }
 .pill-menu-toggle:hover { background: #ffffff18; }
@@ -101,11 +95,11 @@
   .reference-header { height: 60px; }
   .reference-navbar { height: 60px; padding-inline: 20px; }
   .reference-header.is-scrolled .reference-navbar { height: 56px; }
-  .navbar-identity { gap: 10px; }.navbar-brand { font-size: 17px; gap: 10px; }.navbar-avatar { width: 39px; height: 39px; }.navbar-home { width: 36px; }.navbar-home svg { width: 26px; height: 26px; }
+  .navbar-home { width: 36px; }.navbar-home svg { width: 26px; height: 26px; }
   .pill-desktop-nav { display: none; }.pill-menu-toggle { display: flex; }
   .pill-mobile-nav { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; padding: 12px; background: linear-gradient(115deg, rgb(0 123 185 / 90%), rgb(0 59 93 / 94%)); backdrop-filter: blur(20px) saturate(145%); -webkit-backdrop-filter: blur(20px) saturate(145%); border: 1px solid #ffffff22; border-radius: 0; box-shadow: 0 12px 35px #003b5d2b; }
   .reference-header.is-scrolled .pill-mobile-nav { top: 56px; }
-  .pill-mobile-nav a { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 16px; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 15px; font-weight: 600; border-radius: 14px; transition: background .2s, color .2s; }.pill-mobile-nav a:hover { background: #ffffff15; color: #ffe000; }.pill-mobile-nav a.active { background: #ffcc00; color: white; text-shadow: 0 1px 2px rgb(98 67 0 / 36%); }
+  .pill-mobile-nav a { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 16px; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 15px; font-weight: 600; border-radius: 14px; transition: background .2s, color .2s; }.pill-mobile-nav a:hover { background: #ffffff15; color: #ffe000; }.pill-mobile-nav a.active { background: rgb(255 255 255 / 12%); color: white; }
   .reference-hero { min-height: auto; }.reference-hero-inner { width: calc(100% - 64px); padding-block: 136px 60px; gap: 35px; grid-template-columns: 1fr .8fr; }.reference-greeting { font-size: 22px; }.reference-title { font-size: 34px; }.reference-biography { font-size: 14px; }.reference-hero-actions { padding-top: 33px; gap: 17px; }.profile-pill { font-size: 15px; padding-left: 19px; }.hire-pill { font-size: 15px; padding-inline: 19px; }.reference-hero-copy { padding-bottom: 0; }.reference-hero-portrait { aspect-ratio: .69; }
 }
 @media (max-width: 650px) {
@@ -114,5 +108,5 @@
   .reference-greeting { font-size: 22px; }.reference-title { font-size: clamp(30px, 7.5vw, 40px); letter-spacing: -.7px; margin-top: 23px; }.reference-biography { font-size: 15px; line-height: 1.65; margin-top: 24px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { padding-top: 30px; gap: 22px; }.profile-pill { font-size: 16px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 16px; padding-inline: 22px; }.reference-hero-portrait { width: min(100% - 24px, 385px); aspect-ratio: .79; }.reference-profile-photo { right: 6px; }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
 }
 @media (max-width: 380px) {
-  .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-identity { gap: 6px; }.navbar-brand { font-size: 15px; }.navbar-avatar { width: 34px; height: 34px; }.navbar-home { width: 31px; }.navbar-home svg { width: 24px; height: 24px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 20px; }.reference-title { font-size: 29px; }.reference-biography { font-size: 14px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }
+  .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-home { width: 31px; }.navbar-home svg { width: 24px; height: 24px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 20px; }.reference-title { font-size: 29px; }.reference-biography { font-size: 14px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }
 }
