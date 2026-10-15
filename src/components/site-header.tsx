@@ -49,7 +49,6 @@ export function SiteHeader({ activeSection, onNavigate }: { activeSection: strin
   return (
     <header ref={header} className={`reference-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="reference-navbar">
-        <a className="navbar-wordmark" href="#beranda" aria-label={copy.home} aria-current={activeSection === "#beranda" ? "location" : undefined} onClick={() => navigate("#beranda")}>alvin</a>
         <div className="navbar-actions">
           <nav className="pill-desktop-nav" aria-label={copy.mainNav}>
             {navigation.map((link) => <a key={link.href} href={link.href} className={activeSection === link.href ? "active" : ""} aria-current={activeSection === link.href ? "location" : undefined} onClick={() => navigate(link.href)}>{linkLabel(link.href, link.label)}</a>)}

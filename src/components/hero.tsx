@@ -21,7 +21,8 @@ export function Hero({ onContact }: { onContact: () => void }) {
           <Reveal delay={0.22} className="reference-hero-actions"><a className="profile-pill" href="#tentang">{copy.viewProfile}<span className="profile-play"><Play size={18} fill="currentColor" strokeWidth={0} /></span></a><button className="hire-pill" onClick={onContact}>{copy.hire}</button></Reveal>
         </div>
         <Reveal className="reference-hero-portrait" delay={0.16}>
-          <div className="reference-profile-photo"><Image src={profile.heroPortrait} alt={`${copy.portraitAlt} ${profile.name}`} fill priority sizes="(max-width: 900px) 80vw, 470px" /></div>
+          <div className="reference-portrait-backdrop" aria-hidden="true"><span className="portrait-ring ring-top" /><span className="portrait-ring ring-bottom" /></div>
+          <div className="reference-profile-photo"><Image src={profile.portrait} alt={`${copy.portraitAlt} ${profile.name}`} fill priority sizes="(max-width: 900px) 80vw, 470px" /></div>
         </Reveal>
       </div>
     </section>

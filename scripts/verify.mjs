@@ -29,17 +29,15 @@ try {
   }
 
   async function goHome() {
-    await page.locator(".navbar-wordmark").click();
+    await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForFunction(() => window.scrollY < 10);
   }
 
   await page.goto(url, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
   assert.equal(await page.locator("html").getAttribute("lang"), "id");
-  assert.equal(await page.locator(".navbar-wordmark").innerText(), "alvin");
   assert.equal(await page.locator(".reference-header img").count(), 0);
   assert.match(await page.locator("h1").innerText(), /Desainer Kreatif/);
-  assert.match(await page.locator(".navbar-wordmark").evaluate(element => getComputedStyle(element).fontFamily), /Outfit/);
   const heroStyles = await page.locator(".reference-hero").evaluate(element => ({
     background: getComputedStyle(element).backgroundImage,
     headingFont: getComputedStyle(element.querySelector("h1")).fontFamily,
@@ -50,11 +48,11 @@ try {
   }));
   assert.match(heroStyles.background, /hero-pattern\.svg/);
   assert.match(heroStyles.headingFont, /Montserrat/);
-  assert(heroStyles.headingWeight < 600);
+  assert(heroStyles.headingWeight >= 600);
   assert.match(heroStyles.bodyFont, /Poppins/);
   assert.equal(heroStyles.photoBackground, "rgba(0, 0, 0, 0)");
-  assert.match(heroStyles.photo, /alvin-hero-cutout\.webp/);
-  assert.equal(await page.locator(".reference-portrait-backdrop").count(), 0);
+  assert.match(heroStyles.photo, /alvin-profile\.webp/);
+  assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
 
   const initialNavbar = await page.locator(".reference-navbar").boundingBox();
   assert.equal(initialNavbar.y, 0);
@@ -78,7 +76,7 @@ try {
   await page.locator('.pill-desktop-nav a[href="#karya"]').hover();
   await page.waitForFunction(() => {
     const style = getComputedStyle(document.querySelector('.pill-desktop-nav a[href="#karya"]'));
-    return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgba(255, 255, 255, 0.12)";
+    return style.color === "rgb(0, 59, 93)" && style.backgroundColor === "rgb(255, 224, 0)";
   });
   await page.getByRole("button", { name: "Video", exact: true }).click();
   await page.waitForFunction(() => document.querySelectorAll(".project-card").length === 1);
@@ -148,7 +146,7 @@ try {
     }
   }
   assert.deepEqual(errors, [], "Browser errors");
-  console.log("PASS: ID/EN translation, persistence after reload, document language, category preservation, translated dialogs, wordmark, transparent portrait, smaller hero type, navbar, filters, Escape, focus restoration, and 404.");
+  console.log("PASS: ID/EN translation, persistence after reload, document language, category preservation, translated dialogs, original portrait card, hero type, navbar, filters, Escape, focus restoration, and 404.");
 } finally {
   if (browser) await browser.close();
   preview.kill();

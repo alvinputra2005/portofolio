@@ -35,15 +35,14 @@
   border-color: rgb(255 255 255 / 35%);
   box-shadow: 0 12px 30px rgb(0 46 73 / 22%), 0 3px 8px rgb(0 46 73 / 8%);
 }
-.navbar-wordmark { display: inline-flex; align-items: center; min-height: 44px; min-width: 64px; color: white; font-family: "Outfit Variable", sans-serif; font-size: 30px; font-weight: 550; letter-spacing: -1.4px; line-height: 1; transition: opacity .2s, transform .2s; }
-.navbar-wordmark:hover { opacity: .82; transform: translateY(-1px); }
-.navbar-actions { display: flex; align-items: center; gap: 18px; }
-.language-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; min-width: 65px; padding: 8px 10px; border: 1px solid rgb(255 255 255 / 24%); border-radius: 6px; background: transparent; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .5px; transition: background .2s, border-color .2s; }
-.language-toggle:hover { background: rgb(255 255 255 / 12%); border-color: rgb(255 255 255 / 50%); }
-.pill-desktop-nav { display: flex; align-items: center; gap: 18px; }
-.pill-desktop-nav a { position: relative; padding: 12px 15px; font-size: 16px; font-weight: 600; letter-spacing: -.45px; border-radius: 999px; white-space: nowrap; transition: color .2s, background .2s, transform .2s; }
-.pill-desktop-nav a:hover { color: #ffe000; background: #ffffff0f; transform: translateY(-1px); }
+.navbar-actions { display: flex; align-items: stretch; justify-content: space-between; width: 100%; height: 100%; gap: 0; }
+.language-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 28px; min-width: 69px; align-self: center; margin-left: 15px; padding: 0 0 0 20px; border: 0; border-left: 1px solid rgb(255 255 255 / 34%); border-radius: 0; background: transparent; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .25px; transition: color .2s, opacity .2s; }
+.language-toggle:hover { color: #ffe000; opacity: .96; }
+.pill-desktop-nav { display: flex; align-items: stretch; height: 100%; gap: 0; }
+.pill-desktop-nav a { display: inline-flex; align-items: center; justify-content: center; position: relative; min-width: 132px; padding: 0 26px; font-size: 16px; font-weight: 600; letter-spacing: -.45px; border-radius: 0; white-space: nowrap; transition: color .22s, background .22s, box-shadow .22s; }
+.pill-desktop-nav a:hover { color: #003b5d; background: #ffe000; box-shadow: inset 0 -3px 0 rgb(0 59 93 / 18%); }
 .pill-desktop-nav a.active { background: rgb(255 255 255 / 12%); color: white; }
+.pill-desktop-nav a.active:hover { color: #003b5d; background: #ffe000; }
 .reference-navbar :focus-visible, .pill-mobile-nav :focus-visible { outline: 2px solid #ffe000; outline-offset: 3px; }
 .pill-menu-toggle { display: none; width: 43px; height: 43px; align-items: center; justify-content: center; border: 0; border-radius: 50%; color: white; background: transparent; flex-shrink: 0; transition: background .2s; }
 .pill-menu-toggle:hover { background: #ffffff18; }
@@ -70,9 +69,9 @@
 .reference-hero-copy { align-self: stretch; display: flex; flex-direction: column; padding-block: 0 23px; }
 .reference-greeting { color: #090909; font-family: "Montserrat Variable", sans-serif; font-size: 22px; font-weight: 500; letter-spacing: -.4px; line-height: 1.6; }
 .reference-greeting mark { background: linear-gradient(90deg, #ffc400, #ffe600); color: #000; padding: 3px 7px 4px; border-radius: 7px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.reference-title { font-size: clamp(30px, 2.65vw, 40px); font-weight: 500; line-height: 1.3; letter-spacing: -.7px; margin-top: 22px; background: linear-gradient(100deg, #005a91 0%, #168ad0 60%, #38b4ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.reference-title { font-size: clamp(30px, 2.65vw, 40px); font-weight: 600; line-height: 1.3; letter-spacing: -.7px; margin-top: 22px; background: linear-gradient(100deg, #005a91 0%, #168ad0 60%, #38b4ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .reference-title span { display: block; }
-.reference-biography { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 400; line-height: 1.75; color: #30343a; max-width: 650px; margin-top: 29px; }
+.reference-biography { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 500; line-height: 1.75; color: #30343a; max-width: 650px; margin-top: 29px; }
 .reference-biography p + p { margin-top: 24px; }
 .reference-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; margin-top: auto; padding-top: 72px; }
 .profile-pill { display: inline-flex; align-items: center; justify-content: center; gap: 13px; background: linear-gradient(105deg, #0080bf, #003b5d); border-radius: 999px; padding: 6px 10px 6px 25px; min-height: 46px; color: white; font-family: "Poppins", sans-serif; font-size: 17px; font-weight: 500; letter-spacing: -.3px; transition: box-shadow .2s, transform .2s; }
@@ -82,12 +81,15 @@
 .hire-pill { min-height: 43px; padding: 4px 25px; background: transparent; border: 2px solid #0a0a0a; border-radius: 999px; color: #050505; font-family: "Poppins", sans-serif; font-size: 17px; font-weight: 400; line-height: 1.35; transition: background .2s, transform .2s; }
 .hire-pill:hover { background: #ffe000; transform: translateY(-3px); }
 .reference-hero-portrait { position: relative; justify-self: center; width: min(100%, 470px); aspect-ratio: .79; }
-.reference-profile-photo { position: absolute; inset: 0; background: transparent; }
-.reference-profile-photo img { object-fit: contain; object-position: center bottom; filter: drop-shadow(0 12px 18px rgb(18 52 69 / 8%)); }
+.reference-portrait-backdrop { position: absolute; inset: 15px -14px 15px 14px; border-radius: 17px; background: linear-gradient(#4fc1ff, #0084c5 57%, #003958); overflow: hidden; }
+.portrait-ring { position: absolute; border: 22px solid #ffdf00; width: 148px; height: 148px; border-radius: 50%; }
+.ring-top { top: 32px; left: -38px; }.ring-bottom { bottom: 50px; right: -52px; }
+.reference-profile-photo { position: absolute; inset: 0 10px 0 0; overflow: hidden; border-radius: 15px; box-shadow: 0 6px 22px #003b5d08; }
+.reference-profile-photo img { object-fit: cover; object-position: center 45%; }
 
 @media (max-width: 1200px) {
   .reference-navbar { gap: 15px; padding-inline: 32px; }
-  .pill-desktop-nav { gap: 7px; }.pill-desktop-nav a { font-size: 15px; padding-inline: 11px; }
+  .pill-desktop-nav a { min-width: 112px; font-size: 15px; padding-inline: 18px; }
   .reference-hero-inner { gap: 65px; padding-block: 160px 60px; }.reference-title { font-size: 36px; }.reference-biography { font-size: 15px; }.reference-hero-actions { gap: 22px; padding-top: 54px; }.profile-pill,.hire-pill { font-size: 16px; }.reference-hero-portrait { max-width: 410px; }
 }
 @media (max-width: 900px) {
@@ -95,8 +97,7 @@
   .reference-header { height: 60px; }
   .reference-navbar { height: 60px; padding-inline: 20px; }
   .reference-header.is-scrolled .reference-navbar { height: 56px; }
-  .navbar-wordmark { font-size: 28px; }
-  .navbar-actions { gap: 10px; }
+  .navbar-actions { justify-content: flex-end; gap: 10px; }
   .pill-desktop-nav { display: none; }.pill-menu-toggle { display: flex; }
   .pill-mobile-nav { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; padding: 12px; background: linear-gradient(115deg, rgb(0 123 185 / 90%), rgb(0 59 93 / 94%)); backdrop-filter: blur(20px) saturate(145%); -webkit-backdrop-filter: blur(20px) saturate(145%); border: 1px solid #ffffff22; border-radius: 0; box-shadow: 0 12px 35px #003b5d2b; }
   .reference-header.is-scrolled .pill-mobile-nav { top: 56px; }
@@ -106,8 +107,8 @@
 @media (max-width: 650px) {
   .reference-hero-inner { width: calc(100% - 44px); grid-template-columns: 1fr; gap: 39px; padding-block: 125px 49px; }
   .reference-hero { background-size: auto 100%; background-position: 44% center; }
-  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 23px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 24px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { padding-top: 30px; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { width: min(100% - 24px, 385px); aspect-ratio: .79; }
+  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 23px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 24px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { padding-top: 30px; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { width: min(100% - 24px, 385px); aspect-ratio: .79; }.reference-profile-photo { right: 6px; }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
 }
 @media (max-width: 380px) {
-  .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-wordmark { font-size: 26px; }.navbar-actions { gap: 7px; }.language-toggle { min-width: 60px; padding-inline: 8px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 19px; }.reference-title { font-size: 27px; }.reference-biography { font-size: 13px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }
+  .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-actions { gap: 7px; }.language-toggle { min-width: 60px; margin-left: 0; padding-left: 10px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 19px; }.reference-title { font-size: 27px; }.reference-biography { font-size: 13px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }
 }
