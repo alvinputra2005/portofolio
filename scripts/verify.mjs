@@ -67,6 +67,11 @@ try {
   assert(Math.abs(alignedContainers[0].right - languageDividerX) < 1);
   const portraitBackdrop = await page.locator(".reference-portrait-backdrop").boundingBox();
   assert(Math.abs(portraitBackdrop.x + portraitBackdrop.width - alignedContainers[0].right) < 1);
+  const portraitClip = await page.locator(".reference-profile-photo").boundingBox();
+  assert(Math.abs(portraitClip.x - portraitBackdrop.x) < 1);
+  assert(Math.abs(portraitClip.y - portraitBackdrop.y) < 1);
+  assert(Math.abs(portraitClip.width - portraitBackdrop.width) < 1);
+  assert(Math.abs(portraitClip.height - portraitBackdrop.height) < 1);
 
   const initialNavbar = await page.locator(".reference-navbar").boundingBox();
   assert.equal(initialNavbar.y, 0);
