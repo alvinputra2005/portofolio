@@ -38,7 +38,7 @@
 .navbar-actions { display: flex; align-items: center; justify-content: flex-end; width: 100%; height: 100%; gap: 0; }
 .language-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 28px; min-width: 69px; align-self: center; margin-left: 15px; padding: 0 0 0 20px; border: 0; border-left: 1px solid rgb(255 255 255 / 34%); border-radius: 0; background: transparent; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .25px; transition: color .2s, opacity .2s; }
 .language-toggle:hover { color: #c9efff; opacity: 1; }
-.pill-desktop-nav { display: flex; align-items: stretch; height: 100%; gap: 2px; }
+.pill-desktop-nav { display: flex; align-items: stretch; height: 100%; gap: 0; }
 .pill-desktop-nav a { display: inline-flex; align-items: center; justify-content: center; position: relative; height: 100%; padding: 0 18px; font-size: 16px; font-weight: 600; letter-spacing: -.45px; border-radius: 0; white-space: nowrap; transition: color .22s, background .22s, box-shadow .22s; }
 .pill-desktop-nav a:hover { color: white; background: rgb(255 255 255 / 16%); box-shadow: inset 0 -3px 0 rgb(183 231 255 / 70%); }
 .pill-desktop-nav a.active { background: rgb(255 255 255 / 12%); color: white; }
@@ -88,7 +88,7 @@
 .portrait-ring { position: absolute; border: 22px solid #ffdf00; width: 148px; height: 148px; border-radius: 50%; }
 .ring-top { top: 32px; left: -38px; }.ring-bottom { bottom: 50px; right: -52px; }
 .reference-profile-photo { position: absolute; inset: 15px -14px 15px 14px; overflow: hidden; border-radius: 17px; }
-.reference-profile-photo img { object-fit: cover; object-position: center top; transform: scale(.92); transform-origin: center bottom; filter: drop-shadow(0 12px 18px rgb(0 45 70 / 10%)); }
+.reference-profile-photo img { object-fit: cover; object-position: center top; transform: scale(.87); transform-origin: center bottom; filter: drop-shadow(0 12px 18px rgb(0 45 70 / 10%)); }
 
 @media (max-width: 1200px) {
   .reference-navbar { gap: 15px; padding-inline: 32px; }
@@ -110,7 +110,7 @@
 @media (max-width: 650px) {
   .reference-hero-inner { width: calc(100% - 44px); grid-template-columns: 1fr; gap: 35px; padding-block: 106px 49px; }
   .reference-hero { background-size: auto 100%; background-position: 44% center; }
-  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 14px; }.reference-socials { margin-top: 16px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 21px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { margin-top: 26px; padding-top: 0; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { justify-self: center; width: min(100% - 64px, 310px); margin-right: 0; aspect-ratio: .79; }.reference-profile-photo { inset: 15px -9px 15px 14px; }.reference-profile-photo img { transform: scale(.9); }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
+  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 14px; }.reference-socials { margin-top: 16px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 21px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { margin-top: 26px; padding-top: 0; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { justify-self: center; width: min(100% - 64px, 310px); margin-right: 0; aspect-ratio: .79; }.reference-profile-photo { inset: 15px -9px 15px 14px; }.reference-profile-photo img { transform: scale(.85); }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
 }
 
 /* One shared page grid: the left edge follows the hero copy, while the

@@ -72,6 +72,14 @@ try {
   assert(Math.abs(portraitClip.y - portraitBackdrop.y) < 1);
   assert(Math.abs(portraitClip.width - portraitBackdrop.width) < 1);
   assert(Math.abs(portraitClip.height - portraitBackdrop.height) < 1);
+  const portraitImage = await page.locator(".reference-profile-photo img").boundingBox();
+  assert(portraitImage.width < portraitClip.width);
+  assert(Math.abs(portraitImage.y + portraitImage.height - (portraitClip.y + portraitClip.height)) < 1);
+  const desktopNavItems = await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => {
+    const box = link.getBoundingClientRect();
+    return { left: box.left, right: box.right };
+  }));
+  assert(desktopNavItems.slice(1).every((item, index) => Math.abs(item.left - desktopNavItems[index].right) < 1));
 
   const initialNavbar = await page.locator(".reference-navbar").boundingBox();
   assert.equal(initialNavbar.y, 0);
