@@ -13,6 +13,7 @@ export type Profile = {
   initials: string;
   role: string;
   portrait: string;
+  heroPortrait: string;
   email: string | null;
   available: boolean;
   location: string;
@@ -25,8 +26,9 @@ export type Profile = {
 export const profile: Profile = {
   name: "Alvin",
   initials: "A",
-  role: "Creative Designer & Digital Creator",
+  role: "Desainer Kreatif & Kreator Digital",
   portrait: "/images/alvin-profile.webp",
+  heroPortrait: "/images/alvin-hero-cutout.webp",
   email: null, // Isi alamat email Anda untuk mengaktifkan tautan kontak.
   available: true,
   location: "Indonesia",

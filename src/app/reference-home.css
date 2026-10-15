@@ -35,8 +35,11 @@
   border-color: rgb(255 255 255 / 35%);
   box-shadow: 0 12px 30px rgb(0 46 73 / 22%), 0 3px 8px rgb(0 46 73 / 8%);
 }
-.navbar-home { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 42px; color: white; border-radius: 6px; transition: background .2s, transform .2s; }
-.navbar-home:hover { color: white; background: #ffffff12; transform: translateY(-2px); }
+.navbar-wordmark { display: inline-flex; align-items: center; min-height: 44px; min-width: 64px; color: white; font-family: "Outfit Variable", sans-serif; font-size: 30px; font-weight: 550; letter-spacing: -1.4px; line-height: 1; transition: opacity .2s, transform .2s; }
+.navbar-wordmark:hover { opacity: .82; transform: translateY(-1px); }
+.navbar-actions { display: flex; align-items: center; gap: 18px; }
+.language-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; min-width: 65px; padding: 8px 10px; border: 1px solid rgb(255 255 255 / 24%); border-radius: 6px; background: transparent; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .5px; transition: background .2s, border-color .2s; }
+.language-toggle:hover { background: rgb(255 255 255 / 12%); border-color: rgb(255 255 255 / 50%); }
 .pill-desktop-nav { display: flex; align-items: center; gap: 18px; }
 .pill-desktop-nav a { position: relative; padding: 12px 15px; font-size: 16px; font-weight: 600; letter-spacing: -.45px; border-radius: 999px; white-space: nowrap; transition: color .2s, background .2s, transform .2s; }
 .pill-desktop-nav a:hover { color: #ffe000; background: #ffffff0f; transform: translateY(-1px); }
@@ -65,48 +68,46 @@
   align-items: center;
 }
 .reference-hero-copy { align-self: stretch; display: flex; flex-direction: column; padding-block: 0 23px; }
-.reference-greeting { color: #090909; font-family: "Montserrat Variable", sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -.55px; line-height: 1.6; }
+.reference-greeting { color: #090909; font-family: "Montserrat Variable", sans-serif; font-size: 22px; font-weight: 500; letter-spacing: -.4px; line-height: 1.6; }
 .reference-greeting mark { background: linear-gradient(90deg, #ffc400, #ffe600); color: #000; padding: 3px 7px 4px; border-radius: 7px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.reference-title { font-size: clamp(36px, 3.1vw, 48px); font-weight: 700; line-height: 1.25; letter-spacing: -.9px; margin-top: 22px; background: linear-gradient(100deg, #005a91 0%, #168ad0 60%, #38b4ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.reference-title { font-size: clamp(30px, 2.65vw, 40px); font-weight: 500; line-height: 1.3; letter-spacing: -.7px; margin-top: 22px; background: linear-gradient(100deg, #005a91 0%, #168ad0 60%, #38b4ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .reference-title span { display: block; }
-.reference-biography { font-family: "Poppins", sans-serif; font-size: 18px; font-weight: 500; line-height: 1.5; color: #121212; max-width: 650px; margin-top: 29px; }
+.reference-biography { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 400; line-height: 1.75; color: #30343a; max-width: 650px; margin-top: 29px; }
 .reference-biography p + p { margin-top: 24px; }
 .reference-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; margin-top: auto; padding-top: 72px; }
-.profile-pill { display: inline-flex; align-items: center; justify-content: center; gap: 13px; background: linear-gradient(105deg, #0080bf, #003b5d); border-radius: 999px; padding: 6px 10px 6px 25px; min-height: 46px; color: white; font-family: "Poppins", sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -.3px; transition: box-shadow .2s, transform .2s; }
+.profile-pill { display: inline-flex; align-items: center; justify-content: center; gap: 13px; background: linear-gradient(105deg, #0080bf, #003b5d); border-radius: 999px; padding: 6px 10px 6px 25px; min-height: 46px; color: white; font-family: "Poppins", sans-serif; font-size: 17px; font-weight: 500; letter-spacing: -.3px; transition: box-shadow .2s, transform .2s; }
 .profile-pill:hover { transform: translateY(-3px); box-shadow: 0 7px 20px #006a9f22; }
 .profile-play { display: grid; place-items: center; width: 33px; height: 33px; background: #ffe000; color: #0083c5; border-radius: 50%; padding-left: 2px; transition: transform .25s; }
 .profile-pill:hover .profile-play { transform: rotate(-15deg); }
-.hire-pill { min-height: 43px; padding: 4px 25px; background: transparent; border: 2.5px solid #0a0a0a; border-radius: 999px; color: #050505; font-family: "Poppins", sans-serif; font-size: 19px; font-weight: 500; line-height: 1.35; transition: background .2s, transform .2s; }
+.hire-pill { min-height: 43px; padding: 4px 25px; background: transparent; border: 2px solid #0a0a0a; border-radius: 999px; color: #050505; font-family: "Poppins", sans-serif; font-size: 17px; font-weight: 400; line-height: 1.35; transition: background .2s, transform .2s; }
 .hire-pill:hover { background: #ffe000; transform: translateY(-3px); }
 .reference-hero-portrait { position: relative; justify-self: center; width: min(100%, 470px); aspect-ratio: .79; }
-.reference-portrait-backdrop { position: absolute; inset: 15px -14px 15px 14px; border-radius: 17px; background: linear-gradient(#4fc1ff, #0084c5 57%, #003958); overflow: hidden; }
-.portrait-ring { position: absolute; border: 22px solid #ffdf00; width: 148px; height: 148px; border-radius: 50%; }
-.ring-top { top: 32px; left: -38px; }.ring-bottom { bottom: 50px; right: -52px; }
-.reference-profile-photo { position: absolute; inset: 0 10px 0 0; overflow: hidden; border-radius: 15px; box-shadow: 0 6px 22px #003b5d08; }
-.reference-profile-photo img { object-fit: cover; object-position: center 45%; }
+.reference-profile-photo { position: absolute; inset: 0; background: transparent; }
+.reference-profile-photo img { object-fit: contain; object-position: center bottom; filter: drop-shadow(0 12px 18px rgb(18 52 69 / 8%)); }
 
 @media (max-width: 1200px) {
   .reference-navbar { gap: 15px; padding-inline: 32px; }
   .pill-desktop-nav { gap: 7px; }.pill-desktop-nav a { font-size: 15px; padding-inline: 11px; }
-  .reference-hero-inner { gap: 65px; padding-block: 160px 60px; }.reference-title { font-size: 40px; }.reference-biography { font-size: 16px; }.reference-hero-actions { gap: 22px; padding-top: 54px; }.profile-pill,.hire-pill { font-size: 17px; }.reference-hero-portrait { max-width: 410px; }
+  .reference-hero-inner { gap: 65px; padding-block: 160px 60px; }.reference-title { font-size: 36px; }.reference-biography { font-size: 15px; }.reference-hero-actions { gap: 22px; padding-top: 54px; }.profile-pill,.hire-pill { font-size: 16px; }.reference-hero-portrait { max-width: 410px; }
 }
 @media (max-width: 900px) {
   html { scroll-padding-top: 92px; }
   .reference-header { height: 60px; }
   .reference-navbar { height: 60px; padding-inline: 20px; }
   .reference-header.is-scrolled .reference-navbar { height: 56px; }
-  .navbar-home { width: 36px; }.navbar-home svg { width: 26px; height: 26px; }
+  .navbar-wordmark { font-size: 28px; }
+  .navbar-actions { gap: 10px; }
   .pill-desktop-nav { display: none; }.pill-menu-toggle { display: flex; }
   .pill-mobile-nav { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; padding: 12px; background: linear-gradient(115deg, rgb(0 123 185 / 90%), rgb(0 59 93 / 94%)); backdrop-filter: blur(20px) saturate(145%); -webkit-backdrop-filter: blur(20px) saturate(145%); border: 1px solid #ffffff22; border-radius: 0; box-shadow: 0 12px 35px #003b5d2b; }
   .reference-header.is-scrolled .pill-mobile-nav { top: 56px; }
   .pill-mobile-nav a { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 16px; color: white; font-family: "Montserrat Variable", sans-serif; font-size: 15px; font-weight: 600; border-radius: 14px; transition: background .2s, color .2s; }.pill-mobile-nav a:hover { background: #ffffff15; color: #ffe000; }.pill-mobile-nav a.active { background: rgb(255 255 255 / 12%); color: white; }
-  .reference-hero { min-height: auto; }.reference-hero-inner { width: calc(100% - 64px); padding-block: 136px 60px; gap: 35px; grid-template-columns: 1fr .8fr; }.reference-greeting { font-size: 22px; }.reference-title { font-size: 34px; }.reference-biography { font-size: 14px; }.reference-hero-actions { padding-top: 33px; gap: 17px; }.profile-pill { font-size: 15px; padding-left: 19px; }.hire-pill { font-size: 15px; padding-inline: 19px; }.reference-hero-copy { padding-bottom: 0; }.reference-hero-portrait { aspect-ratio: .69; }
+  .reference-hero { min-height: auto; }.reference-hero-inner { width: calc(100% - 64px); padding-block: 136px 60px; gap: 35px; grid-template-columns: 1fr .8fr; }.reference-greeting { font-size: 20px; }.reference-title { font-size: 31px; }.reference-biography { font-size: 14px; }.reference-hero-actions { padding-top: 33px; gap: 17px; }.profile-pill { font-size: 15px; padding-left: 19px; }.hire-pill { font-size: 15px; padding-inline: 19px; }.reference-hero-copy { padding-bottom: 0; }.reference-hero-portrait { aspect-ratio: .69; }
 }
 @media (max-width: 650px) {
   .reference-hero-inner { width: calc(100% - 44px); grid-template-columns: 1fr; gap: 39px; padding-block: 125px 49px; }
   .reference-hero { background-size: auto 100%; background-position: 44% center; }
-  .reference-greeting { font-size: 22px; }.reference-title { font-size: clamp(30px, 7.5vw, 40px); letter-spacing: -.7px; margin-top: 23px; }.reference-biography { font-size: 15px; line-height: 1.65; margin-top: 24px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { padding-top: 30px; gap: 22px; }.profile-pill { font-size: 16px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 16px; padding-inline: 22px; }.reference-hero-portrait { width: min(100% - 24px, 385px); aspect-ratio: .79; }.reference-profile-photo { right: 6px; }.portrait-ring { border-width: 16px; width: 115px; height: 115px; }.reference-portrait-backdrop { right: -9px; }
+  .reference-greeting { font-size: 20px; }.reference-title { font-size: clamp(27px, 7vw, 34px); letter-spacing: -.5px; margin-top: 23px; }.reference-biography { font-size: 14px; line-height: 1.75; margin-top: 24px; }.reference-biography p + p { margin-top: 20px; }.reference-hero-actions { padding-top: 30px; gap: 22px; }.profile-pill { font-size: 15px; padding-left: 20px; gap: 10px; }.hire-pill { font-size: 15px; padding-inline: 22px; }.reference-hero-portrait { width: min(100% - 24px, 385px); aspect-ratio: .79; }
 }
 @media (max-width: 380px) {
-  .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-home { width: 31px; }.navbar-home svg { width: 24px; height: 24px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 20px; }.reference-title { font-size: 29px; }.reference-biography { font-size: 14px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }
+  .reference-navbar { padding-inline: 14px; gap: 10px; }.navbar-wordmark { font-size: 26px; }.navbar-actions { gap: 7px; }.language-toggle { min-width: 60px; padding-inline: 8px; }.pill-menu-toggle { width: 36px; }.reference-hero-inner { width: calc(100% - 36px); }.reference-greeting { font-size: 19px; }.reference-title { font-size: 27px; }.reference-biography { font-size: 13px; }.reference-hero-actions { gap: 14px; }.profile-pill { font-size: 14px; padding-left: 17px; }.hire-pill { font-size: 14px; padding-inline: 18px; }
 }

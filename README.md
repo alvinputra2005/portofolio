@@ -1,6 +1,6 @@
 # Portofolio Alvin
 
-Website portofolio responsif dengan Next.js 16 App Router, TypeScript, Tailwind CSS 4, Motion, dan Lucide. Font Montserrat untuk judul/navbar dan Poppins untuk teks disajikan lokal melalui Fontsource. Desain terinspirasi dari [Vegliano Celo](https://veglianocelo.framer.website/).
+Website portofolio responsif dengan Next.js 16 App Router, TypeScript, Tailwind CSS 4, Motion, dan Lucide. Font Montserrat untuk judul/navbar, Poppins untuk teks, dan Outfit untuk wordmark disajikan lokal melalui Fontsource. Desain terinspirasi dari [Vegliano Celo](https://veglianocelo.framer.website/).
 
 ## Menjalankan proyek
 
@@ -55,6 +55,12 @@ Konten proyek dan pengalaman saat ini adalah **contoh**, bukan klaim riwayat nya
 Antarmuka menyediakan tab filter proyek, menu responsif, dan dialog HTML native untuk detail proyek serta kontak. Animasi menghormati preferensi pengurangan gerakan perangkat. Kontak belum memiliki backend pengiriman pesan; alamat email masih kosong sampai diisi pada data profil.
 
 Beranda dan navbar dipisahkan ke `src/components/hero.tsx` dan `src/components/site-header.tsx`. Styling keduanya ada di `src/app/reference-home.css`; pola gelombang ringan ada di `public/images/hero-pattern.svg`. Navbar menyediakan home, penanda bagian aktif, hover kuning, serta menu mobile yang menutup lewat Escape, klik di luar, atau pemilihan tautan.
+
+## Bahasa dan foto hero
+
+Tombol globe di navbar mengganti bahasa Indonesia/Inggris tanpa memuat ulang halaman. Pilihan disimpan di localStorage dan atribut `lang` dokumen ikut diperbarui. Default bahasa Indonesia. Terjemahan UI dan konten Inggris ada di `src/data/translations.ts`; data dasar Indonesia tetap di `src/data/portfolio.ts`. `LanguageProvider` mengelola bahasa di seluruh komponen. Nama proyek dan teks ilustrasi konsep dipertahankan sebagai bagian dari karya.
+
+`profile.heroPortrait` memakai cutout transparan `public/images/alvin-hero-cutout.webp`. Aset PNG hasil Imagegen, sumber asli, serta prompt edit dicatat di [docs/hero-image-edit.md](docs/hero-image-edit.md). Foto bagian profil lain memakai `profile.portrait`. Jalankan `node scripts/verify.mjs` untuk memeriksa kedua bahasa, preferensi setelah reload, navigasi, filter, dialog, dan layout empat ukuran layar; Windows memakai Chrome yang terpasang. Di lingkungan lain, set `BROWSER_PATH` ke browser Chromium yang sesuai atau siapkan browser Playwright.
 
 ## Deployment
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import { useLanguage } from "./language-provider";
 
 export function Dialog({ open, onClose, title, children, className = "" }: {
   open: boolean;
@@ -11,6 +12,7 @@ export function Dialog({ open, onClose, title, children, className = "" }: {
   className?: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const { copy } = useLanguage();
 
   useEffect(() => {
     const element = ref.current;
@@ -39,7 +41,7 @@ export function Dialog({ open, onClose, title, children, className = "" }: {
       }}
     >
       {open && <>
-        <button className="dialog-close icon-button" aria-label="Tutup dialog" onClick={onClose}><X size={20} /></button>
+        <button className="dialog-close icon-button" aria-label={copy.closeDialog} onClick={onClose}><X size={20} /></button>
         {children}
       </>}
     </dialog>
