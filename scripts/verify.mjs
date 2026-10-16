@@ -38,11 +38,13 @@ try {
   assert.equal(await page.locator("html").getAttribute("lang"), "id");
   assert.equal(await page.locator(".reference-header img").count(), 0);
   assert.match(await page.locator("h1").innerText(), /Desainer Kreatif/);
-  const sectionOrder = ["#tentang", "#pengalaman", "#karya", "#pencapaian", "#kontak"];
+  const sectionOrder = ["#tentang", "#pengalaman", "#pencapaian", "#kontak"];
   assert.deepEqual(await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => link.getAttribute("href"))), sectionOrder);
   assert.deepEqual(await page.locator('main > section[id]:not(#beranda)').evaluateAll(sections => sections.map(section => `#${section.id}`)), sectionOrder);
   assert.equal(await page.locator(".reference-socials a, .reference-socials button").count(), 5);
   assert.equal(await page.locator("#sosial").count(), 0);
+  assert.equal(await page.locator("#karya, #work-title, .project-card, .project-filters, .project-dialog").count(), 0);
+  assert(await page.locator("#pencapaian").evaluate(el => el.previousElementSibling?.id === "pengalaman"));
   assert.match(await page.locator("#about-title").innerText(), /Siapa Alvin/);
   assert.equal(await page.locator(".reference-about-stats dd").count(), 3);
   assert.deepEqual(await page.locator(".reference-about-stats dd").allTextContents(), ["—", "—", "—"]);
@@ -74,7 +76,7 @@ try {
   assert.match(heroStyles.photo, /alvin-hero-framed\.webp/);
   assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
 
-  const alignedContainers = await page.locator(".reference-hero-inner, .work-section, .about-layout, .achievements-layout, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
+  const alignedContainers = await page.locator(".reference-hero-inner, .about-layout, .achievements-layout, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
     const box = element.getBoundingClientRect();
     return { left: box.left, right: box.right };
   }));
@@ -117,45 +119,28 @@ try {
   await page.getByRole("dialog", { name: "Let's get acquainted" }).waitFor();
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await goHome();
-  assert.match(await page.locator("#work-title").innerText(), /Ideas made/);
   assert.equal(await page.locator("#achievements-title").innerText(), "Achievements");
-  assert.match(await page.locator(".achievements-category").innerText(), /Organization & Competition/);
+  const achievementCategories = await page.locator(".achievements-category").allTextContents();
+  assert.equal(achievementCategories.length, 3);
+  assert(achievementCategories.every(label => label.trim().length > 0));
   await page.reload({ waitUntil: "networkidle" });
   await page.waitForFunction(() => document.documentElement.lang === "en");
   assert.match(await page.locator("h1").innerText(), /Creative Designer/);
   assert.match(await page.title(), /Creative Designer/);
-  await page.locator('.pill-desktop-nav a[href="#karya"]').click();
-  await page.waitForFunction(() => document.querySelector('.pill-desktop-nav a[href="#karya"]')?.getAttribute("aria-current") === "location");
-  await page.locator('.pill-desktop-nav a[href="#karya"]').hover();
+  await page.locator('.pill-desktop-nav a[href="#pengalaman"]').click();
+  await page.waitForFunction(() => document.querySelector('.pill-desktop-nav a[href="#pengalaman"]')?.getAttribute("aria-current") === "location");
+  await page.locator('.pill-desktop-nav a[href="#pengalaman"]').hover();
   await page.waitForFunction(() => {
-    const style = getComputedStyle(document.querySelector('.pill-desktop-nav a[href="#karya"]'));
+    const style = getComputedStyle(document.querySelector('.pill-desktop-nav a[href="#pengalaman"]'));
     return style.color === "rgb(255, 255, 255)" && style.backgroundColor === "rgba(255, 255, 255, 0.19)";
   });
-  await page.getByRole("button", { name: "Video", exact: true }).click();
-  await page.waitForFunction(() => document.querySelectorAll(".project-card").length === 1);
-  await setLanguage("id");
-  assert.equal(await page.locator(".project-card").count(), 1);
-  assert.match(await page.locator(".project-card").innerText(), /Stories in motion/);
-  await page.locator(".project-filters button").first().click();
-  await page.waitForFunction(() => document.querySelectorAll(".project-card").length === 6);
-  await page.locator(".project-open").first().click();
-  await page.getByRole("dialog", { name: "Identity, with purpose." }).waitFor();
-  assert.match(await page.locator("dialog[open]").innerText(), /kartu konsep sementara/);
-  await page.keyboard.press("Escape");
-  assert.equal(await page.locator("dialog[open]").count(), 0);
-  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Lihat detail Identity, with purpose.");
-
-  await setLanguage("en");
-  await page.locator(".project-open").first().click();
-  await page.getByRole("dialog", { name: "Identity, with purpose." }).waitFor();
-  assert.match(await page.locator("dialog[open]").innerText(), /A visual identity concept/);
-  assert.match(await page.locator("dialog[open]").innerText(), /This is a concept placeholder/);
-  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await goHome();
   await page.locator(".hire-pill").click();
   await page.getByRole("dialog", { name: "Let's get acquainted" }).waitFor();
   assert.match(await page.locator("dialog[open]").innerText(), /Contact details coming soon/);
-  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
+  await page.keyboard.press("Escape");
+  assert.equal(await page.locator("dialog[open]").count(), 0);
+  assert(await page.locator(".hire-pill").evaluate(el => document.activeElement === el));
   await page.screenshot({ path: "artifacts/desktop-en.png" });
   await setLanguage("id");
   await delay(350);
@@ -169,7 +154,7 @@ try {
       await page.evaluate(() => document.fonts.ready);
       const overflow = await page.evaluate(() => ({ viewport: innerWidth, scroll: document.documentElement.scrollWidth }));
       assert(overflow.scroll <= overflow.viewport, `Horizontal overflow at ${width}px/${locale}: ${JSON.stringify(overflow)}`);
-      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #work-title, #achievements-title, #contact-title").evaluateAll(elements => elements.map(el => {
+      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #achievements-title, #contact-title").evaluateAll(elements => elements.map(el => {
         const style = getComputedStyle(el);
         return { size: style.fontSize, weight: style.fontWeight, family: style.fontFamily };
       }));
@@ -245,7 +230,7 @@ try {
   await page.screenshot({ path: "artifacts/tech-stack-mobile.png" });
   console.log("PASS: 16 tech stack entries, removed items absent, every local logo loaded, continuous marquee, hover pause, reduced motion");
   assert.deepEqual(errors, [], "Browser errors");
-  console.log("PASS: ID/EN translation, persistence after reload, shared page margins, hero social links, navigation order, category preservation, translated dialogs, transparent hero portrait, neutral navbar hover, hero type, filters, Escape, focus restoration, and 404.");
+  console.log("PASS: project section removed, navigation order, ID/EN translation, persistence after reload, shared page margins, hero social links, translated contact dialog, transparent hero portrait, neutral navbar hover, hero type, Escape, focus restoration, and 404.");
 } finally {
   if (browser) await browser.close();
   preview.kill();

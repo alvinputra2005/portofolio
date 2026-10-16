@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowUp, ArrowUpRight, Check, Copy, Mail, MapPin, Plus } from "lucide-react";
-import { projectCategories, siteSettings } from "@/data/portfolio";
-import { categoryLabel, getLocalizedPortfolio } from "@/data/translations";
+import { MotionConfig } from "motion/react";
+import { ArrowUp, ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
+import { siteSettings } from "@/data/portfolio";
+import { getLocalizedPortfolio } from "@/data/translations";
 import { Reveal } from "./reveal";
 import { Dialog } from "./dialog";
-import { ProjectArt } from "./project-art";
 import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
 import { TechStack } from "./tech-stack";
@@ -16,19 +15,12 @@ import { Experience } from "./experience";
 import { Achievements } from "./achievements";
 import { useLanguage } from "./language-provider";
 
-function SectionLabel({ number, children }: { number: string; children: React.ReactNode }) {
-  return <div className="section-label"><span>{number}</span><span className="label-line" />{children}</div>;
-}
-
 export function Portfolio() {
   const { locale, copy } = useLanguage();
-  const { profile, projects } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
+  const { profile } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
   const [activeSection, setActiveSection] = useState("#beranda");
-  const [category, setCategory] = useState<(typeof projectCategories)[number]>("Semua");
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const selectedProject = projects.find(project => project.id === selectedProjectId) ?? null;
 
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
@@ -52,8 +44,6 @@ export function Portfolio() {
     catch { setCopied(false); }
   }
 
-  const visibleProjects = category === "Semua" ? projects : projects.filter(project => project.category === category);
-
   return (
     <MotionConfig reducedMotion="user">
       <a className="skip-link" href="#main">{copy.skip}</a>
@@ -66,30 +56,6 @@ export function Portfolio() {
         <About onContact={() => setContactOpen(true)} />
 
         <Experience />
-
-        <section className="section container work-section" id="karya" aria-labelledby="work-title">
-          <Reveal>
-            <SectionLabel number="01">{copy.workLabel}</SectionLabel>
-            <div className="section-heading"><h2 id="work-title">{copy.workTitle}<br /><span className="muted-heading">{copy.workTitleMuted}</span></h2><p>{copy.workIntro}<br />{copy.workIntroSecond}</p></div>
-          </Reveal>
-          <Reveal>
-            <div className="work-toolbar">
-              <div className="project-filters" aria-label={copy.filterLabel}>{projectCategories.map(item => <button key={item} aria-pressed={category === item} className={`filter-button ${category === item ? "selected" : ""}`} onClick={() => setCategory(item)}>{categoryLabel(item, locale)}{item === "Semua" && <span>{projects.length.toString().padStart(2, "0")}</span>}</button>)}</div>
-              <span className="project-count" aria-live="polite">{visibleProjects.length.toString().padStart(2, "0")} {copy.explorations}</span>
-            </div>
-          </Reveal>
-          <div className="project-grid" aria-live="polite" aria-atomic="false">
-            <AnimatePresence mode="popLayout" initial={false}>
-              {visibleProjects.map(project => <motion.article className="project-card" key={project.id} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ duration: 0.3 }}>
-                <button className="project-open" onClick={() => setSelectedProjectId(project.id)} aria-label={`${copy.viewProject} ${project.title}`}>
-                  <ProjectArt project={project} />
-                  <div className="project-card-info"><div><span className="project-category">{categoryLabel(project.category, locale)} <span> / </span> {project.year}</span><h3>{project.title}</h3></div><span className="project-arrow"><ArrowUpRight size={21} /></span></div>
-                </button>
-              </motion.article>)}
-            </AnimatePresence>
-          </div>
-          {projects.some(project => project.isPlaceholder) && <p className="placeholder-caption"><Plus size={13} />{copy.placeholderCaption}</p>}
-        </section>
 
         <Achievements />
 
@@ -104,12 +70,6 @@ export function Portfolio() {
 
       <footer className="site-footer container"><a className="wordmark" href="#beranda">{profile.name.toLowerCase()}<span>.</span></a><p>© {siteSettings.year} {profile.name}. {copy.footer}</p><a className="back-top" href="#beranda">{copy.backTop}<ArrowUp size={15} /></a></footer>
 
-      <Dialog open={!!selectedProject} onClose={() => setSelectedProjectId(null)} title={selectedProject?.title ?? copy.projectDetails} className="project-dialog">
-        {selectedProject && <>
-          <ProjectArt project={selectedProject} />
-          <div className="dialog-content"><span className="project-category">{categoryLabel(selectedProject.category, locale)} / {selectedProject.year}</span><h2>{selectedProject.title}</h2><p>{selectedProject.description}</p><div className="project-tags">{selectedProject.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{selectedProject.isPlaceholder && <div className="project-demo-note"><span className="blue-dot" /><p>{copy.projectNote}</p></div>}<button className="button button-primary" onClick={() => { setSelectedProjectId(null); setContactOpen(true); }}>{copy.discussProject}<ArrowUpRight size={17} /></button></div>
-        </>}
-      </Dialog>
       <Dialog open={contactOpen} onClose={() => { setContactOpen(false); setCopied(false); }} title={copy.contactTitle} className="contact-dialog">
         <div className="dialog-content">
           <div className="contact-dialog-icon"><Mail size={29} strokeWidth={1.3} /></div><span className="section-label">{copy.sayHello}</span><h2>{copy.contactTitle}<span className="accent-word">.</span></h2><p>{copy.contactDialogIntro}</p>
