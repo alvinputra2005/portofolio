@@ -12,7 +12,10 @@ import { Hero } from "./hero";
 import { TechStack } from "./tech-stack";
 import { About } from "./about";
 import { Experience } from "./experience";
+import { Projects } from "./projects";
 import { Achievements } from "./achievements";
+import { Credentials } from "./credentials";
+import { SkillExperience } from "./skill-experience";
 import { useLanguage } from "./language-provider";
 
 export function Portfolio() {
@@ -57,7 +60,13 @@ export function Portfolio() {
 
         <Experience />
 
+        <Projects />
+
         <Achievements />
+
+        <Credentials />
+
+        <SkillExperience />
 
         <section className="contact-section" id="kontak" aria-labelledby="contact-title">
           <div className="container"><Reveal>

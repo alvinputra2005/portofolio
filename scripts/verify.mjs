@@ -38,13 +38,62 @@ try {
   assert.equal(await page.locator("html").getAttribute("lang"), "id");
   assert.equal(await page.locator(".reference-header img").count(), 0);
   assert.match(await page.locator("h1").innerText(), /Desainer Kreatif/);
-  const sectionOrder = ["#tentang", "#pengalaman", "#pencapaian", "#kontak"];
+  const sectionOrder = ["#tentang", "#pengalaman", "#proyek", "#pencapaian", "#sertifikat", "#tech-stack", "#kontak"];
   assert.deepEqual(await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => link.getAttribute("href"))), sectionOrder);
   assert.deepEqual(await page.locator('main > section[id]:not(#beranda)').evaluateAll(sections => sections.map(section => `#${section.id}`)), sectionOrder);
   assert.equal(await page.locator(".reference-socials a, .reference-socials button").count(), 5);
   assert.equal(await page.locator("#sosial").count(), 0);
   assert.equal(await page.locator("#karya, #work-title, .project-card, .project-filters, .project-dialog").count(), 0);
-  assert(await page.locator("#pencapaian").evaluate(el => el.previousElementSibling?.id === "pengalaman"));
+  assert(await page.locator("#proyek").evaluate(el => el.previousElementSibling?.id === "pengalaman"));
+  assert(await page.locator("#pencapaian").evaluate(el => el.previousElementSibling?.id === "proyek"));
+  assert.equal(await page.locator("#projects-title").innerText(), "Proyek");
+  assert.deepEqual(await page.locator("#proyek .reference-experience-type").allTextContents(), ["SaaS", "SCM", "ERP"]);
+  assert.equal(await page.locator("#proyek .reference-experience-photo").count(), 12);
+  assert(await page.locator("#sertifikat").evaluate(el => el.previousElementSibling?.id === "pencapaian"));
+  assert(await page.locator("#tech-stack").evaluate(el => el.previousElementSibling?.id === "sertifikat"));
+  assert.deepEqual(await page.locator(".credential-filters button").allTextContents(), ["Semua", "Sertifikat", "Penghargaan"]);
+  assert.equal(await page.locator(".credential-dots button").count(), 8);
+  assert(await page.locator(".credential-slide").evaluateAll(elements => elements.every(el => getComputedStyle(el).transitionDuration.split(",").every(value => parseFloat(value) <= .001))));
+  await page.locator(".credential-carousel").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Dokumen berikutnya", exact: true }).click();
+  assert.equal(await page.locator('.credential-slide[data-position="0"]').getAttribute("data-slide-index"), "1");
+  await page.locator(".credential-carousel").focus();
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(await page.locator('.credential-slide[data-position="0"]').getAttribute("data-slide-index"), "0");
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(await page.locator('.credential-slide[data-position="0"]').getAttribute("data-slide-index"), "7");
+  await page.getByRole("button", { name: "Ke dokumen 3", exact: true }).click();
+  assert.equal(await page.locator('.credential-slide[data-position="0"]').getAttribute("data-slide-index"), "2");
+  await page.locator(".credential-filters").getByRole("button", { name: "Penghargaan", exact: true }).click();
+  assert.equal(await page.locator(".credential-dots button").count(), 4);
+  assert.equal(await page.locator(".credential-caption .credential-kind").innerText(), "Penghargaan");
+  await page.locator(".credential-filters").getByRole("button", { name: "Sertifikat", exact: true }).click();
+  await page.locator('.credential-slide[data-position="0"]').click();
+  await page.getByRole("dialog", { name: "Nama sertifikat atau pelatihan", exact: true }).waitFor();
+  await page.keyboard.press("Escape");
+  assert.equal(await page.locator("dialog[open]").count(), 0);
+  assert.equal(await page.locator('.credential-slide[data-position="0"]').evaluate(el => document.activeElement === el), true);
+  const stage = await page.locator(".credential-stage").boundingBox();
+  await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(stage.x + stage.width / 2 - 100, stage.y + stage.height / 2, { steps: 8 });
+  await page.mouse.up();
+  assert.equal(await page.locator('.credential-slide[data-position="0"]').getAttribute("data-slide-index"), "1");
+  assert.equal(await page.locator("dialog[open]").count(), 0);
+  await page.locator(".credential-filters").getByRole("button", { name: "Semua", exact: true }).click();
+  await goHome();
+  await page.waitForFunction(() => !document.querySelector(".reference-header").classList.contains("is-scrolled") && document.querySelector(".reference-navbar").getBoundingClientRect().height >= 63.9);
+  assert.deepEqual(await page.locator(".skill-card-heading h3").allTextContents(), ["Front End", "Back End", "AI/ML"]);
+  for (const style of await page.locator(".skill-experience-card").evaluateAll(elements => elements.map(el => ({ top: getComputedStyle(el).borderTopWidth, bottom: getComputedStyle(el).borderBottomWidth, background: getComputedStyle(el).backgroundColor })))) {
+    assert.equal(style.top, style.bottom);
+    assert.equal(style.background, "rgb(255, 255, 255)");
+  }
+  assert(await page.locator(".skill-card-icon").evaluateAll(elements => elements.every(el => getComputedStyle(el).color === "rgb(255, 255, 255)" && getComputedStyle(el).backgroundColor === "rgb(0, 114, 172)")));
+  const durations = await page.locator(".skill-experience-list li").evaluateAll(items => items.map(item => Number(item.dataset.months)));
+  assert(durations.length === 10 && durations.every(months => months > 0 && months <= 18));
+  assert.match(await page.locator('[aria-labelledby="skills-frontend"]').innerText(), /React/);
+  assert.match(await page.locator('[aria-labelledby="skills-backend"]').innerText(), /Laravel/);
+  assert.match(await page.locator('[aria-labelledby="skills-aiml"]').innerText(), /PyTorch/);
   assert.match(await page.locator("#about-title").innerText(), /Siapa Alvin/);
   assert.equal(await page.locator(".reference-about-stats dd").count(), 3);
   assert.deepEqual(await page.locator(".reference-about-stats dd").allTextContents(), ["—", "—", "—"]);
@@ -76,14 +125,16 @@ try {
   assert.match(heroStyles.photo, /alvin-hero-framed\.webp/);
   assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
 
-  const alignedContainers = await page.locator(".reference-hero-inner, .about-layout, .achievements-layout, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
+  const alignedContainers = await page.locator(".navbar-inner, .reference-hero-inner, .about-layout, .projects-layout, .achievements-layout, .credentials-layout, .skills-layout, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
     const box = element.getBoundingClientRect();
     return { left: box.left, right: box.right };
   }));
   assert(alignedContainers.every(box => Math.abs(box.left - alignedContainers[0].left) < 1));
   assert(alignedContainers.every(box => Math.abs(box.right - alignedContainers[0].right) < 1));
-  const languageDividerX = (await page.locator(".language-toggle").boundingBox()).x;
-  assert(Math.abs(alignedContainers[0].right - languageDividerX) < 1);
+  const languageBox = await page.locator(".language-toggle").boundingBox();
+  assert(Math.abs(alignedContainers[0].right - (languageBox.x + languageBox.width)) < 1);
+  assert.equal(await page.locator(".navbar-wordmark").innerText(), "alvin.");
+  assert(Math.abs((await page.locator(".navbar-wordmark").boundingBox()).x - alignedContainers[0].left) < 1);
   const portraitBackdrop = await page.locator(".reference-portrait-backdrop").boundingBox();
   assert(Math.abs(portraitBackdrop.x + portraitBackdrop.width - alignedContainers[0].right) < 1);
   const portraitClip = await page.locator(".reference-profile-photo").boundingBox();
@@ -120,6 +171,10 @@ try {
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await goHome();
   assert.equal(await page.locator("#achievements-title").innerText(), "Achievements");
+  assert.equal(await page.locator("#projects-title").innerText(), "Projects");
+  assert.equal(await page.locator("#credentials-title").innerText(), "Certificates & Awards");
+  assert.deepEqual(await page.locator(".credential-filters button").allTextContents(), ["All", "Certificates", "Awards"]);
+  assert.match(await page.locator(".skill-duration").first().innerText(), /1 year 6 months/);
   const achievementCategories = await page.locator(".achievements-category").allTextContents();
   assert.equal(achievementCategories.length, 3);
   assert(achievementCategories.every(label => label.trim().length > 0));
@@ -154,7 +209,13 @@ try {
       await page.evaluate(() => document.fonts.ready);
       const overflow = await page.evaluate(() => ({ viewport: innerWidth, scroll: document.documentElement.scrollWidth }));
       assert(overflow.scroll <= overflow.viewport, `Horizontal overflow at ${width}px/${locale}: ${JSON.stringify(overflow)}`);
-      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #achievements-title, #contact-title").evaluateAll(elements => elements.map(el => {
+      const margins = await page.locator(".navbar-inner, .reference-hero-inner, .about-layout, .experience-layout, .projects-layout, .achievements-layout, .credentials-layout, .skills-layout, .contact-section .container, .site-footer").evaluateAll(elements => elements.map(el => {
+        const box = el.getBoundingClientRect();
+        return { left: box.left, right: box.right };
+      }));
+      assert(margins.every(box => Math.abs(box.left - margins[0].left) < 1 && Math.abs(box.right - margins[0].right) < 1), `Shared margins at ${width}px/${locale}`);
+      assert(Math.abs(margins[0].left - (overflow.viewport - margins[0].right)) < 1, `Symmetric margins at ${width}px/${locale}`);
+      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #projects-title, #achievements-title, #credentials-title, #skills-title, #contact-title").evaluateAll(elements => elements.map(el => {
         const style = getComputedStyle(el);
         return { size: style.fontSize, weight: style.fontWeight, family: style.fontFamily };
       }));
@@ -172,7 +233,8 @@ try {
         await page.keyboard.press("Escape");
         assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "false");
         await page.locator("#menu-toggle").click();
-        await page.mouse.click(5, 400);
+        const menuBox = await page.locator("#mobile-navigation").boundingBox();
+        await page.mouse.click(5, menuBox.y + menuBox.height + 12);
         assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "false");
       }
       for (let y = 0; y < await page.evaluate(() => document.body.scrollHeight); y += 650) {
@@ -195,10 +257,45 @@ try {
         await page.locator("#pencapaian").scrollIntoViewIfNeeded();
         await delay(750);
         await page.locator("#pencapaian").screenshot({ path: `artifacts/achievements-${width}-${locale}.png`, style: ".reference-header, .skip-link { visibility: hidden; }" });
+        await page.locator("#proyek").scrollIntoViewIfNeeded();
+        await delay(750);
+        await page.locator("#proyek").screenshot({ path: `artifacts/projects-${width}-${locale}.png`, style: ".reference-header, .skip-link { visibility: hidden; }" });
+        for (const [section, name] of [["#sertifikat", "credentials"], ["#tech-stack", "skills"]]) {
+          await page.locator(section).scrollIntoViewIfNeeded();
+          await delay(750);
+          await page.locator(section).screenshot({ path: `artifacts/${name}-${width}-${locale}.png`, style: ".reference-header, .skip-link { visibility: hidden; }" });
+        }
         await goHome();
       }
       console.log(`PASS: ${width}px/${locale}, images, layout${width <= 900 ? ", mobile menu and language switching" : ""}`);
     }
+  }
+  for (const width of [1200, 1101, 1100, 1024]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await goHome();
+    for (const locale of ["id", "en"]) {
+      await setLanguage(locale);
+      const desktop = width > 1100;
+      assert.equal(await page.locator(".pill-desktop-nav").isVisible(), desktop);
+      assert.equal(await page.locator("#menu-toggle").isVisible(), !desktop);
+      if (desktop) {
+        const brand = await page.locator(".navbar-wordmark").boundingBox();
+        const nav = await page.locator(".pill-desktop-nav").boundingBox();
+        const language = await page.locator(".language-toggle").boundingBox();
+        const content = await page.locator(".reference-hero-inner").boundingBox();
+        assert(brand.x + brand.width + 24 <= nav.x, `Navbar fits at ${width}px/${locale}`);
+        assert(Math.abs(brand.x - content.x) < 1 && Math.abs(language.x + language.width - content.x - content.width) < 1, `Navbar margins at ${width}px/${locale}`);
+      } else {
+        await page.locator("#menu-toggle").click();
+        assert.equal(await page.locator("#mobile-navigation a").count(), 7);
+        await page.locator('#mobile-navigation a[href="#tech-stack"]').click();
+        assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "false");
+        await goHome();
+      }
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    }
+    console.log(`PASS: ${width}px navbar, both languages, wordmark and responsive menu`);
   }
   const stackNames = await page.locator('.tech-stack-group:not([aria-hidden="true"]) .tech-stack-item > span:last-child').allTextContents();
   assert.equal(stackNames.length, 16);
@@ -230,7 +327,7 @@ try {
   await page.screenshot({ path: "artifacts/tech-stack-mobile.png" });
   console.log("PASS: 16 tech stack entries, removed items absent, every local logo loaded, continuous marquee, hover pause, reduced motion");
   assert.deepEqual(errors, [], "Browser errors");
-  console.log("PASS: project section removed, navigation order, ID/EN translation, persistence after reload, shared page margins, hero social links, translated contact dialog, transparent hero portrait, neutral navbar hover, hero type, Escape, focus restoration, and 404.");
+  console.log("PASS: SaaS/SCM/ERP projects, certificate carousel arrows, keyboard, wraparound, filters, drag, detail dialog and focus restoration; white skill cards with white icons on blue, durations up to 18 months, navbar, ID/EN translation, symmetric margins, reduced motion and 404.");
 } finally {
   if (browser) await browser.close();
   preview.kill();

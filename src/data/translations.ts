@@ -1,4 +1,4 @@
-import { achievements, experiences, profile, projects, services, type ProjectCategory } from "./portfolio";
+import { achievements, credentials, experiences, profile, projects, services, softwareProjects, type ProjectCategory } from "./portfolio";
 
 export type Locale = "id" | "en";
 
@@ -12,6 +12,11 @@ export const messages = {
     servicesLabel: "PENCAPAIAN & KEAHLIAN", servicesTitle: "Beragam keahlian.", servicesTitleMuted: "Satu arah kreatif.", servicesIntro: "Dari ide pertama sampai sentuhan akhir.", servicesIntroSecond: "Mari buat sesuatu yang berarti.", ideaToExpression: "DARI IDE MENJADI KARYA",
     journeyLabel: "PERJALANAN KREATIF", journeyFirst: "Belajar.", journeySecond: "Berkarya.", journeyThird: "Bertumbuh.", journeyIntro: "Setiap kesempatan menjadi ruang", journeyIntroSecond: "untuk belajar dan berkembang.", experiencePlaceholder: "Ruang untuk perjalanan dan pengalamanmu.",
     experienceTitle: "Pengalaman", experiencePhoto: "Dokumentasi", experiencePhotoComing: "Foto segera hadir", experienceLogo: "Logo", experienceGallery: "Galeri pengalaman", experienceDetailsComing: "Dokumentasi dan detail pengalaman akan ditambahkan.",
+    projectsTitle: "Proyek", projectsGallery: "Galeri proyek", projectsComing: "Dokumentasi dan detail proyek akan ditambahkan.",
+    credentialsTitle: "Sertifikat & Penghargaan", certificate: "Sertifikat", award: "Penghargaan", credentialsGallery: "Galeri sertifikat dan penghargaan", credentialsComing: "Dokumentasi dan detail sertifikat serta penghargaan akan ditambahkan.",
+    credentialFilter: "Kategori dokumen", credentialCarousel: "karusel", credentialPrevious: "Dokumen sebelumnya", credentialNext: "Dokumen berikutnya", credentialView: "Lihat detail dokumen", credentialSelect: "Pilih dokumen", credentialChoose: "Pilih slide dokumen", credentialGoTo: "Ke dokumen", credentialDocumentComing: "Dokumen segera hadir",
+    skillsTitle: "Tech Stack", skillsDuration: "Durasi penggunaan", skillsDummy: "Contoh durasi penggunaan; data akan disesuaikan dengan pengalaman sebenarnya.",
+    frontendDescription: "Antarmuka web yang responsif dan interaktif.", backendDescription: "Logika aplikasi, layanan server, dan integrasi data.", aimlDescription: "Pengolahan data dan pengembangan model pembelajaran mesin.",
     achievementsTitle: "Pencapaian", achievementsGallery: "Galeri pencapaian", achievementsComing: "Dokumentasi dan detail pencapaian akan ditambahkan.",
     socialLabel: "DI BALIK PORTOFOLIO", socialTitle: "Mari tetap", socialTitleMuted: "terhubung.", socialIntro: "Ide, proses, dan hal menarik lainnya.", socialFollow: "Ikuti perjalanan kreatifku", socialComing: "Profil akan segera hadir", socialUnavailable: "profil belum ditambahkan",
     contactEyebrow: "HAL BAIK DIMULAI DARI SEBUAH PERCAKAPAN", contactIdea: "PUNYA IDE MENARIK?", contactFirst: "Yuk, buat", contactSecond: "sesuatu yang", contactAccent: "berarti.", openContact: "Buka informasi kontak", contactIntro: "Proyek baru, ide menarik, atau sekadar menyapa.", contactIntroSecond: "Aku senang mendengar ceritamu.", startConversation: "Mulai percakapan", footer: "Dibuat dengan sepenuh hati.", backTop: "Kembali ke atas",
@@ -26,6 +31,11 @@ export const messages = {
     servicesLabel: "ACHIEVEMENTS & SKILLS", servicesTitle: "Different skills.", servicesTitleMuted: "One creative direction.", servicesIntro: "From the first idea to the finishing touches.", servicesIntroSecond: "Let's make something meaningful.", ideaToExpression: "IDEA TO EXPRESSION",
     journeyLabel: "THE JOURNEY", journeyFirst: "Learning.", journeySecond: "Making.", journeyThird: "Growing.", journeyIntro: "Every opportunity is a space", journeyIntroSecond: "to learn and grow.", experiencePlaceholder: "A space for your journey and experience.",
     experienceTitle: "Experience", experiencePhoto: "Documentation", experiencePhotoComing: "Photo coming soon", experienceLogo: "Logo", experienceGallery: "Experience gallery", experienceDetailsComing: "Experience details and original photos will be added soon.",
+    projectsTitle: "Projects", projectsGallery: "Project gallery", projectsComing: "Project details and original photos will be added soon.",
+    credentialsTitle: "Certificates & Awards", certificate: "Certificates", award: "Awards", credentialsGallery: "Certificate and award gallery", credentialsComing: "Certificate and award details and original photos will be added soon.",
+    credentialFilter: "Document categories", credentialCarousel: "carousel", credentialPrevious: "Previous document", credentialNext: "Next document", credentialView: "View document details", credentialSelect: "Select document", credentialChoose: "Choose a document slide", credentialGoTo: "Go to document", credentialDocumentComing: "Document coming soon",
+    skillsTitle: "Tech Stack", skillsDuration: "Time using each tool", skillsDummy: "Sample durations; these will be updated to reflect actual experience.",
+    frontendDescription: "Responsive, interactive web interfaces.", backendDescription: "Application logic, server services, and data integration.", aimlDescription: "Data processing and machine learning model development.",
     achievementsTitle: "Achievements", achievementsGallery: "Achievement gallery", achievementsComing: "Achievement details and original photos will be added soon.",
     socialLabel: "BEYOND THE PORTFOLIO", socialTitle: "Let's stay", socialTitleMuted: "connected.", socialIntro: "Ideas, process, and other interesting things.", socialFollow: "Follow my creative journey", socialComing: "Profile coming soon", socialUnavailable: "profile not added yet",
     contactEyebrow: "GOOD THINGS START WITH A CONVERSATION", contactIdea: "HAVE AN IDEA IN MIND?", contactFirst: "Let's make", contactSecond: "something", contactAccent: "great.", openContact: "Open contact information", contactIntro: "A new project, an interesting idea, or just a hello.", contactIntroSecond: "I'd love to hear your story.", startConversation: "Start a conversation", footer: "Crafted with intention.", backTop: "Back to top",
@@ -34,8 +44,8 @@ export const messages = {
 } as const;
 
 export const navigationLabels = {
-  id: { "#tentang": "Tentang", "#karya": "Proyek", "#pengalaman": "Pengalaman", "#pencapaian": "Pencapaian", "#kontak": "Kontak" },
-  en: { "#tentang": "About", "#karya": "Projects", "#pengalaman": "Experience", "#pencapaian": "Achievements", "#kontak": "Contact" },
+  id: { "#tentang": "Tentang", "#karya": "Proyek", "#pengalaman": "Pengalaman", "#proyek": "Proyek", "#pencapaian": "Pencapaian", "#sertifikat": "Sertifikat", "#tech-stack": "Tech Stack", "#kontak": "Kontak" },
+  en: { "#tentang": "About", "#karya": "Projects", "#pengalaman": "Experience", "#proyek": "Projects", "#pencapaian": "Achievements", "#sertifikat": "Certificates", "#tech-stack": "Tech Stack", "#kontak": "Contact" },
 } as const;
 
 export function categoryLabel(category: ProjectCategory | "Semua", locale: Locale): string {
@@ -71,6 +81,17 @@ const englishAchievements = [
   { category: "Organization", title: "Organization or activity name", year: "Activity year", role: "Your role / contribution", description: "A space for your organizational achievements. Describe your contribution, responsibilities, and the impact you made with the team." },
 ];
 
+const englishSoftwareProjects = [
+  { title: "SaaS application name", year: "Development year", role: "Your role in the project", description: "A space for your Software as a Service project. Describe user needs, key features, the technologies used, and your contribution to the application." },
+  { title: "SCM system name", year: "Development year", role: "Your role in the project", description: "A space for your Supply Chain Management project. Share your solution for managing supply chains, inventory or distribution, and your contribution to the system." },
+  { title: "ERP system name", year: "Development year", role: "Your role in the project", description: "A space for your Enterprise Resource Planning project. Describe the business processes integrated, the modules developed, and your contribution to the system." },
+];
+
+const englishCredentials = [
+  { title: "Certificate or training name", issuer: "Issuing institution", year: "Year obtained", description: "A space for your learning and training certificates. Add the subject studied, the issuing institution, and your certificate documentation." },
+  { title: "Award name", issuer: "Award organizer", year: "Year obtained", description: "A space for the awards you have earned. Describe the award category, the work or contribution recognized, and documentation of the occasion." },
+];
+
 export function getLocalizedPortfolio(locale: Locale) {
   return {
     profile: locale === "id" ? profile : {
@@ -86,5 +107,7 @@ export function getLocalizedPortfolio(locale: Locale) {
     services: locale === "id" ? services : services.map((service, index) => ({ ...service, ...englishServices[index] })),
     experiences: locale === "id" ? experiences : experiences.map((experience, index) => ({ ...experience, ...englishExperiences[index] })),
     achievements: locale === "id" ? achievements : achievements.map((achievement, index) => ({ ...achievement, ...englishAchievements[index] })),
+    softwareProjects: locale === "id" ? softwareProjects : softwareProjects.map((project, index) => ({ ...project, ...englishSoftwareProjects[index] })),
+    credentials: locale === "id" ? credentials : credentials.map((credential, index) => ({ ...credential, ...englishCredentials[index] })),
   };
 }

@@ -303,10 +303,107 @@ export const services: Service[] = [
   },
 ];
 
+export type SoftwareProject = {
+  id: string;
+  category: "SaaS" | "SCM" | "ERP";
+  title: string;
+  year: string;
+  role: string;
+  description: string;
+  logo: string | null;
+  photos: (string | null)[];
+  isPlaceholder: boolean;
+};
+
+export const softwareProjects: SoftwareProject[] = [
+  {
+    id: "project-saas",
+    category: "SaaS",
+    title: "Nama aplikasi SaaS",
+    year: "Tahun pengembangan",
+    role: "Peran Anda dalam proyek",
+    description: "Ruang untuk proyek Software as a Service. Ceritakan kebutuhan pengguna, fitur utama, teknologi yang digunakan, dan kontribusi Anda dalam pengembangan aplikasi.",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
+  },
+  {
+    id: "project-scm",
+    category: "SCM",
+    title: "Nama sistem SCM",
+    year: "Tahun pengembangan",
+    role: "Peran Anda dalam proyek",
+    description: "Ruang untuk proyek Supply Chain Management. Bagikan solusi pengelolaan rantai pasok, alur persediaan atau distribusi, dan kontribusi Anda dalam pengembangan sistem.",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
+  },
+  {
+    id: "project-erp",
+    category: "ERP",
+    title: "Nama sistem ERP",
+    year: "Tahun pengembangan",
+    role: "Peran Anda dalam proyek",
+    description: "Ruang untuk proyek Enterprise Resource Planning. Ceritakan integrasi proses bisnis, modul yang dikembangkan, dan kontribusi Anda dalam membangun sistem.",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
+  },
+];
+
+export type Credential = {
+  id: string;
+  kind: "certificate" | "award";
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  logo: string | null;
+  photos: (string | null)[];
+  isPlaceholder: boolean;
+};
+
+export const credentials: Credential[] = [
+  {
+    id: "credential-certificate", kind: "certificate", title: "Nama sertifikat atau pelatihan",
+    issuer: "Lembaga penerbit", year: "Tahun perolehan",
+    description: "Ruang untuk sertifikat pembelajaran dan pelatihan. Tambahkan bidang yang dipelajari, lembaga penerbit, dan dokumentasi sertifikat Anda.",
+    logo: null, photos: [null, null, null, null], isPlaceholder: true,
+  },
+  {
+    id: "credential-award", kind: "award", title: "Nama penghargaan",
+    issuer: "Penyelenggara penghargaan", year: "Tahun perolehan",
+    description: "Ruang untuk penghargaan yang Anda raih. Ceritakan kategori penghargaan, karya atau kontribusi yang dinilai, dan dokumentasi momennya.",
+    logo: null, photos: [null, null, null, null], isPlaceholder: true,
+  },
+];
+
+export const skillGroups = [
+  { id: "frontend", title: "Front End", skills: [
+    { name: "React", icon: "react", months: 18 },
+    { name: "Next.js", icon: "nextjs", months: 12 },
+    { name: "Bootstrap", icon: "bootstrap", months: 10 },
+  ] },
+  { id: "backend", title: "Back End", skills: [
+    { name: "Laravel", icon: "laravel", months: 14 },
+    { name: "Node.js", icon: "nodejs", months: 12 },
+    { name: "Flask", icon: "flask", months: 8 },
+  ] },
+  { id: "aiml", title: "AI/ML", skills: [
+    { name: "Python", icon: "python", months: 18 },
+    { name: "PyTorch", icon: "pytorch", months: 10 },
+    { name: "TensorFlow", icon: "tensorflow", months: 8 },
+    { name: "scikit-learn", icon: "scikitlearn", months: 12 },
+  ] },
+] as const;
+
 export const navigation = [
   { label: "About", href: "#tentang" },
   { label: "Experience", href: "#pengalaman" },
+  { label: "Projects", href: "#proyek" },
   { label: "Achievements", href: "#pencapaian" },
+  { label: "Certificates", href: "#sertifikat" },
+  { label: "Tech Stack", href: "#tech-stack" },
   { label: "Contact", href: "#kontak" },
 ];
 

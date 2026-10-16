@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Globe, Menu, X } from "lucide-react";
-import { navigation } from "@/data/portfolio";
+import { navigation, profile } from "@/data/portfolio";
 import { navigationLabels } from "@/data/translations";
 import { useLanguage } from "./language-provider";
 
@@ -18,7 +18,7 @@ export function SiteHeader({ activeSection, onNavigate }: { activeSection: strin
     const updateScroll = () => setScrolled(window.scrollY > 24);
     updateScroll();
     window.addEventListener("scroll", updateScroll, { passive: true });
-    const desktop = window.matchMedia("(min-width: 901px)");
+    const desktop = window.matchMedia("(min-width: 1101px)");
     const closeOnDesktop = () => { if (desktop.matches) setMenuOpen(false); };
     desktop.addEventListener("change", closeOnDesktop);
     return () => {
@@ -49,12 +49,15 @@ export function SiteHeader({ activeSection, onNavigate }: { activeSection: strin
   return (
     <header ref={header} className={`reference-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="reference-navbar">
-        <div className="navbar-actions">
-          <nav className="pill-desktop-nav" aria-label={copy.mainNav}>
-            {navigation.map((link) => <a key={link.href} href={link.href} className={activeSection === link.href ? "active" : ""} aria-current={activeSection === link.href ? "location" : undefined} onClick={() => navigate(link.href)}>{linkLabel(link.href, link.label)}</a>)}
-          </nav>
-          <button className="language-toggle" type="button" aria-label={copy.switchLanguage} title={copy.switchLanguage} onClick={() => setLocale(locale === "id" ? "en" : "id")}><Globe size={18} strokeWidth={1.7} /><span>{locale.toUpperCase()}</span></button>
-          <button ref={toggle} id="menu-toggle" className="pill-menu-toggle" aria-label={menuOpen ? copy.closeMenu : copy.openMenu} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={24} /> : <Menu size={24} />}</button>
+        <div className="container navbar-inner">
+          <a className="wordmark navbar-wordmark" href="#beranda" aria-label={`${profile.name} — ${copy.home}`} onClick={() => navigate("#beranda")}>{profile.name.toLowerCase()}<span>.</span></a>
+          <div className="navbar-actions">
+            <nav className="pill-desktop-nav" aria-label={copy.mainNav}>
+              {navigation.map((link) => <a key={link.href} href={link.href} className={activeSection === link.href ? "active" : ""} aria-current={activeSection === link.href ? "location" : undefined} onClick={() => navigate(link.href)}>{linkLabel(link.href, link.label)}</a>)}
+            </nav>
+            <button className="language-toggle" type="button" aria-label={copy.switchLanguage} title={copy.switchLanguage} onClick={() => setLocale(locale === "id" ? "en" : "id")}><Globe size={18} strokeWidth={1.7} /><span>{locale.toUpperCase()}</span></button>
+            <button ref={toggle} id="menu-toggle" className="pill-menu-toggle" aria-label={menuOpen ? copy.closeMenu : copy.openMenu} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={24} /> : <Menu size={24} />}</button>
+          </div>
         </div>
       </div>
       <AnimatePresence>
