@@ -257,7 +257,7 @@ body {
 .reference-experience-title mark { padding: 3px 19px 7px; border-radius: 9px; color: #080808; background: linear-gradient(90deg, #ffc400, #ffe600); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .reference-experience-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start; }
 .reference-experience-column { min-width: 0; }
-.reference-experience-type { font-size: clamp(20px, 1.85vw, 26px); font-weight: 600; line-height: 1.3; letter-spacing: -.5px; text-align: center; margin: 0 0 26px; }
+.reference-experience-type { font-size: clamp(18px, 1.5vw, 21px); font-weight: 600; line-height: 1.3; letter-spacing: -.4px; text-align: center; margin: 0 0 26px; }
 .reference-experience-type > span { display: inline-block; padding: 5px 22px 7px; border: 2px solid #101719; border-radius: 999px; color: #0072ac; background: rgb(255 255 255 / 35%); }
 .reference-experience-meta { display: flex; align-items: center; gap: 13px; min-height: 77px; margin-bottom: 17px; }
 .reference-experience-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex: 0 0 50px; height: 50px; border: 1px dashed #9dbdce; border-radius: 7px; background: rgb(241 248 252 / 85%); color: #6b91a6; }
@@ -294,11 +294,29 @@ body {
   .reference-experience-title { font-size: 32px; margin-bottom: 35px; }
   .reference-experience-title mark { padding-inline: 15px; }
   .reference-experience-grid { grid-template-columns: minmax(0, 1fr); gap: 39px; }
-  .reference-experience-type { font-size: 23px; margin-bottom: 15px; }
+  .reference-experience-type { font-size: 20px; margin-bottom: 15px; }
   .reference-experience-meta { margin-bottom: 14px; min-height: 65px; }
   .reference-experience-company { font-size: 13px; }
   .reference-experience-period { font-size: 11px; }
   .reference-experience-gallery { padding: 16px; gap: 14px; }
   .reference-experience-description { font-size: 14px; margin-top: 18px; }
   .experience-photo-label { font-size: 9px; }
+}
+
+/* Shared title scale follows the hero at every viewport width. */
+:root { --portfolio-title-size: clamp(30px, 2.65vw, 40px); --portfolio-title-spacing: -.7px; }
+@media (max-width: 1200px) { :root { --portfolio-title-size: 36px; } }
+@media (max-width: 900px) { :root { --portfolio-title-size: 31px; } }
+@media (max-width: 650px) { :root { --portfolio-title-size: clamp(27px, 7vw, 34px); --portfolio-title-spacing: -.5px; } }
+@media (max-width: 380px) { :root { --portfolio-title-size: 27px; } }
+.reference-title,
+.reference-about-copy h2,
+.reference-experience-title,
+.section-heading h2,
+.contact-main h2 {
+  font-family: "Montserrat Variable", sans-serif;
+  font-size: var(--portfolio-title-size);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: var(--portfolio-title-spacing);
 }

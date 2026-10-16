@@ -163,6 +163,11 @@ try {
       await page.evaluate(() => document.fonts.ready);
       const overflow = await page.evaluate(() => ({ viewport: innerWidth, scroll: document.documentElement.scrollWidth }));
       assert(overflow.scroll <= overflow.viewport, `Horizontal overflow at ${width}px/${locale}: ${JSON.stringify(overflow)}`);
+      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #work-title, #service-title, #contact-title").evaluateAll(elements => elements.map(el => {
+        const style = getComputedStyle(el);
+        return { size: style.fontSize, weight: style.fontWeight, family: style.fontFamily };
+      }));
+      for (const style of titleStyles) assert.deepEqual(style, titleStyles[0], `Main headings match the hero at ${width}px/${locale}`);
       if (width <= 900) {
         await page.locator("#menu-toggle").click();
         assert.equal(await page.locator("#menu-toggle").getAttribute("aria-expanded"), "true");
