@@ -12,6 +12,7 @@ import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
 import { TechStack } from "./tech-stack";
 import { About } from "./about";
+import { Experience } from "./experience";
 import { useLanguage } from "./language-provider";
 
 const serviceIcons = { pen: PenTool, video: Video, camera: Camera, code: Code2 };
@@ -22,7 +23,7 @@ function SectionLabel({ number, children }: { number: string; children: React.Re
 
 export function Portfolio() {
   const { locale, copy } = useLanguage();
-  const { profile, projects, services, experiences } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
+  const { profile, projects, services } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
   const [activeSection, setActiveSection] = useState("#beranda");
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("Semua");
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -65,6 +66,8 @@ export function Portfolio() {
 
         <About onContact={() => setContactOpen(true)} />
 
+        <Experience />
+
         <section className="section container work-section" id="karya" aria-labelledby="work-title">
           <Reveal>
             <SectionLabel number="01">{copy.workLabel}</SectionLabel>
@@ -98,13 +101,6 @@ export function Portfolio() {
             const Icon = serviceIcons[service.icon];
             return <Reveal key={service.number} delay={index * .06}><div className="service-card"><div className="service-top"><Icon size={24} strokeWidth={1.4} /><span>{service.number}</span></div><h3>{service.title}</h3><p>{service.description}</p><span className="service-bottom">{copy.ideaToExpression}<ArrowDownRight size={19} /></span></div></Reveal>;
           })}</div>
-        </section>
-
-        <section className="experience-section" id="pengalaman" aria-labelledby="experience-title">
-          <div className="container experience-layout">
-            <Reveal className="experience-intro"><SectionLabel number="04">{copy.journeyLabel}</SectionLabel><h2 id="experience-title">{copy.journeyFirst}<br />{copy.journeySecond}<br /><span className="muted-heading">{copy.journeyThird}</span></h2><p>{copy.journeyIntro}<br />{copy.journeyIntroSecond}</p><span className="experience-star" aria-hidden="true">✳</span></Reveal>
-            <div className="experience-list">{experiences.map((experience, index) => <Reveal key={experience.id} delay={index * .05}><article className="experience-row"><div className="experience-meta"><span>{experience.period}</span><span className="experience-type">{experience.type}</span></div><h3>{experience.role}</h3><span className="experience-company">{experience.company}</span><p>{experience.description}</p><span className="experience-number">0{index + 1}</span></article></Reveal>)}<p className="experience-placeholder">{copy.experiencePlaceholder}</p></div>
-          </div>
         </section>
 
         <section className="contact-section" id="kontak" aria-labelledby="contact-title">

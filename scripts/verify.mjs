@@ -45,6 +45,10 @@ try {
   assert.equal(await page.locator(".reference-about-stats dd").count(), 3);
   assert.deepEqual(await page.locator(".reference-about-stats dd").allTextContents(), ["—", "—", "—"]);
   assert(await page.locator(".reference-about").evaluate(el => el.previousElementSibling?.classList.contains("tech-stack-section")));
+  assert(await page.locator(".reference-experience").evaluate(el => el.previousElementSibling?.id === "tentang"));
+  assert.equal(await page.locator(".reference-experience-card").count(), 3);
+  assert.equal(await page.locator(".reference-experience-photo").count(), 12);
+  assert.equal(await page.locator("#experience-title").innerText(), "Pengalaman");
   assert.match(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundImage), /hero-pattern-continuous\.svg/);
   for (const selector of [".reference-about", ".experience-section", ".contact-section", ".site-footer"]) {
     assert.equal(await page.locator(selector).evaluate(el => getComputedStyle(el).backgroundColor), "rgba(0, 0, 0, 0)");
@@ -102,6 +106,8 @@ try {
   await setLanguage("en");
   assert.match(await page.locator("h1").innerText(), /Creative Designer/);
   assert.match(await page.locator("#about-title").innerText(), /Who is Alvin/);
+  assert.equal(await page.locator("#experience-title").innerText(), "Experience");
+  assert.deepEqual(await page.locator(".reference-experience-type").allTextContents(), ["Internship", "Full Time", "Volunteer"]);
   await page.locator(".reference-about-actions .profile-pill").click();
   await page.getByRole("dialog", { name: "Let's get acquainted" }).waitFor();
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
@@ -187,6 +193,9 @@ try {
         await page.locator(".reference-about").scrollIntoViewIfNeeded();
         await delay(750);
         await page.locator(".reference-about").screenshot({ path: `artifacts/about-${width}-${locale}.png`, style: ".reference-header { visibility: hidden; }" });
+        await page.locator(".reference-experience").scrollIntoViewIfNeeded();
+        await delay(750);
+        await page.locator(".reference-experience").screenshot({ path: `artifacts/experience-${width}-${locale}.png`, style: ".reference-header { visibility: hidden; }" });
         await goHome();
       }
       console.log(`PASS: ${width}px/${locale}, images, layout${width <= 900 ? ", mobile menu and language switching" : ""}`);

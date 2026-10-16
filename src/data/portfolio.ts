@@ -173,35 +173,47 @@ export type Experience = {
   company: string;
   description: string;
   type: string;
+  logo: string | null;
+  photos: (string | null)[];
+  isPlaceholder: boolean;
 };
 
 export const experiences: Experience[] = [
   {
     id: "experience-01",
-    period: "Periode pengalaman",
+    period: "Durasi magang",
     role: "Posisi / peran Anda",
     company: "Nama perusahaan atau studio",
     description:
-      "Placeholder pengalaman kerja. Tambahkan tanggung jawab utama, kontribusi, dan hal yang Anda pelajari di sini.",
-    type: "Pengalaman Kerja",
+      "Ruang untuk pengalaman magang. Tambahkan tanggung jawab, kontribusi, dan hal yang dipelajari selama bekerja bersama tim.",
+    type: "Magang",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
   },
   {
     id: "experience-02",
-    period: "Periode kolaborasi",
-    role: "Peran dalam proyek",
-    company: "Nama proyek atau kolaborasi",
+    period: "Durasi bekerja",
+    role: "Posisi / peran Anda",
+    company: "Nama perusahaan atau studio",
     description:
-      "Placeholder kolaborasi kreatif. Ceritakan konteks proyek, peran Anda, dan proses bekerja bersama tim.",
-    type: "Kolaborasi",
+      "Ruang untuk pengalaman kerja penuh waktu. Ceritakan peran, proyek yang ditangani, dan hasil yang ingin ditampilkan.",
+    type: "Penuh Waktu",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
   },
   {
     id: "experience-03",
-    period: "Periode kegiatan",
+    period: "Durasi kegiatan",
     role: "Peran dalam kegiatan",
     company: "Nama organisasi atau komunitas",
     description:
-      "Placeholder organisasi atau kegiatan. Tambahkan pengalaman relevan dan kontribusi yang ingin Anda tampilkan.",
-    type: "Organisasi",
+      "Ruang untuk pengalaman relawan. Bagikan cerita kegiatan, kontribusi, dan dokumentasi momen bersama komunitas.",
+    type: "Relawan",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
   },
 ];
 

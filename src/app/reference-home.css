@@ -250,3 +250,55 @@ body {
   .reference-about-socials { gap: 3px; }
   .reference-about-socials a,.reference-about-socials button { width: 34px; height: 38px; }
 }
+
+.reference-experience { padding-block: 30px 80px; border: 0; }
+.reference-experience .experience-layout { display: block; }
+.reference-experience-title { font-size: clamp(32px, 3.2vw, 44px); font-weight: 700; letter-spacing: -.9px; line-height: 1.45; text-align: center; margin-bottom: 45px; }
+.reference-experience-title mark { padding: 3px 19px 7px; border-radius: 9px; color: #080808; background: linear-gradient(90deg, #ffc400, #ffe600); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.reference-experience-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start; }
+.reference-experience-column { min-width: 0; }
+.reference-experience-type { font-size: clamp(20px, 1.85vw, 26px); font-weight: 600; line-height: 1.3; letter-spacing: -.5px; text-align: center; margin: 0 0 26px; }
+.reference-experience-type > span { display: inline-block; padding: 5px 22px 7px; border: 2px solid #101719; border-radius: 999px; color: #0072ac; background: rgb(255 255 255 / 35%); }
+.reference-experience-meta { display: flex; align-items: center; gap: 13px; min-height: 77px; margin-bottom: 17px; }
+.reference-experience-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex: 0 0 50px; height: 50px; border: 1px dashed #9dbdce; border-radius: 7px; background: rgb(241 248 252 / 85%); color: #6b91a6; }
+.reference-experience-logo > span { font-size: 7px; font-weight: 500; }
+.reference-experience-logo.has-image { border: 0; background: transparent; }
+.reference-experience-logo img { width: 50px; height: 50px; object-fit: contain; }
+.reference-experience-meta > div:last-child { min-width: 0; }
+.reference-experience-company { font-size: 13px; font-weight: 600; line-height: 1.55; color: #37454f; }
+.reference-experience-period { font-size: 11px; font-weight: 400; color: #65737c; line-height: 1.65; margin-top: 3px; }
+.reference-experience-period > span { padding-inline: 3px; }
+.reference-experience-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; padding: 18px; border-radius: 16px; background: linear-gradient(180deg, #38b4ff, #0084c5 56%, #003b5d); }
+.reference-experience-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; aspect-ratio: 1; min-width: 0; gap: 10px; overflow: hidden; border: 1px dashed rgb(255 255 255 / 65%); border-radius: 12px; background: #e5f3fa; color: #7a9fb5; }
+.reference-experience-photo:nth-child(2),.reference-experience-photo:nth-child(3) { background: #f0f7fb; }
+.reference-experience-photo.has-image { border: 0; background: transparent; }
+.reference-experience-photo img { object-fit: cover; transition: transform .35s; }
+.reference-experience-photo.has-image:hover img { transform: scale(1.04); }
+.experience-photo-index { position: absolute; top: 10px; left: 11px; color: #789bb0; font-family: "Montserrat Variable", sans-serif; font-size: 9px; font-weight: 500; }
+.experience-photo-label { font-size: 8px; font-weight: 500; text-align: center; padding-inline: 5px; }
+.reference-experience-description { font-size: 14px; font-weight: 500; line-height: 1.7; color: #30363c; margin-top: 23px; }
+.reference-experience-note { margin-top: 29px; text-align: center; font-size: 10px; line-height: 1.7; color: #6c7b86; }
+@media (max-width: 1100px) {
+  .reference-experience-grid { gap: 25px; }
+  .reference-experience-gallery { gap: 11px; padding: 14px; }
+  .reference-experience-company { font-size: 12px; }
+  .reference-experience-period { font-size: 10px; }
+  .reference-experience-description { font-size: 13px; }
+}
+@media (min-width: 651px) and (max-width: 900px) {
+  .reference-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 38px 28px; }
+  .reference-experience-column:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc((100% - 28px) / 2); justify-self: center; }
+}
+@media (max-width: 650px) {
+  .reference-experience { padding-block: 20px 60px; }
+  .reference-experience-title { font-size: 32px; margin-bottom: 35px; }
+  .reference-experience-title mark { padding-inline: 15px; }
+  .reference-experience-grid { grid-template-columns: minmax(0, 1fr); gap: 39px; }
+  .reference-experience-type { font-size: 23px; margin-bottom: 15px; }
+  .reference-experience-meta { margin-bottom: 14px; min-height: 65px; }
+  .reference-experience-company { font-size: 13px; }
+  .reference-experience-period { font-size: 11px; }
+  .reference-experience-gallery { padding: 16px; gap: 14px; }
+  .reference-experience-description { font-size: 14px; margin-top: 18px; }
+  .experience-photo-label { font-size: 9px; }
+}
