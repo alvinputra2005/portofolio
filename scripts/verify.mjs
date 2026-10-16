@@ -38,16 +38,21 @@ try {
   assert.equal(await page.locator("html").getAttribute("lang"), "id");
   assert.equal(await page.locator(".reference-header img").count(), 0);
   assert.match(await page.locator("h1").innerText(), /Desainer Kreatif/);
-  assert.deepEqual(await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => link.getAttribute("href"))), ["#tentang", "#karya", "#pengalaman", "#pencapaian", "#kontak"]);
+  const sectionOrder = ["#tentang", "#pengalaman", "#karya", "#pencapaian", "#kontak"];
+  assert.deepEqual(await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => link.getAttribute("href"))), sectionOrder);
+  assert.deepEqual(await page.locator('main > section[id]:not(#beranda)').evaluateAll(sections => sections.map(section => `#${section.id}`)), sectionOrder);
   assert.equal(await page.locator(".reference-socials a, .reference-socials button").count(), 5);
   assert.equal(await page.locator("#sosial").count(), 0);
   assert.match(await page.locator("#about-title").innerText(), /Siapa Alvin/);
   assert.equal(await page.locator(".reference-about-stats dd").count(), 3);
   assert.deepEqual(await page.locator(".reference-about-stats dd").allTextContents(), ["—", "—", "—"]);
   assert(await page.locator(".reference-about").evaluate(el => el.previousElementSibling?.classList.contains("tech-stack-section")));
-  assert(await page.locator(".reference-experience").evaluate(el => el.previousElementSibling?.id === "tentang"));
+  assert(await page.locator("#pengalaman").evaluate(el => el.previousElementSibling?.id === "tentang"));
   assert.equal(await page.locator(".reference-experience-card").count(), 3);
-  assert.equal(await page.locator(".reference-experience-photo").count(), 12);
+  assert.equal(await page.locator("#pengalaman .reference-experience-photo").count(), 12);
+  assert.equal(await page.locator(".achievement-card").count(), 3);
+  assert.equal(await page.locator("#pencapaian .reference-experience-photo").count(), 12);
+  assert.equal(await page.locator("#achievements-title").innerText(), "Pencapaian");
   assert.equal(await page.locator("#experience-title").innerText(), "Pengalaman");
   assert.match(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundImage), /hero-pattern-continuous\.svg/);
   for (const selector of [".reference-about", ".experience-section", ".contact-section", ".site-footer"]) {
@@ -69,7 +74,7 @@ try {
   assert.match(heroStyles.photo, /alvin-hero-framed\.webp/);
   assert.equal(await page.locator(".reference-portrait-backdrop").count(), 1);
 
-  const alignedContainers = await page.locator(".reference-hero-inner, .work-section, .about-layout, .service-section, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
+  const alignedContainers = await page.locator(".reference-hero-inner, .work-section, .about-layout, .achievements-layout, .experience-layout, .contact-section .container").evaluateAll(elements => elements.map(element => {
     const box = element.getBoundingClientRect();
     return { left: box.left, right: box.right };
   }));
@@ -107,13 +112,14 @@ try {
   assert.match(await page.locator("h1").innerText(), /Creative Designer/);
   assert.match(await page.locator("#about-title").innerText(), /Who is Alvin/);
   assert.equal(await page.locator("#experience-title").innerText(), "Experience");
-  assert.deepEqual(await page.locator(".reference-experience-type").allTextContents(), ["Internship", "Full Time", "Volunteer"]);
+  assert.deepEqual(await page.locator("#pengalaman .reference-experience-type").allTextContents(), ["Internship", "Full Time", "Volunteer"]);
   await page.locator(".reference-about-actions .profile-pill").click();
   await page.getByRole("dialog", { name: "Let's get acquainted" }).waitFor();
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await goHome();
   assert.match(await page.locator("#work-title").innerText(), /Ideas made/);
-  assert.match(await page.locator(".service-card").first().innerText(), /Graphic Design/);
+  assert.equal(await page.locator("#achievements-title").innerText(), "Achievements");
+  assert.match(await page.locator(".achievements-category").innerText(), /Organization & Competition/);
   await page.reload({ waitUntil: "networkidle" });
   await page.waitForFunction(() => document.documentElement.lang === "en");
   assert.match(await page.locator("h1").innerText(), /Creative Designer/);
@@ -163,7 +169,7 @@ try {
       await page.evaluate(() => document.fonts.ready);
       const overflow = await page.evaluate(() => ({ viewport: innerWidth, scroll: document.documentElement.scrollWidth }));
       assert(overflow.scroll <= overflow.viewport, `Horizontal overflow at ${width}px/${locale}: ${JSON.stringify(overflow)}`);
-      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #work-title, #service-title, #contact-title").evaluateAll(elements => elements.map(el => {
+      const titleStyles = await page.locator(".reference-title, #about-title, #experience-title, #work-title, #achievements-title, #contact-title").evaluateAll(elements => elements.map(el => {
         const style = getComputedStyle(el);
         return { size: style.fontSize, weight: style.fontWeight, family: style.fontFamily };
       }));
@@ -198,9 +204,12 @@ try {
         await page.locator(".reference-about").scrollIntoViewIfNeeded();
         await delay(750);
         await page.locator(".reference-about").screenshot({ path: `artifacts/about-${width}-${locale}.png`, style: ".reference-header { visibility: hidden; }" });
-        await page.locator(".reference-experience").scrollIntoViewIfNeeded();
+        await page.locator("#pengalaman").scrollIntoViewIfNeeded();
         await delay(750);
-        await page.locator(".reference-experience").screenshot({ path: `artifacts/experience-${width}-${locale}.png`, style: ".reference-header { visibility: hidden; }" });
+        await page.locator("#pengalaman").screenshot({ path: `artifacts/experience-${width}-${locale}.png`, style: ".reference-header, .skip-link { visibility: hidden; }" });
+        await page.locator("#pencapaian").scrollIntoViewIfNeeded();
+        await delay(750);
+        await page.locator("#pencapaian").screenshot({ path: `artifacts/achievements-${width}-${locale}.png`, style: ".reference-header, .skip-link { visibility: hidden; }" });
         await goHome();
       }
       console.log(`PASS: ${width}px/${locale}, images, layout${width <= 900 ? ", mobile menu and language switching" : ""}`);

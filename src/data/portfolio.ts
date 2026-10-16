@@ -224,6 +224,50 @@ export type Service = {
   icon: "pen" | "video" | "camera" | "code";
 };
 
+export type Achievement = {
+  id: string;
+  title: string;
+  year: string;
+  role: string;
+  description: string;
+  logo: string | null;
+  photos: (string | null)[];
+  isPlaceholder: boolean;
+};
+
+export const achievements: Achievement[] = [
+  {
+    id: "achievement-01",
+    title: "Nama organisasi atau kegiatan",
+    year: "Tahun kegiatan",
+    role: "Peran / kontribusi Anda",
+    description: "Ruang untuk pencapaian organisasi. Ceritakan kontribusi, tanggung jawab, dan dampak yang dihasilkan bersama tim.",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
+  },
+  {
+    id: "achievement-02",
+    title: "Nama kompetisi atau program",
+    year: "Tahun kompetisi",
+    role: "Peran / partisipasi Anda",
+    description: "Ruang untuk perjalanan kompetisi. Bagikan proses persiapan, ide yang dikembangkan, dan pengalaman selama mengikuti kegiatan.",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
+  },
+  {
+    id: "achievement-03",
+    title: "Nama penghargaan atau prestasi",
+    year: "Tahun pencapaian",
+    role: "Pencapaian / kategori Anda",
+    description: "Ruang untuk prestasi dan penghargaan. Tambahkan hasil yang diraih, peran Anda, dan dokumentasi momen yang ingin dibagikan.",
+    logo: null,
+    photos: [null, null, null, null],
+    isPlaceholder: true,
+  },
+];
+
 export const services: Service[] = [
   {
     number: "01",
@@ -257,8 +301,8 @@ export const services: Service[] = [
 
 export const navigation = [
   { label: "About", href: "#tentang" },
-  { label: "Projects", href: "#karya" },
   { label: "Experience", href: "#pengalaman" },
+  { label: "Projects", href: "#karya" },
   { label: "Achievements", href: "#pencapaian" },
   { label: "Contact", href: "#kontak" },
 ];

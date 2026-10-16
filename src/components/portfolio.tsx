@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowDownRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Mail, MapPin, PenTool, Plus, Video } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Check, Copy, Mail, MapPin, Plus } from "lucide-react";
 import { projectCategories, siteSettings } from "@/data/portfolio";
 import { categoryLabel, getLocalizedPortfolio } from "@/data/translations";
 import { Reveal } from "./reveal";
@@ -13,9 +13,8 @@ import { Hero } from "./hero";
 import { TechStack } from "./tech-stack";
 import { About } from "./about";
 import { Experience } from "./experience";
+import { Achievements } from "./achievements";
 import { useLanguage } from "./language-provider";
-
-const serviceIcons = { pen: PenTool, video: Video, camera: Camera, code: Code2 };
 
 function SectionLabel({ number, children }: { number: string; children: React.ReactNode }) {
   return <div className="section-label"><span>{number}</span><span className="label-line" />{children}</div>;
@@ -23,7 +22,7 @@ function SectionLabel({ number, children }: { number: string; children: React.Re
 
 export function Portfolio() {
   const { locale, copy } = useLanguage();
-  const { profile, projects, services } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
+  const { profile, projects } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
   const [activeSection, setActiveSection] = useState("#beranda");
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("Semua");
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -92,16 +91,7 @@ export function Portfolio() {
           {projects.some(project => project.isPlaceholder) && <p className="placeholder-caption"><Plus size={13} />{copy.placeholderCaption}</p>}
         </section>
 
-        <section className="section container service-section" id="pencapaian" aria-labelledby="service-title">
-          <Reveal>
-            <SectionLabel number="03">{copy.servicesLabel}</SectionLabel>
-            <div className="section-heading"><h2 id="service-title">{copy.servicesTitle}<br /><span className="muted-heading">{copy.servicesTitleMuted}</span></h2><p>{copy.servicesIntro}<br />{copy.servicesIntroSecond}</p></div>
-          </Reveal>
-          <div className="service-grid">{services.map((service, index) => {
-            const Icon = serviceIcons[service.icon];
-            return <Reveal key={service.number} delay={index * .06}><div className="service-card"><div className="service-top"><Icon size={24} strokeWidth={1.4} /><span>{service.number}</span></div><h3>{service.title}</h3><p>{service.description}</p><span className="service-bottom">{copy.ideaToExpression}<ArrowDownRight size={19} /></span></div></Reveal>;
-          })}</div>
-        </section>
+        <Achievements />
 
         <section className="contact-section" id="kontak" aria-labelledby="contact-title">
           <div className="container"><Reveal>

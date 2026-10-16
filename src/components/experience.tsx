@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Building2, ImagePlus } from "lucide-react";
+import { Building2 } from "lucide-react";
 import { getLocalizedPortfolio } from "@/data/translations";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
+import { DocumentationGallery } from "./documentation-gallery";
 
 export function Experience() {
   const { locale, copy } = useLanguage();
@@ -23,18 +24,7 @@ export function Experience() {
               </div>
               <div><p className="reference-experience-company">{experience.company}</p><p className="reference-experience-period">{experience.period} <span aria-hidden="true">·</span> {experience.role}</p></div>
             </div>
-            <div className="reference-experience-gallery" role="group" aria-label={`${copy.experienceGallery}: ${experience.type}`}>
-              {Array.from({ length: 4 }, (_, photoIndex) => {
-                const photo = experience.photos[photoIndex];
-                return <div className={`reference-experience-photo${photo ? " has-image" : ""}`} key={photoIndex}>
-                  {photo ? <Image src={photo} alt={`${copy.experiencePhoto} ${experience.type} ${photoIndex + 1}`} fill sizes="(max-width: 650px) 42vw, (max-width: 1000px) 23vw, 200px" /> : <>
-                    <span className="experience-photo-index" aria-hidden="true">0{photoIndex + 1}</span>
-                    <ImagePlus size={30} strokeWidth={1.2} aria-hidden="true" />
-                    <span className="experience-photo-label">{copy.experiencePhotoComing}</span>
-                  </>}
-                </div>;
-              })}
-            </div>
+            <DocumentationGallery photos={experience.photos} label={`${copy.experienceGallery}: ${experience.type}`} photoLabel={`${copy.experiencePhoto} ${experience.type}`} placeholder={copy.experiencePhotoComing} />
             <p className="reference-experience-description">{experience.description}</p>
           </article>
         </Reveal>)}
