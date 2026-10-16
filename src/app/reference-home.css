@@ -176,3 +176,77 @@
   .tech-stack-sequence[aria-hidden="true"],.tech-stack-group[aria-hidden="true"] { display: none; }
   .tech-stack-window { overflow-x: auto; scrollbar-width: thin; mask-image: none; }
 }
+
+/* Continue the hero's light wave pattern behind the rest of the page. */
+body {
+  background-color: #fcfcfc;
+  background-image: url("/images/hero-pattern-continuous.svg");
+  background-position: center top;
+  background-size: max(1440px, 100vw) auto;
+  background-repeat: repeat-y;
+}
+.experience-section,.contact-section { background: transparent; }
+.service-card { background: rgb(255 255 255 / 80%); }
+.contact-section { color: #005a91; border-top: 1px solid var(--line); }
+.contact-top { color: #607c90; }
+.contact-eyebrow .status-dot { background: #1687ce; box-shadow: 0 0 0 4px #1687ce12; }
+.contact-main h2 span { color: #1687ce; }
+.contact-orb { color: #005a91; border-color: #8cb9d4; background: rgb(255 255 255 / 60%); }
+.contact-orb:hover { background: #e5f3fb; }
+.contact-bottom { border-color: #cddfe9; }
+.contact-bottom p { color: #566b7b; }
+.contact-link { color: #005a91; }
+.contact-link:hover { color: #1687ce; }
+
+.reference-about { padding-block: 100px 105px; }
+.reference-about .about-layout { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(55px, 7vw, 110px); align-items: center; }
+.reference-about-visual { width: 100%; max-width: 420px; }
+.reference-about-card { position: relative; width: 100%; aspect-ratio: .75; overflow: hidden; border-radius: 17px; background: linear-gradient(180deg, #4fc1ff, #0084c5 58%, #003958); isolation: isolate; }
+.reference-about-card::after { content: ""; position: absolute; inset: auto 0 0; height: 10%; background: linear-gradient(transparent, #fcfcfc); pointer-events: none; z-index: 2; }
+.reference-about-card img { object-fit: contain; object-position: center bottom; padding: 23px 12px 0; z-index: 1; filter: drop-shadow(0 10px 18px rgb(0 40 65 / 10%)); }
+.reference-about-ring { position: absolute; display: block; border-radius: 50%; border: 23px solid #ffe000; }
+.about-ring-large { width: 230px; height: 230px; top: 60px; right: -18px; }
+.about-ring-small { width: 138px; height: 138px; bottom: 125px; left: -27px; border-width: 18px; }
+.reference-about-badge { font-family: "Montserrat Variable", sans-serif; font-size: 23px; font-weight: 700; line-height: 1.5; margin-bottom: 24px; }
+.reference-about-badge mark { padding: 3px 9px 5px; border-radius: 8px; color: #080808; background: linear-gradient(90deg, #ffc400, #ffe600); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.reference-about-copy h2 { font-size: clamp(32px, 3.35vw, 48px); font-weight: 700; letter-spacing: -.9px; line-height: 1.25; background: linear-gradient(100deg, #005a91, #168ad0 60%, #38b4ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 27px; }
+.reference-about-description { font-size: 16px; font-weight: 500; color: #252a30; line-height: 1.75; }
+.reference-about-description p + p { margin-top: 21px; }
+.reference-about-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 25px; margin: 35px 0 0; }
+.reference-about-stats > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 7px; }
+.reference-about-stats dt { font-size: 15px; font-weight: 500; line-height: 1.45; }
+.reference-about-stats dd { margin: 0; font-family: "Montserrat Variable", sans-serif; font-size: 44px; font-weight: 650; letter-spacing: -1.4px; line-height: 1.15; background: linear-gradient(100deg, #005a91, #38b4ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.reference-about-stats-note { margin-top: 12px; font-size: 10px; color: #657684; }
+.reference-about-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 29px; }
+.reference-about-actions .profile-pill { font-size: 16px; }
+.reference-about-socials { display: flex; align-items: center; gap: 10px; }
+.reference-about-socials a,.reference-about-socials button { display: grid; place-items: center; padding: 0; width: 41px; height: 41px; border: 0; border-radius: 8px; background: transparent; color: #101a20; transition: color .2s, background .2s, transform .2s; }
+.reference-about-socials a:hover,.reference-about-socials button:hover { color: #005a91; background: #e7f3fc; transform: translateY(-2px); }
+@media (max-width: 1000px) {
+  .reference-about { padding-block: 80px; }
+  .reference-about .about-layout { gap: 38px; }
+  .reference-about-badge { font-size: 20px; margin-bottom: 20px; }
+  .reference-about-copy h2 { font-size: 34px; margin-bottom: 21px; }
+  .reference-about-description { font-size: 14px; }
+  .reference-about-stats { gap: 14px; margin-top: 25px; }
+  .reference-about-stats dt { font-size: 13px; }
+  .reference-about-stats dd { font-size: 37px; }
+  .reference-about-actions { gap: 14px; margin-top: 24px; }
+  .reference-about-actions .profile-pill { font-size: 14px; }
+  .about-ring-large { width: 175px; height: 175px; border-width: 18px; right: -35px; top: 30px; }
+  .about-ring-small { width: 105px; height: 105px; bottom: 70px; border-width: 14px; }
+}
+@media (max-width: 650px) {
+  .reference-about { padding-block: 60px 65px; }
+  .reference-about .about-layout { grid-template-columns: minmax(0, 1fr); gap: 37px; }
+  .reference-about-visual { width: min(100% - 28px, 340px); justify-self: center; }
+  .reference-about-copy h2 { font-size: clamp(30px, 8vw, 36px); }
+  .reference-about-description { font-size: 14px; line-height: 1.75; }
+  .reference-about-stats { gap: 12px; margin-top: 29px; }
+  .reference-about-stats dt { font-size: 12px; }
+  .reference-about-stats dd { font-size: 36px; }
+  .reference-about-actions { margin-top: 24px; gap: 14px; }
+  .reference-about-actions .profile-pill { padding-left: 18px; gap: 9px; }
+  .reference-about-socials { gap: 3px; }
+  .reference-about-socials a,.reference-about-socials button { width: 34px; height: 38px; }
+}

@@ -14,6 +14,8 @@ export type Profile = {
   role: string;
   portrait: string;
   heroPortrait: string;
+  aboutPortrait: string;
+  statistics: { projects: string | null; community: string | null; experience: string | null };
   email: string | null;
   available: boolean;
   location: string;
@@ -29,6 +31,9 @@ export const profile: Profile = {
   role: "Desainer Kreatif & Kreator Digital",
   portrait: "/images/alvin-profile.webp",
   heroPortrait: "/images/alvin-hero-framed.webp",
+  aboutPortrait: "/images/alvin-hero-framed.webp",
+  // Isi angka terverifikasi, misalnya "50+". Null menampilkan tanda —.
+  statistics: { projects: null, community: null, experience: null },
   email: null, // Isi alamat email Anda untuk mengaktifkan tautan kontak.
   available: true,
   location: "Indonesia",

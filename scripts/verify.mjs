@@ -41,6 +41,14 @@ try {
   assert.deepEqual(await page.locator(".pill-desktop-nav a").evaluateAll(links => links.map(link => link.getAttribute("href"))), ["#tentang", "#karya", "#pengalaman", "#pencapaian", "#kontak"]);
   assert.equal(await page.locator(".reference-socials a, .reference-socials button").count(), 5);
   assert.equal(await page.locator("#sosial").count(), 0);
+  assert.match(await page.locator("#about-title").innerText(), /Siapa Alvin/);
+  assert.equal(await page.locator(".reference-about-stats dd").count(), 3);
+  assert.deepEqual(await page.locator(".reference-about-stats dd").allTextContents(), ["—", "—", "—"]);
+  assert(await page.locator(".reference-about").evaluate(el => el.previousElementSibling?.classList.contains("tech-stack-section")));
+  assert.match(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundImage), /hero-pattern-continuous\.svg/);
+  for (const selector of [".reference-about", ".experience-section", ".contact-section", ".site-footer"]) {
+    assert.equal(await page.locator(selector).evaluate(el => getComputedStyle(el).backgroundColor), "rgba(0, 0, 0, 0)");
+  }
   const heroStyles = await page.locator(".reference-hero").evaluate(element => ({
     background: getComputedStyle(element).backgroundImage,
     headingFont: getComputedStyle(element.querySelector("h1")).fontFamily,
@@ -93,6 +101,11 @@ try {
 
   await setLanguage("en");
   assert.match(await page.locator("h1").innerText(), /Creative Designer/);
+  assert.match(await page.locator("#about-title").innerText(), /Who is Alvin/);
+  await page.locator(".reference-about-actions .profile-pill").click();
+  await page.getByRole("dialog", { name: "Let's get acquainted" }).waitFor();
+  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
+  await goHome();
   assert.match(await page.locator("#work-title").innerText(), /Ideas made/);
   assert.match(await page.locator(".service-card").first().innerText(), /Graphic Design/);
   await page.reload({ waitUntil: "networkidle" });
@@ -170,6 +183,12 @@ try {
       await delay(600);
       if (width === 1440 || width === 390) await page.screenshot({ path: `artifacts/full-${width}-${locale}.png`, fullPage: true });
       if (width === 390) await page.screenshot({ path: `artifacts/mobile-${locale}.png` });
+      if (width === 1440 || width === 390) {
+        await page.locator(".reference-about").scrollIntoViewIfNeeded();
+        await delay(750);
+        await page.locator(".reference-about").screenshot({ path: `artifacts/about-${width}-${locale}.png`, style: ".reference-header { visibility: hidden; }" });
+        await goHome();
+      }
       console.log(`PASS: ${width}px/${locale}, images, layout${width <= 900 ? ", mobile menu and language switching" : ""}`);
     }
   }

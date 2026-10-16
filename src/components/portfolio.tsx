@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowDownRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Download, Mail, MapPin, PenTool, Plus, Sparkles, Video } from "lucide-react";
+import { ArrowDownRight, ArrowUp, ArrowUpRight, Camera, Check, Code2, Copy, Mail, MapPin, PenTool, Plus, Video } from "lucide-react";
 import { projectCategories, siteSettings } from "@/data/portfolio";
 import { categoryLabel, getLocalizedPortfolio } from "@/data/translations";
 import { Reveal } from "./reveal";
@@ -12,6 +11,7 @@ import { ProjectArt } from "./project-art";
 import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
 import { TechStack } from "./tech-stack";
+import { About } from "./about";
 import { useLanguage } from "./language-provider";
 
 const serviceIcons = { pen: PenTool, video: Video, camera: Camera, code: Code2 };
@@ -63,6 +63,8 @@ export function Portfolio() {
 
         <TechStack />
 
+        <About onContact={() => setContactOpen(true)} />
+
         <section className="section container work-section" id="karya" aria-labelledby="work-title">
           <Reveal>
             <SectionLabel number="01">{copy.workLabel}</SectionLabel>
@@ -85,22 +87,6 @@ export function Portfolio() {
             </AnimatePresence>
           </div>
           {projects.some(project => project.isPlaceholder) && <p className="placeholder-caption"><Plus size={13} />{copy.placeholderCaption}</p>}
-        </section>
-
-        <section className="about-section" id="tentang" aria-labelledby="about-title">
-          <div className="container about-layout">
-            <Reveal className="about-visual">
-              <div className="about-photo"><Image src={profile.portrait} alt={`${copy.portraitAlt} ${profile.name}`} fill sizes="(max-width: 760px) 90vw, 36vw" /><span className="about-photo-label">{copy.photoLabel}</span></div>
-              <div className="about-note"><span className="handwritten">{copy.curiousNote}</span><ArrowUpRight size={30} strokeWidth={1} /></div>
-            </Reveal>
-            <Reveal className="about-copy">
-              <SectionLabel number="02">{copy.aboutLabel}</SectionLabel>
-              <h2 id="about-title">{copy.aboutTitle}<br />{copy.aboutTitleSecond}<br /><span className="accent-word">{copy.aboutTitleAccent}</span></h2>
-              {profile.about.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
-              <div className="about-pills"><span><PenTool size={14} />{copy.designThinker}</span><span><Sparkles size={14} />{copy.curiousCreator}</span></div>
-              <div className="about-actions">{profile.cvUrl ? <a className="button button-outline" href={profile.cvUrl} target="_blank" rel="noreferrer">{copy.viewCv}<Download size={16} /></a> : <button className="button button-outline" onClick={() => setContactOpen(true)}>{copy.getToKnow}<ArrowUpRight size={16} /></button>}<span className="about-signature">{profile.name}<span>.</span></span></div>
-            </Reveal>
-          </div>
         </section>
 
         <section className="section container service-section" id="pencapaian" aria-labelledby="service-title">

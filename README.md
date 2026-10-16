@@ -50,17 +50,18 @@ Konten proyek dan pengalaman saat ini adalah **contoh**, bukan klaim riwayat nya
 - Ubah `projects[].isPlaceholder` menjadi `false` setelah isi proyek asli tersedia untuk menghilangkan catatan konsep sementara.
 - Setiap proyek memiliki satu `category`, misalnya `"Desain Grafis"`, sesuai pilihan di `projectCategories`. Tambahkan kategori pada daftar tersebut jika diperlukan agar filter bekerja dengan tepat.
 - Alamat email, tautan sosial, dan CV belum diisi (`null`). Isi `profile.email`, `profile.socialLinks[].href`, dan `profile.cvUrl` dengan alamat serta URL yang benar. Simpan CV di `public/` jika ingin menggunakan file lokal, misalnya `/cv-alvin.pdf`.
+- Bagian Tentang langsung mengikuti creative tech stack. Foto transparannya memakai `profile.aboutPortrait`; angka pada `profile.statistics.projects`, `community`, dan `experience` menampilkan `—` selama nilainya `null`. Isi dengan angka terverifikasi seperti `"50+"` jika sudah tersedia.
 - Sesuaikan `siteSettings.title`, `siteSettings.description`, dan `siteSettings.year` di file data yang sama. Layout menggunakan pengaturan ini untuk metadata halaman.
 
 Antarmuka menyediakan tab filter proyek, menu responsif, dan dialog HTML native untuk detail proyek serta kontak. Animasi menghormati preferensi pengurangan gerakan perangkat. Kontak belum memiliki backend pengiriman pesan; alamat email masih kosong sampai diisi pada data profil.
 
-Beranda dan navbar dipisahkan ke `src/components/hero.tsx` dan `src/components/site-header.tsx`. Styling keduanya ada di `src/app/reference-home.css`; pola gelombang ringan ada di `public/images/hero-pattern.svg`. Navbar menyediakan home, penanda bagian aktif, hover kuning, serta menu mobile yang menutup lewat Escape, klik di luar, atau pemilihan tautan.
+Beranda, Tentang, dan navbar dipisahkan ke `src/components/hero.tsx`, `src/components/about.tsx`, dan `src/components/site-header.tsx`. Styling ada di `src/app/reference-home.css`; pola gelombang ringan `public/images/hero-pattern.svg` diteruskan hingga kontak dan footer. Navbar menyediakan penanda bagian aktif, hover biru transparan, serta menu mobile yang menutup lewat Escape, klik di luar, atau pemilihan tautan.
 
 ## Bahasa dan foto hero
 
 Tombol globe di navbar mengganti bahasa Indonesia/Inggris tanpa memuat ulang halaman. Pilihan disimpan di localStorage dan atribut `lang` dokumen ikut diperbarui. Default bahasa Indonesia. Terjemahan UI dan konten Inggris ada di `src/data/translations.ts`; data dasar Indonesia tetap di `src/data/portfolio.ts`. `LanguageProvider` mengelola bahasa di seluruh komponen. Nama proyek dan teks ilustrasi konsep dipertahankan sebagai bagian dari karya.
 
-`profile.heroPortrait` memakai cutout transparan `public/images/alvin-hero-cutout.webp`. Aset PNG hasil Imagegen, sumber asli, serta prompt edit dicatat di [docs/hero-image-edit.md](docs/hero-image-edit.md). Foto bagian profil lain memakai `profile.portrait`. Jalankan `node scripts/verify.mjs` untuk memeriksa kedua bahasa, preferensi setelah reload, navigasi, filter, dialog, dan layout empat ukuran layar; Windows memakai Chrome yang terpasang. Di lingkungan lain, set `BROWSER_PATH` ke browser Chromium yang sesuai atau siapkan browser Playwright.
+`profile.heroPortrait` dan `profile.aboutPortrait` memakai `public/images/alvin-hero-framed.webp`, hasil framing foto transparan pengguna `Dokumentasi/Foto Alvin Terbaru.png`. Sumber dan riwayat aset dicatat di [docs/hero-image-edit.md](docs/hero-image-edit.md). Jalankan `node scripts/verify.mjs` untuk memeriksa kedua bahasa, preferensi setelah reload, navigasi, filter, dialog, dan layout empat ukuran layar; Windows memakai Chrome yang terpasang. Di lingkungan lain, set `BROWSER_PATH` ke browser Chromium yang sesuai atau siapkan browser Playwright.
 
 ## Deployment
 
