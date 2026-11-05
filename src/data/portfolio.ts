@@ -1,5 +1,5 @@
-// Nama Alvin disimpulkan dari nama file foto. Profil, biografi, dan layanan
-// masih berupa contoh; sesuaikan seluruh informasi dengan identitas asli Anda.
+// Narasi profil mengikuti CV Putu Alvin Mahendra Putra yang diberikan pengguna.
+// Konten proyek dan layanan yang ditandai sebagai contoh masih perlu disesuaikan.
 // Ubah isPlaceholder menjadi false saat karya asli siap. Isi image dengan
 // path gambar lokal dari public (mis. /images/karya.jpg), atau null untuk kartu konsep.
 export type SocialLink = {
@@ -15,7 +15,7 @@ export type Profile = {
   portrait: string;
   heroPortrait: string;
   aboutPortrait: string;
-  statistics: { projects: string | null; community: string | null; experience: string | null };
+  statistics: { projects: string | null; competitions: string | null; experience: number | null };
   email: string | null;
   available: boolean;
   location: string;
@@ -28,26 +28,25 @@ export type Profile = {
 export const profile: Profile = {
   name: "Alvin",
   initials: "A",
-  role: "Desainer Kreatif & Kreator Digital",
+  role: "Software Engineer & Full Stack Developer",
   portrait: "/images/alvin-profile.webp",
   heroPortrait: "/images/alvin-hero-framed.webp",
-  aboutPortrait: "/images/alvin-hero-framed.webp",
-  // Isi angka terverifikasi, misalnya "50+". Null menampilkan tanda —.
-  statistics: { projects: null, community: null, experience: null },
-  email: null, // Isi alamat email Anda untuk mengaktifkan tautan kontak.
+  aboutPortrait: "/images/alvin-about-seated-v2.webp",
+  // Angka dari pengguna; pengalaman dalam tahun. Null menampilkan tanda —.
+  statistics: { projects: "10+", competitions: "5+", experience: 1.5 },
+  email: "bosalvin360@gmail.com",
   available: true,
   location: "Indonesia",
-  bio: "Mengubah ide menjadi pengalaman visual yang berkesan. Sebuah ruang untuk desain, cerita, dan eksplorasi kreatif.",
+  bio: "Ayo wujudkan idemu menjadi produk web berbasis AI yang membantu bisnis bekerja lebih cerdas.",
   about: [
-    "Halo, saya Alvin. Saya tertarik pada pertemuan antara desain yang terarah, cerita yang kuat, dan pengalaman digital yang menyenangkan.",
-    "Portofolio ini menjadi ruang untuk memperkenalkan pendekatan kreatif saya. Profil, pengalaman, dan koleksi karya dapat disesuaikan seiring perjalanan berikutnya.",
+    "Aku mahasiswa Teknik Informatika Universitas Negeri Malang dengan fokus Software Engineering. Pengalaman teknisku mencakup elisitasi kebutuhan, pengembangan antarmuka dan logika backend, serta integrasi basis data untuk sistem layanan desa, pariwisata, dan operasional usaha. Sebagai asisten praktikum, aku juga mendampingi implementasi rancangan basis data menjadi aplikasi.",
   ],
   socialLinks: [
-    { label: "WhatsApp", href: null, icon: "whatsapp" },
-    { label: "Instagram", href: null, icon: "instagram" },
-    { label: "Email", href: null, icon: "email" },
-    { label: "GitHub", href: null, icon: "github" },
-    { label: "LinkedIn", href: null, icon: "linkedin" },
+    { label: "WhatsApp", href: "https://wa.me/6285337236836", icon: "whatsapp" },
+    { label: "Instagram", href: "https://www.instagram.com/alvinmahendrra/", icon: "instagram" },
+    { label: "Email", href: "mailto:bosalvin360@gmail.com", icon: "email" },
+    { label: "GitHub", href: "https://github.com/alvinputra2005", icon: "github" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/putu-alvin-mahendra-putra/", icon: "linkedin" },
   ],
   cvUrl: null, // Isi path PDF CV, misalnya /documents/cv-alvin.pdf.
 };
@@ -181,39 +180,44 @@ export type Experience = {
 export const experiences: Experience[] = [
   {
     id: "experience-01",
-    period: "Durasi magang",
-    role: "Posisi / peran Anda",
-    company: "Nama perusahaan atau studio",
+    period: "4 bulan",
+    role: "Asisten Praktikum Sistem Informasi",
+    company: "Universitas Negeri Malang",
     description:
-      "Ruang untuk pengalaman magang. Tambahkan tanggung jawab, kontribusi, dan hal yang dipelajari selama bekerja bersama tim.",
-    type: "Magang",
-    logo: null,
-    photos: [null, null, null, null],
-    isPlaceholder: true,
+      "Mendampingi praktikum Sistem Informasi dan membantu mahasiswa mengimplementasikan rancangan basis data menjadi sistem informasi untuk menyelesaikan permasalahan nyata.",
+    type: "Asisten Praktikum Sistem Informasi",
+    logo: "/images/logo-um.webp",
+    photos: [
+      "/images/experience/sistem-informasi/asprak-si-1.jpeg",
+      "/images/experience/sistem-informasi/asprak-si-2.jpeg",
+      "/images/experience/sistem-informasi/asprak-si-3.jpeg",
+      "/images/experience/sistem-informasi/asprak-si-4.jpeg",
+    ],
+    isPlaceholder: false,
   },
   {
     id: "experience-02",
-    period: "Durasi bekerja",
-    role: "Posisi / peran Anda",
-    company: "Nama perusahaan atau studio",
+    period: "4 bulan",
+    role: "Asisten Praktikum Basis Data",
+    company: "Universitas Negeri Malang",
     description:
-      "Ruang untuk pengalaman kerja penuh waktu. Ceritakan peran, proyek yang ditangani, dan hasil yang ingin ditampilkan.",
-    type: "Penuh Waktu",
-    logo: null,
+      "Mendampingi praktikum Basis Data dan membantu mahasiswa memahami materi serta menyelesaikan latihan basis data.",
+    type: "Asisten Praktikum Basis Data",
+    logo: "/images/logo-um.webp",
     photos: [null, null, null, null],
-    isPlaceholder: true,
+    isPlaceholder: false,
   },
   {
     id: "experience-03",
-    period: "Durasi kegiatan",
-    role: "Peran dalam kegiatan",
-    company: "Nama organisasi atau komunitas",
+    period: "4 bulan",
+    role: "Asisten Praktikum Algoritma Pemrograman",
+    company: "Universitas Negeri Malang",
     description:
-      "Ruang untuk pengalaman relawan. Bagikan cerita kegiatan, kontribusi, dan dokumentasi momen bersama komunitas.",
-    type: "Relawan",
-    logo: null,
+      "Mendampingi praktikum Algoritma Pemrograman dan membantu mahasiswa memahami alur logika serta menerapkannya dalam latihan pemrograman.",
+    type: "Asisten Praktikum Algoritma Pemrograman",
+    logo: "/images/logo-um.webp",
     photos: [null, null, null, null],
-    isPlaceholder: true,
+    isPlaceholder: false,
   },
 ];
 
@@ -244,7 +248,7 @@ export const achievements: Achievement[] = [
     year: "Tahun pencatatan",
     role: "Nomor pencatatan / peran Anda",
     description: "Ruang untuk karya yang telah tercatat hak ciptanya. Tambahkan nama karya, nomor pencatatan, peran Anda, dan dokumentasi pendukung.",
-    logo: null,
+    logo: "/images/logo-aptikom-fest.png",
     photos: [null, null, null, null],
     isPlaceholder: true,
   },
@@ -255,7 +259,7 @@ export const achievements: Achievement[] = [
     year: "Tahun perolehan",
     role: "Bidang / tingkat kompetensi Anda",
     description: "Ruang untuk kompetensi dan sertifikasi. Bagikan keahlian yang dikuasai, proses pengembangan, dan dokumentasi pendukung.",
-    logo: null,
+    logo: "/images/logo-garuda-hacks-7.png",
     photos: [null, null, null, null],
     isPlaceholder: true,
   },
@@ -266,7 +270,7 @@ export const achievements: Achievement[] = [
     year: "Tahun kegiatan",
     role: "Peran / kontribusi Anda",
     description: "Ruang untuk pencapaian organisasi. Ceritakan kontribusi, tanggung jawab, dan dampak yang dihasilkan bersama tim.",
-    logo: null,
+    logo: "/images/logo-uthm.png",
     photos: [null, null, null, null],
     isPlaceholder: true,
   },
@@ -323,7 +327,7 @@ export const softwareProjects: SoftwareProject[] = [
     year: "Tahun pengembangan",
     role: "Peran Anda dalam proyek",
     description: "Ruang untuk proyek Software as a Service. Ceritakan kebutuhan pengguna, fitur utama, teknologi yang digunakan, dan kontribusi Anda dalam pengembangan aplikasi.",
-    logo: null,
+    logo: "/images/logo-nolla.jpg",
     photos: [null, null, null, null],
     isPlaceholder: true,
   },
@@ -334,7 +338,7 @@ export const softwareProjects: SoftwareProject[] = [
     year: "Tahun pengembangan",
     role: "Peran Anda dalam proyek",
     description: "Ruang untuk proyek Supply Chain Management. Bagikan solusi pengelolaan rantai pasok, alur persediaan atau distribusi, dan kontribusi Anda dalam pengembangan sistem.",
-    logo: null,
+    logo: "/images/logo-waspadai-v2.png",
     photos: [null, null, null, null],
     isPlaceholder: true,
   },
@@ -345,7 +349,7 @@ export const softwareProjects: SoftwareProject[] = [
     year: "Tahun pengembangan",
     role: "Peran Anda dalam proyek",
     description: "Ruang untuk proyek Enterprise Resource Planning. Ceritakan integrasi proses bisnis, modul yang dikembangkan, dan kontribusi Anda dalam membangun sistem.",
-    logo: null,
+    logo: "/images/logo-sukomulyo-v2.png",
     photos: [null, null, null, null],
     isPlaceholder: true,
   },
@@ -408,8 +412,8 @@ export const navigation = [
 ];
 
 export const siteSettings = {
-  title: "Alvin — Creative Designer & Digital Creator",
+  title: "Alvin — Software Engineer & Full Stack Developer",
   description:
-    "Portofolio kreatif Alvin: desain grafis, video, fotografi, dan pengalaman digital. Jelajahi konsep karya dan kenali pendekatan kreatifnya.",
+    "Portofolio Putu Alvin Mahendra Putra, mahasiswa Teknik Informatika Universitas Negeri Malang dengan fokus pengembangan web serta minat pada intelligent systems dan solusi B2B.",
   year: 2026,
 };

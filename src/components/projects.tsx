@@ -16,13 +16,12 @@ export function Projects() {
       <Reveal><h2 className="reference-experience-title" id="projects-title"><mark>{copy.projectsTitle}</mark></h2></Reveal>
       <div className="reference-experience-grid">
         {softwareProjects.map((project, index) => <Reveal key={project.id} delay={index * .08} className="reference-experience-column">
-          <article className="project-showcase-card" aria-labelledby={`${project.id}-category`}>
-            <h3 className="reference-experience-type" id={`${project.id}-category`}><span>{project.category}</span></h3>
+          <article className="project-showcase-card" aria-labelledby={`${project.id}-title`}>
             <div className="reference-experience-meta">
               <div className={`reference-experience-logo${project.logo ? " has-image" : ""}`}>
                 {project.logo ? <Image src={project.logo} alt={project.title} width={50} height={50} /> : <><Monitor size={24} strokeWidth={1.4} aria-hidden="true" /><span>{copy.experienceLogo}</span></>}
               </div>
-              <div><h4 className="reference-experience-company">{project.title}</h4><p className="reference-experience-period">{project.year} <span aria-hidden="true">·</span> {project.role}</p></div>
+              <div><h3 className="reference-experience-company" id={`${project.id}-title`}>{project.title}</h3><p className="reference-experience-period">{project.year} <span aria-hidden="true">·</span> {project.role}</p></div>
             </div>
             <DocumentationGallery photos={project.photos} label={`${copy.projectsGallery}: ${project.category}`} photoLabel={`${copy.experiencePhoto} ${project.title}`} placeholder={copy.experiencePhotoComing} />
             <p className="reference-experience-description">{project.description}</p>

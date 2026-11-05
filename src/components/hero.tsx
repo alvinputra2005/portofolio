@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { Github, Instagram, Linkedin, Mail, MessageCircleMore, Play } from "lucide-react";
+import { ArrowUpRight, Github, Instagram, Linkedin, Mail, MessageCircleMore } from "lucide-react";
 import { getLocalizedPortfolio } from "@/data/translations";
 import { Reveal } from "./reveal";
 import { useLanguage } from "./language-provider";
+import { PortraitMotion } from "./portrait-motion";
 
 const heroSocialIcons = {
   whatsapp: MessageCircleMore,
@@ -37,12 +37,14 @@ export function Hero({ onContact }: { onContact: () => void }) {
               })}
             </div>
           </Reveal>
-          <Reveal delay={0.19}><div className="reference-biography"><p>{profile.bio}</p><p>{profile.about[0]}</p></div></Reveal>
-          <Reveal delay={0.25} className="reference-hero-actions"><a className="profile-pill" href="#tentang">{copy.viewProfile}<span className="profile-play"><Play size={18} fill="currentColor" strokeWidth={0} /></span></a><button className="hire-pill" onClick={onContact}>{copy.hire}</button></Reveal>
+          <Reveal delay={0.19}><div className="reference-biography"><p>{profile.bio}</p></div></Reveal>
+          <Reveal delay={0.25} className="reference-hero-actions">
+            <button className="profile-pill" type="button" onClick={onContact}>{copy.contactMe}<span className="profile-play"><ArrowUpRight size={20} aria-hidden="true" /></span></button>
+            <a className="hire-pill" href="#proyek">{copy.viewProjects}</a>
+          </Reveal>
         </div>
         <Reveal className="reference-hero-portrait" delay={0.16}>
-          <div className="reference-portrait-backdrop" aria-hidden="true"><span className="portrait-ring ring-top" /><span className="portrait-ring ring-bottom" /></div>
-          <div className="reference-profile-photo"><Image src={profile.heroPortrait} alt={`${copy.portraitAlt} ${profile.name}`} fill priority sizes="(max-width: 900px) 80vw, 470px" /></div>
+          <PortraitMotion src={profile.heroPortrait} alt={`${copy.portraitAlt} ${profile.name}`} />
         </Reveal>
       </div>
     </section>

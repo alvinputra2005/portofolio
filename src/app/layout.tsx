@@ -5,10 +5,12 @@ import "@fontsource/poppins/latin-400.css";
 import "@fontsource/poppins/latin-500.css";
 import "@fontsource/poppins/latin-600.css";
 import "@fontsource/poppins/latin-700.css";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import "./reference-home.css";
 import { siteSettings } from "@/data/portfolio";
 import { LanguageProvider } from "@/components/language-provider";
+import { SmoothScroll } from "@/components/smooth-scroll";
 
 export const metadata: Metadata = {
   title: siteSettings.title,
@@ -27,5 +29,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#ffffff", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="id"><body><LanguageProvider>{children}</LanguageProvider></body></html>;
+  return <html lang="id"><body><SmoothScroll /><LanguageProvider>{children}</LanguageProvider></body></html>;
 }

@@ -93,17 +93,11 @@ export function Credentials() {
           </div>
           <p className="credential-counter" role="status">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}<span className="sr-only"> — {active.title}</span></p>
         </div>
-        <div className="credential-caption">
-          <span className="credential-kind">{category(active.kind)}</span>
-          <h3>{active.title}</h3><p className="credential-caption-meta">{active.issuer} <span aria-hidden="true">·</span> {active.year}</p>
-          <p>{active.description}</p>
-        </div>
         <Dialog open={detailOpen} onClose={() => setDetailOpen(false)} title={active.title} className="credential-dialog">
           <div className="credential-detail-image">{active.photo ? <Image src={active.photo} alt={active.title} fill sizes="90vw" /> : <div className="credential-detail-placeholder"><ImagePlus size={48} strokeWidth={1.2} aria-hidden="true" /><span>{copy.credentialDocumentComing}</span></div>}</div>
           <div className="credential-detail-copy"><span className="credential-kind">{category(active.kind)}</span><h2>{active.title}</h2><p>{active.issuer} · {active.year}</p><p>{active.description}</p></div>
         </Dialog>
       </>}
-      {credentials.some(credential => credential.isPlaceholder) && <p className="reference-experience-note">{copy.credentialsComing}</p>}
     </div>
   </section>;
 }

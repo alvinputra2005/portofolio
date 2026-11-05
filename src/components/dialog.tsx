@@ -30,6 +30,7 @@ export function Dialog({ open, onClose, title, children, className = "" }: {
 
   return (
     <dialog
+      data-lenis-prevent
       ref={ref}
       className={`portfolio-dialog ${className}`}
       aria-label={title}

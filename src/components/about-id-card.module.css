@@ -1,0 +1,98 @@
+.stage {
+  position: relative;
+  container-type: inline-size;
+  isolation: isolate;
+  justify-self: center;
+  width: 100%;
+  max-width: 450px;
+  height: 590px;
+  margin: 0;
+}
+
+.halo {
+  position: absolute;
+  inset: 80px -15px 55px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(56 180 255 / 12%), rgb(56 180 255 / 3%) 55%, transparent 72%);
+  pointer-events: none;
+}
+
+.scene { position: absolute; inset: 0; }
+.lanyard { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+.anchor { position: absolute; left: 50%; top: -7px; width: 84px; height: 14px; transform: translateX(-50%); border-radius: 999px; background: linear-gradient(#fff, #e7edf2); box-shadow: 0 2px 5px #003b5d12, inset 0 0 0 1px #dce5ea; }
+.anchor > span { display: block; width: 57px; height: 4px; margin: 5px auto; border-radius: 8px; background: #005a91; }
+
+.card {
+  position: absolute;
+  top: 116px;
+  left: 13%;
+  width: 74%;
+  max-width: 286px;
+  aspect-ratio: .715;
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 25px 45px -17px rgb(0 57 88 / 30%), 0 3px 6px rgb(0 57 88 / 12%);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Keep the mount centered even when the card reaches its maximum width. */
+@media (min-width: 651px) {
+  .card { left: max(13%, calc(50% - 143px)); }
+}
+
+.card:active,.card[data-dragging="true"] { cursor: grabbing; }
+.card:focus-visible { outline: 3px solid #1687ce; outline-offset: 7px; }
+.clip { position: absolute; z-index: 3; left: calc(50% - 13px); top: -34px; width: 26px; height: 50px; border: 1px solid #9aabb6; border-radius: 8px 8px 5px 5px; background: linear-gradient(100deg, #a4b5c0, #f8fcff 28%, #d4dfe5 44%, #fff 57%, #a3b5c1); box-shadow: 1px 3px 4px #002f4c25; }
+.clip::before { content: ""; position: absolute; inset: 7px 5px 13px; border: 2px solid #8c9fab; border-radius: 5px; background: linear-gradient(#d1dfe7, #f6fbff); box-shadow: inset 1px 1px 2px #003b5d35; }
+.clip > span { position: absolute; bottom: 5px; left: 6px; width: 12px; height: 4px; border-radius: 2px; background: #8a9da9; }
+.face { position: absolute; inset: 0; overflow: hidden; contain: paint; isolation: isolate; border: 4px solid #fff; border-radius: inherit; background: #005a91; box-shadow: inset 0 0 0 1px #ffffff70; }
+.face::after { content: ""; position: absolute; z-index: 4; top: 8px; left: calc(50% - 17px); width: 34px; height: 6px; border-radius: 5px; background: #003c5e; box-shadow: inset 0 2px 2px #00243e80, 0 1px 0 #ffffff80; }
+.artwork { object-fit: cover; pointer-events: none; }
+.topline { position: absolute; z-index: 2; top: clamp(16px, 5.2cqw, 22px); left: 17px; right: 17px; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; }
+.wordmark { font-family: "Montserrat Variable", sans-serif; font-size: clamp(15px, 4.9cqw, 20px); font-weight: 750; letter-spacing: -1.4px; }
+.wordmark > span { color: #ffe000; }
+.topline > span:last-child { font-size: 7px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase; }
+.portrait { position: absolute; top: clamp(40px, 14.2cqw, 60px); left: 0; right: 0; height: 50%; overflow: hidden; mask-image: linear-gradient(#000 85%, transparent); }
+.portrait img { object-fit: cover; object-position: 56% top; transform: scale(1.15); transform-origin: 56% top; filter: brightness(1.08) saturate(.88) hue-rotate(-5deg) drop-shadow(0 6px 7px #00324b33); pointer-events: none; }
+.details { position: absolute; z-index: 2; inset: 65% clamp(12px, 4.3cqw, 18px) clamp(8px, 3.5cqw, 16px); display: flex; flex-direction: column; align-items: flex-start; color: #003b5d; }
+.name { font-family: "Montserrat Variable", sans-serif; font-size: clamp(13px, 5.95cqw, 23px); font-weight: 750; letter-spacing: -.5px; line-height: 1.16; }
+.name > span,.role > span { display: block; }
+.role { margin-top: clamp(4px, 2cqw, 8px); font-size: clamp(6px, 2.4cqw, 9px); font-weight: 500; line-height: 1.6; color: #4b7185; }
+.university { display: flex; align-items: center; gap: clamp(4px, 1.7cqw, 7px); margin-top: auto; padding-top: clamp(4px, 2cqw, 10px); width: 100%; border-top: 1px solid #005a9118; font-size: clamp(5px, 1.8cqw, 7px); font-weight: 500; white-space: nowrap; color: #486c80; }
+.university img { object-fit: contain; width: clamp(14px, 5.3cqw, 21px); height: auto; aspect-ratio: 1; pointer-events: none; }
+.sheen { position: absolute; z-index: 3; inset: 0; border-radius: inherit; background: linear-gradient(115deg, rgb(255 255 255 / 10%), transparent 40%, rgb(255 255 255 / 5%) 48%, transparent 52%); pointer-events: none; }
+.hint { position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: #59778a; font-size: 11px; line-height: 1.6; }
+.hint svg { color: #0084c5; flex-shrink: 0; }
+
+@media (max-width: 1000px) and (min-width: 651px) {
+  .stage { height: 540px; }
+}
+
+@media (max-width: 900px) {
+  .stage { max-width: 360px; height: 555px; }
+  .card { left: max(13%, calc(50% - 143px)); }
+}
+
+@media (max-width: 650px) {
+  .hint { font-size: 10px; }
+}
+
+@media (max-width: 360px) {
+  .stage { height: 490px; }
+  .topline { inset-inline: 12px; }
+  .topline > span:last-child { font-size: 6px; letter-spacing: 1px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { box-shadow: 0 12px 28px -12px rgb(0 57 88 / 25%); }
+}

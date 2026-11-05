@@ -5,6 +5,7 @@ import { BrainCircuit, Code2, Server } from "lucide-react";
 import { skillGroups } from "@/data/portfolio";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
+import { TechStack } from "./tech-stack";
 
 function duration(months: number, locale: "id" | "en") {
   const years = Math.floor(months / 12);
@@ -23,6 +24,7 @@ export function SkillExperience() {
   return <section className="reference-experience skill-experience-section" id="tech-stack" aria-labelledby="skills-title">
     <div className="container skills-layout">
       <Reveal><h2 className="reference-experience-title" id="skills-title"><mark>{copy.skillsTitle}</mark></h2></Reveal>
+      <TechStack />
       <div className="reference-experience-grid skill-experience-grid">
         {skillGroups.map((group, index) => {
           const Icon = icons[group.id];

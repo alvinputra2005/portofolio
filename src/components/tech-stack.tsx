@@ -15,6 +15,7 @@ const dataAndTools = [
   ["Google Colab", "googlecolab"], ["Figma", "figma"], ["Canva", "canva"],
 ] as const;
 type StackItems = readonly (readonly [string, string])[];
+const allStack = [...webStack, ...dataAndTools];
 
 function StackRow({ items, label }: { items: StackItems; label: string }) {
   const viewport = useRef<HTMLDivElement>(null);
@@ -49,16 +50,9 @@ function StackRow({ items, label }: { items: StackItems; label: string }) {
 
 export function TechStack() {
   const { locale } = useLanguage();
-  const indonesian = locale === "id";
-  return <section className="discipline-strip tech-stack-section" aria-labelledby="tech-stack-title">
-    <div className="container">
-      <div className="tech-stack-heading">
-        <h2 id="tech-stack-title">Creative tech stack<span>.</span></h2>
-      </div>
-      <div className="tech-stack-lanes">
-        <StackRow items={webStack} label={indonesian ? "Pengembangan web" : "Web development"} />
-        <StackRow items={dataAndTools} label={indonesian ? "Data science dan tools kreatif" : "Data science and creative tools"} />
-      </div>
+  return <div className="tech-stack-section" role="group" aria-label="Creative tech stack">
+    <div className="tech-stack-lanes">
+      <StackRow items={allStack} label={locale === "id" ? "Teknologi dan alat yang digunakan" : "Technologies and tools used"} />
     </div>
-  </section>;
+  </div>;
 }

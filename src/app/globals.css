@@ -10,6 +10,7 @@
 :root { --blue: #005a91; --blue-bright: #1687ce; --ink: #18171e; --muted: #747985; --line: #e7e9ed; --surface: #f7f9fc; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+html.lenis { scroll-behavior: auto !important; }
 body { margin: 0; background: #fff; color: var(--ink); font-family: "Poppins", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 button, input, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }

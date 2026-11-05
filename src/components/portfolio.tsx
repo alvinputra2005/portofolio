@@ -2,14 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { MotionConfig } from "motion/react";
-import { ArrowUp, ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
-import { siteSettings } from "@/data/portfolio";
+import { ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
 import { getLocalizedPortfolio } from "@/data/translations";
-import { Reveal } from "./reveal";
 import { Dialog } from "./dialog";
 import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
-import { TechStack } from "./tech-stack";
 import { About } from "./about";
 import { Experience } from "./experience";
 import { Projects } from "./projects";
@@ -26,11 +23,19 @@ export function Portfolio() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    const footerVisible = () => window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+    const updateFooter = () => {
+      if (footerVisible()) setActiveSection("#kontak");
+      else setActiveSection(current => current === "#kontak" ? "#tech-stack" : current);
+    };
     const observer = new IntersectionObserver(entries => {
+      if (footerVisible()) { setActiveSection("#kontak"); return; }
       for (const entry of entries) if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
     }, { rootMargin: "-20% 0px -55% 0px", threshold: 0 });
     document.querySelectorAll("main > section[id]").forEach(section => observer.observe(section));
-    return () => observer.disconnect();
+    updateFooter();
+    window.addEventListener("scroll", updateFooter, { passive: true });
+    return () => { observer.disconnect(); window.removeEventListener("scroll", updateFooter); };
   }, []);
 
   useEffect(() => { document.title = `${profile.name} — ${profile.role}`; }, [profile.name, profile.role]);
@@ -54,9 +59,7 @@ export function Portfolio() {
       <main id="main">
         <Hero onContact={() => setContactOpen(true)} />
 
-        <TechStack />
-
-        <About onContact={() => setContactOpen(true)} />
+        <About />
 
         <Experience />
 
@@ -68,16 +71,15 @@ export function Portfolio() {
 
         <SkillExperience />
 
-        <section className="contact-section" id="kontak" aria-labelledby="contact-title">
-          <div className="container"><Reveal>
-            <div className="contact-top"><span className="contact-eyebrow"><span className="status-dot" />{copy.contactEyebrow}</span><span>{copy.contactIdea}</span></div>
-            <div className="contact-main"><h2 id="contact-title">{copy.contactFirst}<br />{copy.contactSecond} <span>{copy.contactAccent}</span></h2><button className="contact-orb" aria-label={copy.openContact} onClick={() => setContactOpen(true)}><ArrowUpRight size={56} strokeWidth={1.2} /></button></div>
-            <div className="contact-bottom"><p>{copy.contactIntro}<br />{copy.contactIntroSecond}</p><button className="contact-link" onClick={() => setContactOpen(true)}>{copy.startConversation}<ArrowUpRight size={18} /></button></div>
-          </Reveal></div>
-        </section>
       </main>
 
-      <footer className="site-footer container"><a className="wordmark" href="#beranda">{profile.name.toLowerCase()}<span>.</span></a><p>© {siteSettings.year} {profile.name}. {copy.footer}</p><a className="back-top" href="#beranda">{copy.backTop}<ArrowUp size={15} /></a></footer>
+      <footer className="site-footer" id="kontak" aria-labelledby="contact-title">
+        <div className="container footer-inner">
+          <div className="footer-main">
+            <div><h2 id="contact-title">{copy.footerInviteTitle}</h2><p>{copy.footerInviteDescription}<span className="footer-invite-note">{copy.footerInviteNote}</span></p></div>
+          </div>
+        </div>
+      </footer>
 
       <Dialog open={contactOpen} onClose={() => { setContactOpen(false); setCopied(false); }} title={copy.contactTitle} className="contact-dialog">
         <div className="dialog-content">

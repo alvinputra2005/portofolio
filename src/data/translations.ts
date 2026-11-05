@@ -4,11 +4,16 @@ export type Locale = "id" | "en";
 
 export const messages = {
   id: {
+    idCardFigure: "Kartu profil interaktif Alvin", idCardLabel: "Kartu profil Putu Alvin Mahendra Putra, bisa ditarik", idCardTag: "Portofolio", idCardHint: "Tarik kartunya, lalu lepaskan", idCardKeyboard: "Gunakan tombol panah untuk menggerakkan kartu, Enter atau Spasi untuk mengayunkan, dan Escape untuk mengembalikan posisi.",
+    viewProjects: "Lihat Proyek",
+    downloadCv: "Unduh CV",
+    footerInviteTitle: "Mari Bekerja Sama", footerInviteDescription: "Punya ide proyek? Sedang mencari pengembang web freelance?", footerInviteNote: "Aku siap membantu, cukup kirimkan pesan.",
+    contactMe: "Hubungi Aku", accessCv: "Akses CV", cvComing: "CV segera tersedia", cvComingDescription: "CV belum ditambahkan. Silakan kembali lagi untuk melihat versi terbaru.",
     home: "Kembali ke beranda", mainNav: "Navigasi utama", mobileNav: "Navigasi mobile", openMenu: "Buka menu", closeMenu: "Tutup menu", switchLanguage: "Ganti bahasa ke Inggris", skip: "Langsung ke konten", closeDialog: "Tutup dialog",
     hello: "Halo, aku", viewProfile: "Lihat Profilku", hire: "Hubungi Aku", portraitAlt: "Foto profil", all: "Semua", disciplines: "Bidang kreatif",
     workLabel: "KARYA PILIHAN", workTitle: "Ide yang menjadi", workTitleMuted: "karya bermakna.", workIntro: "Ruang untuk ide, eksplorasi, dan karya.", workIntroSecond: "Setiap detail punya ceritanya sendiri.", filterLabel: "Filter kategori karya", explorations: "EKSPLORASI", viewProject: "Lihat detail", placeholderCaption: "Pilihan konsep sementara. Karya asli akan hadir di sini.",
     aboutLabel: "SEKILAS TENTANG AKU", aboutTitle: "Seorang pribadi.", aboutTitleSecond: "Sudut pandang.", aboutTitleAccent: "Sedikit berbeda.", photoLabel: "SOSOK DI BALIK KARYA", curiousNote: "Selalu ingin tahu.", designThinker: "Pemikir desain", curiousCreator: "Kreator penuh rasa ingin tahu", viewCv: "Lihat CV", getToKnow: "Kenalan lebih jauh",
-    aboutBadge: "Tentang Aku", aboutQuestion: "Siapa", aboutSocial: "Profil Media Sosial", aboutStatsLabel: "Perjalanan dalam angka", aboutStatsComing: "Statistik akan segera diperbarui.", aboutProjects: "Proyek", aboutProjectsSecond: "selesai", aboutCommunity: "Komunitas", aboutCommunitySecond: "di media sosial", aboutExperience: "Tahun", aboutExperienceSecond: "pengalaman",
+    aboutBadge: "Tentang Aku", aboutQuestion: "Siapa", aboutSocial: "Profil Media Sosial", aboutStatsLabel: "Perjalanan dalam angka", aboutStatsComing: "Statistik akan segera diperbarui.", aboutProjects: "Proyek", aboutProjectsSecond: "selesai", aboutCompetitions: "Kompetisi", aboutCompetitionsSecond: "diikuti", aboutExperience: "Tahun", aboutExperienceSecond: "pengalaman",
     servicesLabel: "PENCAPAIAN & KEAHLIAN", servicesTitle: "Beragam keahlian.", servicesTitleMuted: "Satu arah kreatif.", servicesIntro: "Dari ide pertama sampai sentuhan akhir.", servicesIntroSecond: "Mari buat sesuatu yang berarti.", ideaToExpression: "DARI IDE MENJADI KARYA",
     journeyLabel: "PERJALANAN KREATIF", journeyFirst: "Belajar.", journeySecond: "Berkarya.", journeyThird: "Bertumbuh.", journeyIntro: "Setiap kesempatan menjadi ruang", journeyIntroSecond: "untuk belajar dan berkembang.", experiencePlaceholder: "Ruang untuk perjalanan dan pengalamanmu.",
     experienceTitle: "Pengalaman", experiencePhoto: "Dokumentasi", experiencePhotoComing: "Foto segera hadir", experienceLogo: "Logo", experienceGallery: "Galeri pengalaman", experienceDetailsComing: "Dokumentasi dan detail pengalaman akan ditambahkan.",
@@ -23,11 +28,16 @@ export const messages = {
     projectDetails: "Detail proyek", projectNote: "Ini adalah kartu konsep sementara. Visual dan cerita proyek asli akan ditambahkan di sini.", discussProject: "Diskusikan ide serupa", sayHello: "SAPA AKU", contactTitle: "Mari berkenalan", contactDialogIntro: "Kolaborasi yang baik dimulai dari percakapan yang sederhana.", sendEmail: "Kirim email", copyEmail: "Salin email", copied: "Tersalin", copiedAnnouncement: "Alamat email berhasil disalin.", contactComing: "Kontak segera tersedia", contactComingDescription: "Alamat email dan profil sosial akan ditambahkan. Sampai jumpa di percakapan berikutnya!", intention: "BERKARYA DENGAN TUJUAN.", artExploration: "EKSPLORASI KREATIF", artPlaceholder: "KONSEP SEMENTARA",
   },
   en: {
+    idCardFigure: "Alvin's interactive profile card", idCardLabel: "Draggable profile card of Putu Alvin Mahendra Putra", idCardTag: "Portfolio", idCardHint: "Give it a pull, then let go", idCardKeyboard: "Use arrow keys to move the card, Enter or Space to swing it, and Escape to reset its position.",
+    viewProjects: "View Projects",
+    downloadCv: "Download CV",
+    footerInviteTitle: "Let's Work Together", footerInviteDescription: "Have a project in mind? Looking for a freelance web developer?", footerInviteNote: "I'm just a message away.",
+    contactMe: "Contact Me", accessCv: "Access CV", cvComing: "CV coming soon", cvComingDescription: "The CV has not been added yet. Please check back for the latest version.",
     home: "Back to home", mainNav: "Main navigation", mobileNav: "Mobile navigation", openMenu: "Open menu", closeMenu: "Close menu", switchLanguage: "Switch to Indonesian", skip: "Skip to content", closeDialog: "Close dialog",
     hello: "Hi, I'm", viewProfile: "See My Profile", hire: "Hire Me", portraitAlt: "Portrait of", all: "All", disciplines: "Creative disciplines",
     workLabel: "SELECTED WORK", workTitle: "Ideas made", workTitleMuted: "into something.", workIntro: "A space for ideas, exploration, and creativity.", workIntroSecond: "Every detail has a story to tell.", filterLabel: "Filter projects by category", explorations: "EXPLORATIONS", viewProject: "View details", placeholderCaption: "Concept placeholders for now. Original work is coming soon.",
     aboutLabel: "A LITTLE ABOUT ME", aboutTitle: "A person.", aboutTitleSecond: "A perspective.", aboutTitleAccent: "A little different.", photoLabel: "THE PERSON BEHIND THE WORK", curiousNote: "Always curious.", designThinker: "Design thinker", curiousCreator: "Curious creator", viewCv: "View CV", getToKnow: "Get to know me",
-    aboutBadge: "About Me", aboutQuestion: "Who is", aboutSocial: "Social Profiles", aboutStatsLabel: "The journey in numbers", aboutStatsComing: "Statistics will be updated soon.", aboutProjects: "Projects", aboutProjectsSecond: "completed", aboutCommunity: "Community", aboutCommunitySecond: "on social media", aboutExperience: "Years of", aboutExperienceSecond: "experience",
+    aboutBadge: "About Me", aboutQuestion: "Who is", aboutSocial: "Social Profiles", aboutStatsLabel: "The journey in numbers", aboutStatsComing: "Statistics will be updated soon.", aboutProjects: "Projects", aboutProjectsSecond: "completed", aboutCompetitions: "Competitions", aboutCompetitionsSecond: "entered", aboutExperience: "Years of", aboutExperienceSecond: "experience",
     servicesLabel: "ACHIEVEMENTS & SKILLS", servicesTitle: "Different skills.", servicesTitleMuted: "One creative direction.", servicesIntro: "From the first idea to the finishing touches.", servicesIntroSecond: "Let's make something meaningful.", ideaToExpression: "IDEA TO EXPRESSION",
     journeyLabel: "THE JOURNEY", journeyFirst: "Learning.", journeySecond: "Making.", journeyThird: "Growing.", journeyIntro: "Every opportunity is a space", journeyIntroSecond: "to learn and grow.", experiencePlaceholder: "A space for your journey and experience.",
     experienceTitle: "Experience", experiencePhoto: "Documentation", experiencePhotoComing: "Photo coming soon", experienceLogo: "Logo", experienceGallery: "Experience gallery", experienceDetailsComing: "Experience details and original photos will be added soon.",
@@ -70,9 +80,9 @@ const englishServices = [
 ];
 
 const englishExperiences = [
-  { period: "Internship duration", role: "Your position / role", company: "Company or studio name", description: "A space for your internship experience. Add your responsibilities, contributions, and what you learned while working with the team.", type: "Internship" },
-  { period: "Employment duration", role: "Your position / role", company: "Company or studio name", description: "A space for your full-time experience. Describe your role, the projects you worked on, and the outcomes you would like to share.", type: "Full Time" },
-  { period: "Activity duration", role: "Your role in the activity", company: "Organization or community name", description: "A space for your volunteering experience. Share the activities, your contributions, and memorable moments with the community.", type: "Volunteer" },
+  { period: "4 months", role: "Information Systems Teaching Assistant", company: "Universitas Negeri Malang", description: "Assisting with Information Systems practical classes and helping students implement database designs as information systems that address real problems.", type: "Information Systems Teaching Assistant" },
+  { period: "4 months", role: "Database Teaching Assistant", company: "Universitas Negeri Malang", description: "Assisting with Database practical classes and helping students understand the material and complete database exercises.", type: "Database Teaching Assistant" },
+  { period: "4 months", role: "Programming Algorithms Teaching Assistant", company: "Universitas Negeri Malang", description: "Assisting with Programming Algorithms practical classes and helping students understand program logic and apply it in programming exercises.", type: "Programming Algorithms Teaching Assistant" },
 ];
 
 const englishAchievements = [
@@ -96,11 +106,10 @@ export function getLocalizedPortfolio(locale: Locale) {
   return {
     profile: locale === "id" ? profile : {
       ...profile,
-      role: "Creative Designer & Digital Creator",
-      bio: "Turning ideas into memorable visual experiences. A space for design, stories, and creative exploration.",
+      role: "Software Engineer & Full Stack Developer",
+      bio: "Let’s turn your idea into an AI-powered web product that helps businesses work smarter, from simplifying operations to turning data into insights that support decision-making.",
       about: [
-        `Hi, I'm ${profile.name}. I'm interested in the intersection of purposeful design, strong stories, and delightful digital experiences.`,
-        "This portfolio is a space to introduce my creative approach. My profile, experience, and collection of work will grow along the journey.",
+        "I’m an Informatics Engineering student at Universitas Negeri Malang focused on Software Engineering. My technical experience covers requirements elicitation, interface and backend logic development, and database integration for village services, tourism, and business operations. As a teaching assistant, I also guide students in implementing database designs as working applications.",
       ],
     },
     projects: locale === "id" ? projects : projects.map(project => ({ ...project, description: englishDescriptions[project.id] ?? project.description })),

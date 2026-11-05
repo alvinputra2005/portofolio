@@ -1,34 +1,30 @@
 "use client";
 
-import Image from "next/image";
-import { Instagram, Linkedin, Play } from "lucide-react";
+import { useState } from "react";
+import { Download, FileText } from "lucide-react";
 import { getLocalizedPortfolio } from "@/data/translations";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
+import { Dialog } from "./dialog";
+import { AboutIdCard } from "./about-id-card";
 
-export function About({ onContact }: { onContact: () => void }) {
+export function About() {
   const { locale, copy } = useLanguage();
   const { profile } = getLocalizedPortfolio(locale);
+  const [cvOpen, setCvOpen] = useState(false);
   const metrics = [
     { value: profile.statistics.projects, label: copy.aboutProjects, second: copy.aboutProjectsSecond },
-    { value: profile.statistics.community, label: copy.aboutCommunity, second: copy.aboutCommunitySecond },
-    { value: profile.statistics.experience, label: copy.aboutExperience, second: copy.aboutExperienceSecond },
+    { value: profile.statistics.competitions, label: copy.aboutCompetitions, second: copy.aboutCompetitionsSecond },
+    { value: profile.statistics.experience === null ? null : new Intl.NumberFormat(locale).format(profile.statistics.experience), label: copy.aboutExperience, second: copy.aboutExperienceSecond },
   ];
-  const socials = profile.socialLinks.filter(social => social.icon === "instagram" || social.icon === "linkedin");
 
   return <section className="reference-about" id="tentang" aria-labelledby="about-title">
     <div className="container about-layout">
-      <Reveal className="reference-about-visual">
-        <div className="reference-about-card">
-          <span className="reference-about-ring about-ring-large" aria-hidden="true" />
-          <span className="reference-about-ring about-ring-small" aria-hidden="true" />
-          <Image src={profile.aboutPortrait} alt={`${copy.portraitAlt} ${profile.name}`} fill sizes="(max-width: 650px) 85vw, (max-width: 900px) 40vw, 420px" />
-        </div>
-      </Reveal>
+      <AboutIdCard src={profile.aboutPortrait} alt={`${copy.portraitAlt} ${profile.name}`} />
       <Reveal delay={.1} className="reference-about-copy">
         <p className="reference-about-badge"><mark>{copy.aboutBadge}</mark></p>
         <h2 id="about-title">{copy.aboutQuestion} {profile.name}?</h2>
-        <div className="reference-about-description"><p>{profile.about[0]}</p><p>{profile.bio}</p></div>
+        <div className="reference-about-description">{profile.about.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>
         <dl className="reference-about-stats" aria-label={copy.aboutStatsLabel}>
           {metrics.map(metric => <div key={metric.label}>
             <dt>{metric.label}<br />{metric.second}</dt><dd>{metric.value ?? "—"}</dd>
@@ -36,17 +32,14 @@ export function About({ onContact }: { onContact: () => void }) {
         </dl>
         {metrics.some(metric => metric.value === null) && <p className="reference-about-stats-note">{copy.aboutStatsComing}</p>}
         <div className="reference-about-actions">
-          <button className="profile-pill" type="button" onClick={onContact}>{copy.aboutSocial}<span className="profile-play"><Play size={17} fill="currentColor" strokeWidth={0} /></span></button>
-          <div className="reference-about-socials" aria-label={copy.socialLabel}>
-            {socials.map(social => {
-              const Icon = social.icon === "instagram" ? Instagram : Linkedin;
-              return social.href
-                ? <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={social.label}><Icon size={27} strokeWidth={1.8} /></a>
-                : <button key={social.label} type="button" onClick={onContact} aria-label={`${social.label}, ${copy.socialUnavailable}`} title={social.label}><Icon size={27} strokeWidth={1.8} /></button>;
-            })}
-          </div>
+          {profile.cvUrl
+            ? <a className="profile-pill about-cv" href={profile.cvUrl} download>{copy.downloadCv}<span className="profile-play"><Download size={19} aria-hidden="true" /></span></a>
+            : <button className="profile-pill about-cv" type="button" onClick={() => setCvOpen(true)}>{copy.downloadCv}<span className="profile-play"><Download size={19} aria-hidden="true" /></span></button>}
         </div>
       </Reveal>
     </div>
+    <Dialog open={cvOpen} onClose={() => setCvOpen(false)} title={copy.downloadCv} className="cv-dialog">
+      <div className="dialog-content"><div className="contact-dialog-icon"><FileText size={29} strokeWidth={1.3} aria-hidden="true" /></div><h2>{copy.cvComing}</h2><p>{copy.cvComingDescription}</p></div>
+    </Dialog>
   </section>;
 }

@@ -61,7 +61,7 @@ export function SiteHeader({ activeSection, onNavigate }: { activeSection: strin
         </div>
       </div>
       <AnimatePresence>
-        {menuOpen && <motion.nav id="mobile-navigation" className="pill-mobile-nav" aria-label={copy.mobileNav} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
+        {menuOpen && <motion.nav id="mobile-navigation" data-lenis-prevent className="pill-mobile-nav" aria-label={copy.mobileNav} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
           {navigation.map((link) => <a key={link.href} href={link.href} className={activeSection === link.href ? "active" : ""} aria-current={activeSection === link.href ? "location" : undefined} onClick={() => navigate(link.href)}>{linkLabel(link.href, link.label)}<ArrowUpRight size={18} /></a>)}
         </motion.nav>}
       </AnimatePresence>

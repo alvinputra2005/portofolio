@@ -20,3 +20,13 @@ Use case: background-extraction. Edit target: the provided real portrait photogr
 - Penyesuaian: ruang transparan kosong dipangkas dan framing diperpanjang sampai kantong jas terlihat, tanpa mengubah isi foto.
 - Penggunaan: hero memakai foto ini di atas kartu biru; foto pada bagian Tentang tetap memakai foto profil sebelumnya.
 
+## Foto kedua pada bagian Tentang
+
+- Sumber asli: `../../Dokumentasi/Foto Alvin 2.png`, tidak diubah.
+- Aset aktif: `../public/images/alvin-about-seated-v2.webp` melalui `profile.aboutPortrait`, dari versi terbaru sumber dengan pose duduk dan potongan kursi yang diperbarui. Nama aset baru memastikan browser memuat foto terbaru.
+- Aset versi sebelumnya (pose menerima penghargaan): `../public/images/alvin-about-2.webp`.
+- Optimasi: pangkas margin transparan dengan Sharp dan simpan sebagai WebP kualitas 92; alpha tetap dipertahankan, tanpa mengubah isi foto.
+- Card Tentang mengikuti dimensi card hero pada setiap breakpoint. Pada HP, kedua card terpusat dengan jarak kiri dan kanan yang sama.
+- Framing pose duduk di card memakai `object-fit: cover` dan skala 1,47 dengan titik acuan di bagian atas. Offset ke bawah 60px memberi ruang lebih di atas kepala; kaki dipotong oleh batas card agar fokus pada wajah, badan, dan paha sesuai referensi. Efek pudar di bagian bawah dihapus.
+- Warna tampilan dinetralkan dan noise dilembutkan secara ringan melalui CSS; foto asli tetap dipakai untuk mempertahankan struktur wajah. Detail, percobaan imagegen yang tidak dipakai, dan prompt dicatat di [about-photo-retouch.md](about-photo-retouch.md).
+
