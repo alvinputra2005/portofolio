@@ -303,10 +303,23 @@ body {
 .reference-experience-period > span { padding-inline: 3px; }
 .reference-experience-period > .reference-experience-role { padding-inline: 0; }
 .reference-experience-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; padding: 18px; border-radius: 16px; background: linear-gradient(180deg, #38b4ff, #0084c5 56%, #003b5d); }
+.reference-experience-gallery--stacked { grid-template-columns: minmax(0, 1fr); }
+.reference-experience-gallery--stacked .reference-experience-photo { aspect-ratio: 16 / 9; }
+.reference-experience-gallery--single { grid-template-columns: minmax(0, 1fr); }
+.reference-experience-gallery--single .reference-experience-photo { aspect-ratio: 4 / 3; }
+.experience-photo-caption { position: absolute; z-index: 1; inset: 0; display: flex; align-items: flex-end; padding: 22px; background: linear-gradient(transparent, rgb(0 19 33 / 76%)); color: #fff; font-size: 13px; font-weight: 500; line-height: 1.65; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.reference-experience-photo.has-caption img { filter: brightness(1); transition: transform .35s, filter .3s; }
+.reference-experience-photo.has-caption[data-hovered="true"] img { filter: brightness(.72); }
+.reference-experience-photo.has-caption[data-hovered="true"] .experience-photo-caption { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .reference-experience-photo.has-caption img,.experience-photo-caption { transition: none; }
+  .reference-experience-photo.has-caption:hover img { transform: none; }
+}
 .reference-experience-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; aspect-ratio: 1; min-width: 0; gap: 10px; overflow: hidden; border: 1px dashed rgb(255 255 255 / 65%); border-radius: 12px; background: #e5f3fa; color: #7a9fb5; }
 .reference-experience-photo:nth-child(2),.reference-experience-photo:nth-child(3) { background: #f0f7fb; }
 .reference-experience-photo.has-image { border: 0; background: transparent; }
 .reference-experience-photo img { object-fit: cover; transition: transform .35s; }
+.reference-experience-photo img[src="/images/experience/asprak-alpro.jpeg"] { object-position: center 72%; }
 .reference-experience-photo.has-image:hover img { transform: scale(1.04); }
 .experience-photo-index { position: absolute; top: 10px; left: 11px; color: #789bb0; font-family: "Montserrat Variable", sans-serif; font-size: 9px; font-weight: 500; }
 .experience-photo-label { font-size: 8px; font-weight: 500; text-align: center; padding-inline: 5px; }

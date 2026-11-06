@@ -124,7 +124,7 @@ try {
   assert.deepEqual(await page.locator("#pengalaman .reference-experience-company").allTextContents(), Array(3).fill("Universitas Negeri Malang"));
   assert(await page.locator("#pengalaman .reference-experience-period").evaluateAll(elements => elements.every(element => element.textContent.includes("4 bulan"))));
   assert.deepEqual(await page.locator("#pengalaman .reference-experience-logo img").evaluateAll(images => images.map(image => image.getAttribute("src"))), Array(3).fill("/images/logo-um.webp"));
-  assert.equal(await page.locator("#pengalaman .reference-experience-photo").count(), 12);
+  assert.equal(await page.locator("#pengalaman .reference-experience-photo").count(), 3);
   assert.equal(await page.locator(".achievement-card").count(), 3);
   assert.equal(await page.locator("#pencapaian .reference-experience-photo").count(), 12);
   assert.equal(await page.locator("#achievements-title").innerText(), "Pencapaian");

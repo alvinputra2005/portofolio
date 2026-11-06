@@ -188,9 +188,6 @@ export const experiences: Experience[] = [
     type: "Asisten Praktikum Sistem Informasi",
     logo: "/images/logo-um.webp",
     photos: [
-      "/images/experience/sistem-informasi/asprak-si-1.jpeg",
-      "/images/experience/sistem-informasi/asprak-si-2.jpeg",
-      "/images/experience/sistem-informasi/asprak-si-3.jpeg",
       "/images/experience/sistem-informasi/asprak-si-4.jpeg",
     ],
     isPlaceholder: false,
@@ -204,7 +201,7 @@ export const experiences: Experience[] = [
       "Mendampingi praktikum Basis Data dan membantu mahasiswa memahami materi serta menyelesaikan latihan basis data.",
     type: "Asisten Praktikum Basis Data",
     logo: "/images/logo-um.webp",
-    photos: [null, null, null, null],
+    photos: ["/images/experience/asprak-basdat.jpeg"],
     isPlaceholder: false,
   },
   {
@@ -216,7 +213,7 @@ export const experiences: Experience[] = [
       "Mendampingi praktikum Algoritma Pemrograman dan membantu mahasiswa memahami alur logika serta menerapkannya dalam latihan pemrograman.",
     type: "Asisten Praktikum Algoritma Pemrograman",
     logo: "/images/logo-um.webp",
-    photos: [null, null, null, null],
+    photos: ["/images/experience/asprak-alpro.jpeg"],
     isPlaceholder: false,
   },
 ];

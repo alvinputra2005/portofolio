@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent, type PointerEvent } from "react";
 import { animate, motion, useInView, useMotionValue, useSpring, useTransform } from "motion/react";
-import { Move } from "lucide-react";
 import { useLanguage } from "./language-provider";
 import styles from "./about-id-card.module.css";
 
@@ -210,7 +209,7 @@ export function AboutIdCard({ src, alt }: { src: string; alt: string }) {
           type="button"
           className={styles.card}
           aria-label={copy.idCardLabel}
-          aria-describedby={`${id}-hint ${id}-keyboard`}
+          aria-describedby={`${id}-keyboard`}
           data-dragging={dragging}
           style={{ x, y, rotate: reducedMotion ? 0 : rotate, transformOrigin: "50% -32px" }}
           onPointerDown={startDrag}
@@ -235,7 +234,6 @@ export function AboutIdCard({ src, alt }: { src: string; alt: string }) {
           </span>
         </motion.button>
       </motion.div>
-      <figcaption className={styles.hint} id={`${id}-hint`}><Move size={15} strokeWidth={1.6} aria-hidden="true" />{copy.idCardHint}</figcaption>
       <span className="sr-only" id={`${id}-keyboard`}>{copy.idCardKeyboard}</span>
     </figure>
   );
