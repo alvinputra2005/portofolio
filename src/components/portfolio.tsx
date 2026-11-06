@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { MotionConfig } from "motion/react";
 import { ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { Dialog } from "./dialog";
 import { SiteHeader } from "./site-header";
 import { Hero } from "./hero";
@@ -14,10 +14,11 @@ import { Achievements } from "./achievements";
 import { Credentials } from "./credentials";
 import { SkillExperience } from "./skill-experience";
 import { useLanguage } from "./language-provider";
+import { SmoothScroll } from "./smooth-scroll";
 
 export function Portfolio() {
-  const { locale, copy } = useLanguage();
-  const { profile } = useMemo(() => getLocalizedPortfolio(locale), [locale]);
+  const { copy } = useLanguage();
+  const { profile, profilePresent, settings } = useContent();
   const [activeSection, setActiveSection] = useState("#beranda");
   const [contactOpen, setContactOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -38,7 +39,7 @@ export function Portfolio() {
     return () => { observer.disconnect(); window.removeEventListener("scroll", updateFooter); };
   }, []);
 
-  useEffect(() => { document.title = `${profile.name} — ${profile.role}`; }, [profile.name, profile.role]);
+  useEffect(() => { document.title = settings.title; }, [settings.title]);
 
   useEffect(() => {
     if (!copied) return;
@@ -54,12 +55,13 @@ export function Portfolio() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <SmoothScroll />
       <a className="skip-link" href="#main">{copy.skip}</a>
       <SiteHeader activeSection={activeSection} onNavigate={setActiveSection} />
       <main id="main">
-        <Hero onContact={() => setContactOpen(true)} />
+        {profilePresent && <Hero onContact={() => setContactOpen(true)} />}
 
-        <About />
+        {profilePresent && <About />}
 
         <Experience />
 
@@ -76,7 +78,7 @@ export function Portfolio() {
       <footer className="site-footer" id="kontak" aria-labelledby="contact-title">
         <div className="container footer-inner">
           <div className="footer-main">
-            <div><h2 id="contact-title">{copy.footerInviteTitle}</h2><p>{copy.footerInviteDescription}<span className="footer-invite-note">{copy.footerInviteNote}</span></p></div>
+            <div><h2 id="contact-title">{settings.footerTitle}</h2><p>{settings.footerDescription}<span className="footer-invite-note">{settings.footerNote}</span></p></div>
           </div>
         </div>
       </footer>

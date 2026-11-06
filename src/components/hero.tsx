@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Github, Instagram, Linkedin, Mail, MessageCircleMore } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { Reveal } from "./reveal";
 import { useLanguage } from "./language-provider";
 import { PortraitMotion } from "./portrait-motion";
@@ -15,8 +15,8 @@ const heroSocialIcons = {
 };
 
 export function Hero({ onContact }: { onContact: () => void }) {
-  const { locale, copy } = useLanguage();
-  const { profile } = getLocalizedPortfolio(locale);
+  const { copy } = useLanguage();
+  const { profile } = useContent();
   const [firstRole, ...remainingRoles] = profile.role.split(/\s*&\s*/);
 
   return (
@@ -43,9 +43,9 @@ export function Hero({ onContact }: { onContact: () => void }) {
             <a className="hire-pill" href="#proyek">{copy.viewProjects}</a>
           </Reveal>
         </div>
-        <Reveal className="reference-hero-portrait" delay={0.16}>
+        {profile.heroPortrait && <Reveal className="reference-hero-portrait" delay={0.16}>
           <PortraitMotion src={profile.heroPortrait} alt={`${copy.portraitAlt} ${profile.name}`} />
-        </Reveal>
+        </Reveal>}
       </div>
     </section>
   );

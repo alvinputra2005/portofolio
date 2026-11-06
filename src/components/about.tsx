@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Download, FileText } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
 import { Dialog } from "./dialog";
@@ -10,7 +10,7 @@ import { AboutIdCard } from "./about-id-card";
 
 export function About() {
   const { locale, copy } = useLanguage();
-  const { profile } = getLocalizedPortfolio(locale);
+  const { profile } = useContent();
   const [cvOpen, setCvOpen] = useState(false);
   const metrics = [
     { value: profile.statistics.projects, label: copy.aboutProjects, second: copy.aboutProjectsSecond },
@@ -20,7 +20,7 @@ export function About() {
 
   return <section className="reference-about" id="tentang" aria-labelledby="about-title">
     <div className="container about-layout">
-      <AboutIdCard src={profile.aboutPortrait} alt={`${copy.portraitAlt} ${profile.name}`} />
+      {profile.aboutPortrait && <AboutIdCard src={profile.aboutPortrait} alt={`${copy.portraitAlt} ${profile.name}`} />}
       <Reveal delay={.1} className="reference-about-copy">
         <p className="reference-about-badge"><mark>{copy.aboutBadge}</mark></p>
         <h2 id="about-title">{copy.aboutQuestion} {profile.name}?</h2>

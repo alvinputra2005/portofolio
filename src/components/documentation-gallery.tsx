@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useState, type PointerEvent } from "react";
 import { ImagePlus } from "lucide-react";
 
-export function DocumentationGallery({ photos, label, photoLabel, placeholder, layout = "grid", caption }: {
+export function DocumentationGallery({ photos, label, photoLabel, placeholder, layout = "grid", caption, cropY = 50 }: {
   photos: (string | null)[];
   label: string;
   photoLabel: string;
   placeholder: string;
   layout?: "grid" | "stacked" | "single";
   caption?: string;
+  cropY?: number;
 }) {
   const [hoveredPhoto, setHoveredPhoto] = useState<number | null>(null);
 
@@ -28,7 +29,7 @@ export function DocumentationGallery({ photos, label, photoLabel, placeholder, l
         onPointerMove={photo && caption ? event => followPointer(event, index) : undefined}
         onPointerLeave={() => setHoveredPhoto(null)}
         onPointerCancel={() => setHoveredPhoto(null)}>
-        {photo ? <Image src={photo} alt={`${photoLabel} ${index + 1}`} fill sizes={layout !== "grid" ? "(max-width: 650px) 90vw, (max-width: 900px) 45vw, 30vw" : "(max-width: 650px) 42vw, (max-width: 1000px) 23vw, 200px"} /> : <>
+        {photo ? <Image src={photo} alt={`${photoLabel} ${index + 1}`} fill style={{objectPosition:`center ${cropY}%`}} sizes={layout !== "grid" ? "(max-width: 650px) 90vw, (max-width: 900px) 45vw, 30vw" : "(max-width: 650px) 42vw, (max-width: 1000px) 23vw, 200px"} /> : <>
           <span className="experience-photo-index" aria-hidden="true">0{index + 1}</span>
           <ImagePlus size={30} strokeWidth={1.2} aria-hidden="true" />
           <span className="experience-photo-label">{placeholder}</span>

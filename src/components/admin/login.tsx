@@ -1,0 +1,6 @@
+"use client";
+import {useState,type FormEvent} from "react";
+import {api} from "./api";
+export function LoginForm(){const[error,setError]=useState("");const[busy,setBusy]=useState(false);async function submit(event:FormEvent<HTMLFormElement>){event.preventDefault();setBusy(true);setError("");const values=new FormData(event.currentTarget);try{await api("/auth",{method:"POST",body:JSON.stringify({email:values.get("email"),password:values.get("password")})});window.location.assign("/alvin-ganteng");}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+return <div className="admin-login-card"><a href="/" className="admin-brand">alvin<span>.</span></a><span className="admin-kicker">RUANG KELOLA PRIBADI</span><h1>Selamat datang kembali.</h1><p>Masuk untuk merawat cerita, karya, dan portofoliomu.</p><form onSubmit={submit}><label>Email<input autoComplete="username" name="email" type="email" required/></label><label>Password<input autoComplete="current-password" name="password" type="password" required/></label>{error&&<p className="admin-error" role="alert">{error}</p>}<button className="admin-button" disabled={busy}>{busy?"Memeriksa akun…":"Masuk ke studio"}</button></form><small>Akses khusus admin. Reset password melalui Supabase Dashboard.</small></div>;
+}

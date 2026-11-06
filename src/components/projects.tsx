@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { Monitor } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { DocumentationGallery } from "./documentation-gallery";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
 
 export function Projects() {
-  const { locale, copy } = useLanguage();
-  const { softwareProjects } = getLocalizedPortfolio(locale);
+  const { copy } = useLanguage();
+  const { softwareProjects } = useContent();
 
   return <section className="reference-experience reference-projects" id="proyek" aria-labelledby="projects-title">
     <div className="container projects-layout">
@@ -25,6 +25,7 @@ export function Projects() {
             </div>
             <DocumentationGallery photos={project.photos} label={`${copy.projectsGallery}: ${project.category}`} photoLabel={`${copy.experiencePhoto} ${project.title}`} placeholder={copy.experiencePhotoComing} />
             <p className="reference-experience-description">{project.description}</p>
+            {(project.url || project.repository) && <div className="project-links">{project.url && <a href={project.url} target="_blank" rel="noreferrer">{copy.viewProject}</a>}{project.repository && <a href={project.repository} target="_blank" rel="noreferrer">Repository</a>}</div>}
           </article>
         </Reveal>)}
       </div>

@@ -6,7 +6,7 @@ import { chromium } from "@playwright/test";
 
 const externalUrl = process.env.PREVIEW_URL || process.argv.find(arg => arg.startsWith("--url="))?.slice(6);
 const url = externalUrl || "http://127.0.0.1:3194";
-const preview = externalUrl ? null : spawn(process.execPath, ["scripts/preview.mjs", "--port", "3194"], { stdio: "ignore", windowsHide: true });
+const preview = externalUrl ? null : spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3194"], { stdio: "ignore", windowsHide: true });
 const diagnose = process.argv.includes("--diagnose");
 const selector = ".reference-hero-portrait";
 let browser;

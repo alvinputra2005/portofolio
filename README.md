@@ -4,6 +4,10 @@ Website portofolio responsif dengan Next.js 16 App Router, TypeScript, Tailwind 
 
 ## Menjalankan proyek
 
+Panel pengelolaan ada di **`/alvin-ganteng`** dengan Supabase Auth, Database, dan Storage. Halaman publik `/` tetap tanpa login. Panduan env, SQL, akun admin, migrasi, CRUD, dan Gemini: **[docs/admin-setup.md](docs/admin-setup.md)**.
+
+Tanpa konfigurasi Supabase, beranda menampilkan snapshot lokal dan admin menampilkan petunjuk setup. Setelah dikonfigurasi, data publik berasal dari database; database kosong tidak diisi dummy secara otomatis. `.env.example` adalah template; isi kredensial di `.env.local` dan restart server.
+
 Gunakan Node.js **20.9 atau lebih baru** dan npm. Dari folder proyek:
 
 ```sh
@@ -24,9 +28,9 @@ npm run build
 npm run preview
 ```
 
-Build menghasilkan website statis dalam `out/`. Preview tersedia di `http://127.0.0.1:3000`; hentikan dengan `Ctrl+C`. Jika port digunakan, jalankan `npm run preview -- --port 3001`. Variabel lingkungan `PORT` juga didukung.
+Build menghasilkan aplikasi server Next.js dalam `.next/`. Preview tersedia di `http://localhost:3000`; hentikan dengan `Ctrl+C`. Jika port digunakan, jalankan `npm run preview -- --port 3001`. Variabel lingkungan `PORT` juga didukung.
 
-Konfigurasi menggunakan `output: "export"`. Setelah build, `npm start` juga menjalankan server preview statis yang sama.
+`npm start` menjalankan backend produksi lokal dengan `next start`. Ekspor statis lama tidak lagi digunakan untuk fitur admin dan AI. Tidak ada deployment otomatis.
 
 ## Struktur
 
@@ -77,4 +81,4 @@ Tombol globe di navbar mengganti bahasa Indonesia/Inggris tanpa memuat ulang hal
 
 ## Deployment
 
-Unggah isi `out/` ke hosting statis yang mendukung halaman `index.html` per direktori. Bisa juga impor proyek ke Vercel dan gunakan pengaturan build Next.js dengan konfigurasi ekspor yang sudah ada. Jalankan build ulang setiap kali mengubah data atau aset.
+Hosting sekarang harus mendukung backend Next.js. Folder `out/` dan manifest hosting statis sebelumnya bukan keluaran terbaru. Tahap ini hanya lokal; hosting online lama tidak diubah. Perubahan konten Supabase yang dipublikasikan tidak memerlukan rebuild.

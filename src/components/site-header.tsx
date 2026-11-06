@@ -3,12 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Globe, Menu, X } from "lucide-react";
-import { navigation, profile } from "@/data/portfolio";
+import { navigation } from "@/data/portfolio";
+import { useContent } from "./content-provider";
 import { navigationLabels } from "@/data/translations";
 import { useLanguage } from "./language-provider";
 
 export function SiteHeader({ activeSection, onNavigate }: { activeSection: string; onNavigate: (section: string) => void }) {
   const { locale, setLocale, copy } = useLanguage();
+  const { profile } = useContent();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const header = useRef<HTMLElement>(null);

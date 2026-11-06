@@ -2,17 +2,14 @@
 
 import Image from "next/image";
 import { Building2 } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
 import { DocumentationGallery } from "./documentation-gallery";
 
 export function Experience() {
-  const { locale, copy } = useLanguage();
-  const { experiences } = getLocalizedPortfolio(locale);
-  const captions = locale === "id"
-    ? ["Mendampingi mahasiswa membangun sistem informasi dalam sesi praktikum.", "Membantu mahasiswa memahami dan menerapkan konsep basis data.", "Mendampingi mahasiswa menyusun logika dan latihan pemrograman."]
-    : ["Guiding students in building information systems during practical sessions.", "Helping students understand and apply database concepts.", "Guiding students through programming logic and exercises."];
+  const { copy } = useLanguage();
+  const { experiences } = useContent();
 
   return <section className="experience-section reference-experience" id="pengalaman" aria-labelledby="experience-title">
     <div className="container experience-layout">
@@ -26,7 +23,7 @@ export function Experience() {
               </div>
               <div><p className="reference-experience-company">{experience.company}</p><p className="reference-experience-period">{experience.period} <span aria-hidden="true">·</span> <span className="reference-experience-role" id={`${experience.id}-title`}>{experience.role}</span></p></div>
             </div>
-            <DocumentationGallery layout="single" caption={captions[index]} photos={experience.photos} label={`${copy.experienceGallery}: ${experience.type}`} photoLabel={`${copy.experiencePhoto} ${experience.type}`} placeholder={copy.experiencePhotoComing} />
+            <DocumentationGallery layout="single" caption={experience.caption} cropY={experience.cropY} photos={experience.photos} label={`${copy.experienceGallery}: ${experience.type}`} photoLabel={`${copy.experiencePhoto} ${experience.type}`} placeholder={copy.experiencePhotoComing} />
             <p className="reference-experience-description">{experience.description}</p>
           </article>
         </Reveal>)}

@@ -3,19 +3,9 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./language-provider";
+import { useContent } from "./content-provider";
 
-const webStack = [
-  ["Laravel", "laravel"], ["React", "react"], ["Bootstrap", "bootstrap"],
-  ["Next.js", "nextjs"], ["Node.js", "nodejs"], ["Flask", "flask"],
-] as const;
-const dataAndTools = [
-  ["Python", "python"], ["PyTorch", "pytorch"], ["scikit-learn", "scikitlearn"],
-  ["TensorFlow", "tensorflow"],
-  ["Jupyter", "jupyter"], ["Matplotlib", "matplotlib"], ["VS Code", "vscode"],
-  ["Google Colab", "googlecolab"], ["Figma", "figma"], ["Canva", "canva"],
-] as const;
 type StackItems = readonly (readonly [string, string])[];
-const allStack = [...webStack, ...dataAndTools];
 
 function StackRow({ items, label }: { items: StackItems; label: string }) {
   const viewport = useRef<HTMLDivElement>(null);
@@ -39,7 +29,7 @@ function StackRow({ items, label }: { items: StackItems; label: string }) {
       {[0, 1].map(copy => <div key={copy} className="tech-stack-sequence" aria-hidden={copy === 1 ? true : undefined}>
         {Array.from({ length: repetitions }, (_, repeat) => <ul key={repeat} ref={copy === 0 && repeat === 0 ? cycle : undefined} className="tech-stack-group" aria-hidden={copy === 1 || repeat > 0 ? true : undefined}>
           {items.map(([name, icon]) => <li className="tech-stack-item" key={name}>
-            <Image src={`/images/tech/${icon}.svg`} width={30} height={30} alt="" loading="eager" unoptimized />
+            {icon && <Image src={icon} width={30} height={30} alt="" loading="eager" unoptimized />}
             <span>{name}</span>
           </li>)}
         </ul>)}
@@ -50,6 +40,9 @@ function StackRow({ items, label }: { items: StackItems; label: string }) {
 
 export function TechStack() {
   const { locale } = useLanguage();
+  const {techItems}=useContent();
+  const allStack:StackItems=techItems.map(i=>[i.name,i.icon]);
+  if(!allStack.length) return null;
   return <div className="tech-stack-section" role="group" aria-label="Creative tech stack">
     <div className="tech-stack-lanes">
       <StackRow items={allStack} label={locale === "id" ? "Teknologi dan alat yang digunakan" : "Technologies and tools used"} />

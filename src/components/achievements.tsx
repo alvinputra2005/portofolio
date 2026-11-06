@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { Award } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { DocumentationGallery } from "./documentation-gallery";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
 
 export function Achievements() {
-  const { locale, copy } = useLanguage();
-  const { achievements } = getLocalizedPortfolio(locale);
+  const { copy } = useLanguage();
+  const { achievements } = useContent();
 
   return <section className="reference-experience reference-achievements" id="pencapaian" aria-labelledby="achievements-title">
     <div className="container achievements-layout">

@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore, type Keyboard
 import { animate, motion, useInView, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useLanguage } from "./language-provider";
 import styles from "./about-id-card.module.css";
+import { useContent } from "./content-provider";
 
 const followSpring = { stiffness: 850, damping: 42, mass: .5, restDelta: .01, restSpeed: .1 };
 const returnSpring = { type: "spring", stiffness: 180, damping: 23, mass: .8, velocity: 0, restDelta: .01, restSpeed: .1 } as const;
@@ -34,6 +35,7 @@ function getMotionPreference() {
 
 export function AboutIdCard({ src, alt }: { src: string; alt: string }) {
   const { copy } = useLanguage();
+  const { profile } = useContent();
   const reducedMotion = useSyncExternalStore(subscribeToMotionPreference, getMotionPreference, () => true);
   const stage = useRef<HTMLElement>(null);
   const hasDragged = useRef(false);
@@ -222,13 +224,13 @@ export function AboutIdCard({ src, alt }: { src: string; alt: string }) {
         >
           <span className={styles.clip} aria-hidden="true"><span /></span>
           <span className={styles.face}>
-            <Image className={styles.artwork} src="/images/alvin-id-artwork.webp" alt="" fill sizes="286px" draggable={false} />
-            <span className={styles.topline}><span className={styles.wordmark}>alvin<span>.</span></span><span>{copy.idCardTag}</span></span>
+            {profile.cardArtwork && <Image className={styles.artwork} src={profile.cardArtwork} alt="" fill sizes="286px" draggable={false} />}
+            <span className={styles.topline}><span className={styles.wordmark}>{profile.name.toLowerCase()}<span>.</span></span><span>{copy.idCardTag}</span></span>
             <span className={styles.portrait}><Image src={src} alt={alt} fill sizes="(max-width: 650px) 75vw, 320px" draggable={false} /></span>
             <span className={styles.details}>
-              <span className={styles.name}>Putu Alvin<span>Mahendra Putra</span></span>
-              <span className={styles.role}>Software Engineer<span>&amp; Full Stack Developer</span></span>
-              <span className={styles.university}><Image src="/images/logo-um.webp" width={24} height={24} alt="" draggable={false} /><span>Universitas Negeri Malang</span></span>
+              <span className={styles.name}>{profile.fullName.split(" ").slice(0,2).join(" ")}<span>{profile.fullName.split(" ").slice(2).join(" ")}</span></span>
+              <span className={styles.role}>{profile.role.split(/\s*&\s*/)[0]}{profile.role.includes("&")&&<span>&amp; {profile.role.split(/\s*&\s*/).slice(1).join(" & ")}</span>}</span>
+              <span className={styles.university}>{profile.universityLogo && <Image src={profile.universityLogo} width={24} height={24} alt="" draggable={false} />}<span>{profile.university}</span></span>
             </span>
             <span className={styles.sheen} aria-hidden="true" />
           </span>

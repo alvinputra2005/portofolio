@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import { BadgeCheck, ChevronLeft, ChevronRight, ImagePlus, Maximize2, Trophy } from "lucide-react";
-import { getLocalizedPortfolio } from "@/data/translations";
+import { useContent } from "./content-provider";
 import { Dialog } from "./dialog";
 import { useLanguage } from "./language-provider";
 import { Reveal } from "./reveal";
 
 export function Credentials() {
-  const { locale, copy } = useLanguage();
-  const { credentials } = getLocalizedPortfolio(locale);
+  const { copy } = useLanguage();
+  const { credentials } = useContent();
   const [filter, setFilter] = useState<"all" | "certificate" | "award">("all");
   const [cursor, setCursor] = useState(0);
   const [detailOpen, setDetailOpen] = useState(false);
@@ -95,7 +95,7 @@ export function Credentials() {
         </div>
         <Dialog open={detailOpen} onClose={() => setDetailOpen(false)} title={active.title} className="credential-dialog">
           <div className="credential-detail-image">{active.photo ? <Image src={active.photo} alt={active.title} fill sizes="90vw" /> : <div className="credential-detail-placeholder"><ImagePlus size={48} strokeWidth={1.2} aria-hidden="true" /><span>{copy.credentialDocumentComing}</span></div>}</div>
-          <div className="credential-detail-copy"><span className="credential-kind">{category(active.kind)}</span><h2>{active.title}</h2><p>{active.issuer} · {active.year}</p><p>{active.description}</p></div>
+          <div className="credential-detail-copy"><span className="credential-kind">{category(active.kind)}</span><h2>{active.title}</h2><p>{active.issuer} · {active.year}</p><p>{active.description}</p>{active.document&&<a href={active.document} target="_blank" rel="noreferrer" className="button button-outline">PDF</a>}</div>
         </Dialog>
       </>}
     </div>

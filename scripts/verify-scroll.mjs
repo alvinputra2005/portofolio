@@ -4,7 +4,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 
 const url = "http://127.0.0.1:3190";
-const preview = spawn(process.execPath, ["scripts/preview.mjs", "--port", "3190"], { stdio: "ignore", windowsHide: true });
+const preview = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3190"], { stdio: "ignore", windowsHide: true });
 let browser;
 
 try {

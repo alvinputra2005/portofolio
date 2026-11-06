@@ -5,7 +5,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 
 const url = process.env.PREVIEW_URL || "http://127.0.0.1:3192";
-const preview = process.env.PREVIEW_URL ? null : spawn(process.execPath, ["scripts/preview.mjs", "--port", "3192"], { stdio: "ignore", windowsHide: true });
+const preview = process.env.PREVIEW_URL ? null : spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3192"], { stdio: "ignore", windowsHide: true });
 const selector = "#tentang figure button";
 let browser;
 
@@ -106,7 +106,7 @@ try {
 
   await page.locator(".language-toggle").click();
   assert.equal(await page.locator("html").getAttribute("lang"), "en");
-  assert.equal(await stage.locator("figcaption").innerText(), "Give it a pull, then let go");
+  assert.equal(await stage.locator("figcaption").count(), 0, "Drag hint stays removed in both languages");
   assert.match(await card.getAttribute("aria-label"), /Draggable profile/);
   await page.locator(".language-toggle").click();
 
