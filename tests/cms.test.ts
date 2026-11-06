@@ -5,7 +5,7 @@ import {PGlite} from "@electric-sql/pglite";
 import {initialPublications} from "../src/lib/cms/initial";
 import {contentFromRows} from "../src/lib/cms/content";
 import {payloadSchema,emptyPayload,localized,mediaIds} from "../src/lib/cms/model";
-import {makeDesign,designSchema,applySuggestion,addScreenshot,changeTemplate,changePresentation} from "../src/lib/mockup/model";
+import {makeDesign,designSchema,applySuggestion,changeTemplate,normalizeDesign} from "../src/lib/mockup/model";
 import {localAdminAllowed} from "../src/lib/admin/local-access";
 
 test("direct local admin access is opt-in, loopback-only, and never enabled in production",()=>{
@@ -36,29 +36,25 @@ test("AI suggestions preserve locked elements and original assets; invalid code-
  const applied=applySuggestion(design,suggestion);assert.deepEqual(applied.nodes[1],design.nodes[1]);assert.equal(applied.nodes[4].asset,design.nodes[4].asset);assert.equal(applied.nodes[2].fontSize,65);
  assert.throws(()=>designSchema.parse({...design,background:"url(javascript:bad)"}));assert.throws(()=>applySuggestion(design,{...design,nodes:design.nodes.slice(1)}));
 });
-test("mockup screenshots keep names, assets and stable IDs through removal, addition and template changes",()=>{
- const design=makeDesign("browser","Judul","Deskripsi","",["/images/one.png","/images/two.png","/images/three.png"]);
- design.nodes.find(node=>node.id==="screen-2")!.label="Layar penting";design.nodes.find(node=>node.id==="screen-2")!.locked=true;
- const removed={...design,nodes:design.nodes.filter(node=>node.id!=="screen-1")};const added=addScreenshot(removed);
- assert.equal(added.nodes.filter(node=>node.type==="screenshot").length,3);assert.equal(new Set(added.nodes.map(node=>node.id)).size,added.nodes.length);
- assert.equal(added.nodes.find(node=>node.id==="screen-2")!.asset,"/images/three.png");
- const mobile=changeTemplate(added,"phone");assert.deepEqual(mobile.nodes.find(node=>node.id==="screen-2"),design.nodes.find(node=>node.id==="screen-2"));assert.equal(mobile.nodes.find(node=>node.id==="screen-0")!.frame,"phone");assert.equal(mobile.nodes.find(node=>node.id==="screen-0")!.asset,"/images/one.png");
- assert.doesNotThrow(()=>designSchema.parse(mobile));
+test("square mockups have exactly two stable slots and keep locked files through device changes",()=>{
+ const design=makeDesign("phone","Judul","Deskripsi","",["/images/one.png","/images/two.png"]);design.nodes[5].label="Layar penting";design.nodes[5].locked=true;
+ assert.equal(design.width,1200);assert.equal(design.height,1200);assert.equal(design.nodes.filter(node=>node.type==="screenshot").length,2);
+ const desktop=changeTemplate(design,"browser");assert.deepEqual(desktop.nodes[5],design.nodes[5]);assert.equal(desktop.nodes[4].asset,"/images/one.png");assert.equal(desktop.nodes[4].frame,"browser");assert.doesNotThrow(()=>designSchema.parse(desktop));
+ assert.throws(()=>designSchema.parse({...design,nodes:design.nodes.filter(node=>node.id!=="screen-1")}));assert.throws(()=>designSchema.parse({...design,nodes:[...design.nodes,{...design.nodes[4],id:"screen-2"}]}));
 });
-test("legacy designs receive an empty overlay; selected overlays and names survive AI suggestions and validation",()=>{
- const design=makeDesign("browser","Judul","Deskripsi","",["/images/one.png"]);const{overlay:unused,...legacy}=design;void unused;
- assert.deepEqual(designSchema.parse(legacy).overlay,{preset:"none",opacity:0});
- design.overlay={preset:"city",opacity:.12};design.nodes[4].label="Dashboard";const proposal=structuredClone(design);proposal.overlay={preset:"dots",opacity:.3};proposal.nodes[4].label="AI rename";
- const applied=applySuggestion(design,proposal);assert.deepEqual(applied.overlay,design.overlay);assert.equal(applied.nodes[4].label,"Dashboard");
- assert.throws(()=>designSchema.parse({...design,overlay:{preset:"city",opacity:.31}}));assert.throws(()=>designSchema.parse({...design,overlay:{preset:"javascript",opacity:.1}}));
+test("legacy portrait and classic designs migrate to square without losing source references",()=>{
+ const current=makeDesign("browser","Nama aplikasi","Deskripsi","/images/logo.png",["/images/one.png","/images/two.png"]);
+ const third={...current.nodes[4],id:"screen-2",asset:"/images/three.png"};
+ for(const [width,height,presentation]of [[1600,1000,"classic"],[1200,1712,"showcase"]]){
+  const old={...current,width,height,presentation,showcase:{...current.showcase,headline:"Legacy headline",tagline:"Legacy handwriting"},nodes:[...current.nodes,third]};
+  const migrated=normalizeDesign(old);assert.equal(migrated.width,1200);assert.equal(migrated.height,1200);assert.equal(migrated.nodes.filter(node=>node.type==="screenshot").length,2);assert.deepEqual(migrated.archivedAssets,["/images/three.png"]);assert.equal(migrated.showcase.footer,"Deskripsi");assert(!("headline"in migrated.showcase));assert(!("tagline"in migrated.showcase));assert.doesNotThrow(()=>designSchema.parse(migrated));
+ }
 });
-test("portrait showcase uses fixed reference proportions and retains source files through template changes",()=>{
- const original=makeDesign("phone","Nama aplikasi","Deskripsi aplikasi","/images/logo.png",["/images/screen.png"],"#D78019","showcase");
- assert.equal(original.width,1200);assert.equal(original.height,1712);assert.equal(original.presentation,"showcase");assert.equal(original.nodes.filter(node=>node.type==="screenshot").length,1);assert.equal(original.nodes.find(node=>node.id==="accent")!.locked,true);assert.doesNotThrow(()=>designSchema.parse(original));
- const desktop=changeTemplate(original,"browser");assert.equal(desktop.nodes.find(node=>node.id==="screen-0")!.asset,"/images/screen.png");assert.deepEqual(desktop.showcase,original.showcase);
- const classic=changePresentation(original,"classic");assert.equal(classic.width,1600);assert.equal(classic.height,1000);assert.doesNotThrow(()=>designSchema.parse(classic));
- const next=structuredClone(original);next.showcase.headline="AI changed copy";assert.deepEqual(applySuggestion(original,next).showcase,original.showcase);
- assert.throws(()=>designSchema.parse({...original,height:1000}));assert.throws(()=>designSchema.parse({...original,showcase:{...original.showcase,prototypeUrl:"javascript:alert(1)"}}));
+test("city photo remains subtle and user overlays and names survive AI revisions",()=>{
+ const design=makeDesign("phone","Judul","Deskripsi","",["/images/one.png"]);assert.equal(design.cityPhoto.opacity,.1);assert.equal(design.cityPhoto.cropY,70);assert.equal(design.nodes[5].asset,"/images/one.png");
+ design.overlay={preset:"city",opacity:.12};design.nodes[4].label="Dashboard";const proposal=structuredClone(design);proposal.cityPhoto.opacity=.2;proposal.overlay={preset:"dots",opacity:.3};proposal.nodes[4].label="AI rename";proposal.showcase.footer="AI changed footer";
+ const applied=applySuggestion(design,proposal);assert.deepEqual(applied.cityPhoto,design.cityPhoto);assert.deepEqual(applied.overlay,design.overlay);assert.deepEqual(applied.showcase,design.showcase);assert.equal(applied.nodes[4].label,"Dashboard");
+ assert.throws(()=>designSchema.parse({...design,cityPhoto:{...design.cityPhoto,opacity:.21}}));assert.throws(()=>designSchema.parse({...design,overlay:{preset:"city",opacity:.31}}));assert.throws(()=>designSchema.parse({...design,showcase:{...design.showcase,prototypeUrl:"javascript:alert(1)"}}));
 });
 test("PostgreSQL policies isolate drafts, protect admin membership, and publish snapshots atomically",async()=>{
  const db=new PGlite();

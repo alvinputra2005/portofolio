@@ -22,7 +22,7 @@ function screenTexture(image:HTMLImageElement|null,node:Pick<MockupNode,"frame"|
  if(image){
   const scale=node.fit==="cover"?Math.max(w/image.naturalWidth,h/image.naturalHeight):Math.min(w/image.naturalWidth,h/image.naturalHeight),iw=image.naturalWidth*scale,ih=image.naturalHeight*scale;
   context.save();context.beginPath();context.rect(0,top,w,h);context.clip();context.drawImage(image,(w-iw)/2,top+(h-ih)*(node.fit==="cover"?node.cropY/100:.5),iw,ih);context.restore();
- }else{context.fillStyle="#F1F5F8";context.fillRect(0,top,w,h);context.fillStyle="#7891A2";context.textAlign="center";context.font=`${phone?30:34}px Arial`;context.fillText("SCREENSHOT",w/2,top+h/2);}
+ }else{context.fillStyle="#F1F5F8";context.fillRect(0,top,w,h);context.fillStyle="#7891A2";context.textAlign="center";context.font=`${phone?30:34}px Arial`;context.fillText("MOCKUP",w/2,top+h/2);}
  if(phone){context.fillStyle="#05080D";context.beginPath();context.roundRect(w*.36,18,w*.28,44,22);context.fill();}
  else{context.fillStyle="#EDF0F3";context.fillRect(0,0,w,top);["#F08D81","#EAC875","#85C9A0"].forEach((color,index)=>{context.fillStyle=color;context.beginPath();context.arc(24+index*22,top/2,6,0,Math.PI*2);context.fill();});}
  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=4;return texture;

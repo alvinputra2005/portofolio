@@ -89,11 +89,11 @@ Draft dan bahan mockup ada di `portfolio-media` (privat). Media preview memakai 
 
 ## 6. Membuat cover proyek
 
-Buka **Proyek → Edit → Mockup**. Template default **Wave Showcase** memakai kanvas portrait 1200×1712, header berwarna tema aplikasi, pita gelombang, dua perangkat utama, kartu pop-up, dan headline penutup. Unggah screenshot asli; satu screenshot otomatis ditampilkan pada kedua perangkat. Pilih Desktop, Mobile, atau gabungan melalui dropdown. Frame perangkat dirender dengan Three.js saat WebGL tersedia, dengan tampilan cadangan yang tetap dapat diekspor.
+Buka **Proyek → Edit → Mockup**. Editor memakai satu template persegi **1200×1200**, dengan dua slot mockup tetap. Pilih gambar melalui tombol **Tambah mockup** atau **Ganti mockup** dari pustaka. Mengisi slot pertama juga mengisi slot kedua jika masih kosong; keduanya tetap dapat memakai gambar berbeda. Pilih Desktop, Mobile, atau gabungan melalui dropdown. Frame perangkat dirender dengan Three.js saat WebGL tersedia.
 
-Logo, judul, nama screenshot, crop, warna, subtitle, teks penutup, dan kartu pop-up dapat diatur. Gelombang mengikuti bentuk template. Overlay hanya muncul pada area putih dan tidak menutupi grafis berwarna. QR Prototype dan Case Study ditampilkan jika tautannya diisi; pembuat QR tidak mengunjungi tautan tersebut. Desain lama tetap dapat dibuka; pilihan Klasik mempertahankan kanvas horizontal.
+Subjudul berada setelah judul dalam formulir. Deskripsi hanya tampil di bawah perangkat; headline dan tulisan tangan sudah dihapus. Foto `public/images/mockup/kota.jpeg` berasal dari `Dokumentasi/Kota.jpeg`, dengan crop gedung dan opasitas awal 10% pada area berwarna. Opasitas serta crop foto dapat disesuaikan. Pola dekorasi tetap dibatasi pada area putih. QR Prototype dan Case Study ditampilkan jika tautannya diisi. Desain lama dinormalisasi ke format persegi; referensi gambar tambahan lama tetap disimpan agar tidak hilang.
 
-**Simpan desain** mempertahankan JSON yang dapat diedit ulang. **Simpan salinan** membuat alternatif. **Unduh PNG** menghasilkan 1200×1712 untuk Wave Showcase, atau 1600×1000 untuk Klasik. **Pasang ke proyek** menaruh PNG ke slot galeri draft yang dipilih; publikasikan proyek secara terpisah.
+Tombol **Pasang ke proyek** berada di bawah editor. Satu aksi menyimpan desain JSON dan membuat PNG 1200×1200 pada cover galeri draft proyek. Publikasikan proyek dari tab **Form Data** saat sudah siap. Tidak ada tombol simpan salinan, unduh PNG, atau pemilih slot galeri di editor.
 
 Logo/screenshot tidak digambar ulang oleh AI. Tulis arahan, klik **Minta usulan**, tinjau, lalu **Terapkan** atau **Batal**. Elemen terkunci dan referensi aset dipertahankan oleh server. Tanpa Gemini key, editor manual tetap berfungsi. Permintaan dibatasi 5 per menit per admin pada proses server lokal; reset ketika server restart. Tidak ada biaya AI saat hanya mengedit manual. Ketika meminta usulan, gambar terpilih dan arahan dikirim ke Gemini.
 
