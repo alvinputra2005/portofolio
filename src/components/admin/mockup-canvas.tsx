@@ -4,6 +4,7 @@ import {Stage,Layer,Rect,Text,Group,Image as CanvasImage,Circle,Transformer} fro
 import type Konva from "konva";
 import type {MockupDesign,MockupNode} from "@/lib/mockup/model";
 import {assetUrl} from "./api";
+import {MockupOverlay} from "./mockup-overlay";
 
 export default function MockupCanvas({design,onChange,selected,onSelect,onReady}:{design:MockupDesign;onChange:(design:MockupDesign)=>void;selected:string|null;onSelect:(id:string|null)=>void;onReady:(stage:Konva.Stage|null)=>void}){
  const stage=useRef<Konva.Stage>(null),transformer=useRef<Konva.Transformer>(null),wrap=useRef<HTMLDivElement>(null);const[scale,setScale]=useState(.5);
@@ -11,7 +12,7 @@ export default function MockupCanvas({design,onChange,selected,onSelect,onReady}
  useEffect(()=>{const observer=new ResizeObserver(([entry])=>setScale(Math.min(1,entry.contentRect.width/1600)));if(wrap.current)observer.observe(wrap.current);return()=>observer.disconnect();},[]);
  useEffect(()=>{const node=stage.current?.findOne(`#${selected}`);const model=design.nodes.find(n=>n.id===selected);transformer.current?.nodes(node&&!model?.locked?[node]:[]);transformer.current?.getLayer()?.batchDraw();},[selected,design]);
  function update(id:string,change:Partial<MockupNode>){onChange({...design,nodes:design.nodes.map(n=>n.id===id?{...n,...change}:n)});}
- return <div ref={wrap} className="admin-canvas-wrap"><Stage width={1600*scale} height={1000*scale} scaleX={scale} scaleY={scale} ref={stage} onMouseDown={e=>{if(e.target===e.target.getStage())onSelect(null);}} onTouchStart={e=>{if(e.target===e.target.getStage())onSelect(null);}}><Layer><Rect width={1600} height={1000} fill={design.background} listening={false}/>{design.nodes.map(node=><Artwork key={node.id} node={node} select={()=>onSelect(node.id)} update={change=>update(node.id,change)}/>)}<Transformer ref={transformer} keepRatio={false} flipEnabled={false} boundBoxFunc={(old,next)=>next.width<20||next.height<20?old:next}/></Layer></Stage></div>;
+ return <div ref={wrap} className="admin-canvas-wrap"><Stage width={1600*scale} height={1000*scale} scaleX={scale} scaleY={scale} ref={stage} onMouseDown={e=>{if(e.target===e.target.getStage())onSelect(null);}} onTouchStart={e=>{if(e.target===e.target.getStage())onSelect(null);}}><Layer><Rect width={1600} height={1000} fill={design.background} listening={false}/><MockupOverlay design={design}/>{design.nodes.map(node=><Artwork key={node.id} node={node} select={()=>onSelect(node.id)} update={change=>update(node.id,change)}/>)}<Transformer ref={transformer} keepRatio={false} flipEnabled={false} boundBoxFunc={(old,next)=>next.width<20||next.height<20?old:next}/></Layer></Stage></div>;
 }
 function useAsset(asset:string){const[state,setState]=useState<{asset:string;image:HTMLImageElement}|null>(null);useEffect(()=>{if(!asset)return;const img=new window.Image();img.crossOrigin="anonymous";let alive=true;img.onload=()=>{if(alive)setState({asset,image:img});};img.src=assetUrl(asset);return()=>{alive=false;};},[asset]);return state?.asset===asset?state.image:null;}
 function Artwork({node:n,select,update}:{node:MockupNode;select:()=>void;update:(change:Partial<MockupNode>)=>void}){

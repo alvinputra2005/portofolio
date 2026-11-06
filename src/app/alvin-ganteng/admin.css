@@ -158,6 +158,21 @@
 .admin-mockup-properties .admin-button { white-space:normal; }
 .admin-mockup-properties .admin-media-preview img { max-width:120px; height:70px; }
 .admin-mockup-properties .admin-checkbox { display:flex; }
+.admin-mockup-properties .admin-checkbox input { width:auto; }
+.admin-remove-image { display:grid; place-items:center; flex:none; width:32px; height:32px; border-radius:7px; background:#f7ecec; color:#af5050; cursor:pointer; }
+.admin-remove-image:hover { background:#f6dddd; }
+.admin-screenshot-settings { padding:18px 0; border-bottom:1px solid var(--admin-border); }
+.admin-screenshot-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.admin-screenshot-heading h3 { margin:0; font-size:12px; }
+.admin-screenshot-heading small { color:#8096a5; font-size:10px; }
+.admin-mockup-properties .admin-screenshot-card { padding:0; margin:0 0 12px; border:1px solid var(--admin-border); border-radius:9px; }
+.admin-screenshot-card>summary { display:flex; gap:8px; align-items:center; margin:0!important; padding:11px 12px; }
+.admin-screenshot-card>summary::before { content:"›"; color:#7592a5; font-size:18px; transform:rotate(0deg); }
+.admin-screenshot-card[open]>summary::before { transform:rotate(90deg); }
+.admin-screen-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.admin-screenshot-fields { padding:0 12px 5px; border-top:1px solid var(--admin-border); }
+.admin-overlay-opacity output { font-size:11px; color:#1681b8; }
+.admin-shell .admin-mockup-properties input[type=range] { padding:0; border:0; accent-color:#006aa5; background:transparent; }
 .admin-mockup-properties fieldset { border:0; padding:0; margin:0; }
 .admin-mockup-properties fieldset:disabled { opacity:.5; }
 .admin-node-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 12px; }

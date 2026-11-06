@@ -5,7 +5,7 @@ import {PGlite} from "@electric-sql/pglite";
 import {initialPublications} from "../src/lib/cms/initial";
 import {contentFromRows} from "../src/lib/cms/content";
 import {payloadSchema,emptyPayload,localized,mediaIds} from "../src/lib/cms/model";
-import {makeDesign,designSchema,applySuggestion} from "../src/lib/mockup/model";
+import {makeDesign,designSchema,applySuggestion,addScreenshot,changeTemplate} from "../src/lib/mockup/model";
 import {localAdminAllowed} from "../src/lib/admin/local-access";
 
 test("direct local admin access is opt-in, loopback-only, and never enabled in production",()=>{
@@ -35,6 +35,22 @@ test("AI suggestions preserve locked elements and original assets; invalid code-
  const suggestion=structuredClone(design);suggestion.nodes[1].x=1200;suggestion.nodes[4].asset="/images/other.png";suggestion.nodes[2].fontSize=65;
  const applied=applySuggestion(design,suggestion);assert.deepEqual(applied.nodes[1],design.nodes[1]);assert.equal(applied.nodes[4].asset,design.nodes[4].asset);assert.equal(applied.nodes[2].fontSize,65);
  assert.throws(()=>designSchema.parse({...design,background:"url(javascript:bad)"}));assert.throws(()=>applySuggestion(design,{...design,nodes:design.nodes.slice(1)}));
+});
+test("mockup screenshots keep names, assets and stable IDs through removal, addition and template changes",()=>{
+ const design=makeDesign("browser","Judul","Deskripsi","",["/images/one.png","/images/two.png","/images/three.png"]);
+ design.nodes.find(node=>node.id==="screen-2")!.label="Layar penting";design.nodes.find(node=>node.id==="screen-2")!.locked=true;
+ const removed={...design,nodes:design.nodes.filter(node=>node.id!=="screen-1")};const added=addScreenshot(removed);
+ assert.equal(added.nodes.filter(node=>node.type==="screenshot").length,3);assert.equal(new Set(added.nodes.map(node=>node.id)).size,added.nodes.length);
+ assert.equal(added.nodes.find(node=>node.id==="screen-2")!.asset,"/images/three.png");
+ const mobile=changeTemplate(added,"phone");assert.deepEqual(mobile.nodes.find(node=>node.id==="screen-2"),design.nodes.find(node=>node.id==="screen-2"));assert.equal(mobile.nodes.find(node=>node.id==="screen-0")!.frame,"phone");assert.equal(mobile.nodes.find(node=>node.id==="screen-0")!.asset,"/images/one.png");
+ assert.doesNotThrow(()=>designSchema.parse(mobile));
+});
+test("legacy designs receive an empty overlay; selected overlays and names survive AI suggestions and validation",()=>{
+ const design=makeDesign("browser","Judul","Deskripsi","",["/images/one.png"]);const{overlay:unused,...legacy}=design;void unused;
+ assert.deepEqual(designSchema.parse(legacy).overlay,{preset:"none",opacity:0});
+ design.overlay={preset:"city",opacity:.12};design.nodes[4].label="Dashboard";const proposal=structuredClone(design);proposal.overlay={preset:"dots",opacity:.3};proposal.nodes[4].label="AI rename";
+ const applied=applySuggestion(design,proposal);assert.deepEqual(applied.overlay,design.overlay);assert.equal(applied.nodes[4].label,"Dashboard");
+ assert.throws(()=>designSchema.parse({...design,overlay:{preset:"city",opacity:.31}}));assert.throws(()=>designSchema.parse({...design,overlay:{preset:"javascript",opacity:.1}}));
 });
 test("PostgreSQL policies isolate drafts, protect admin membership, and publish snapshots atomically",async()=>{
  const db=new PGlite();
