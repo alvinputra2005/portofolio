@@ -5,7 +5,7 @@ import {PGlite} from "@electric-sql/pglite";
 import {initialPublications} from "../src/lib/cms/initial";
 import {contentFromRows} from "../src/lib/cms/content";
 import {payloadSchema,emptyPayload,localized,mediaIds} from "../src/lib/cms/model";
-import {makeDesign,designSchema,applySuggestion,addScreenshot,changeTemplate} from "../src/lib/mockup/model";
+import {makeDesign,designSchema,applySuggestion,addScreenshot,changeTemplate,changePresentation} from "../src/lib/mockup/model";
 import {localAdminAllowed} from "../src/lib/admin/local-access";
 
 test("direct local admin access is opt-in, loopback-only, and never enabled in production",()=>{
@@ -51,6 +51,14 @@ test("legacy designs receive an empty overlay; selected overlays and names survi
  design.overlay={preset:"city",opacity:.12};design.nodes[4].label="Dashboard";const proposal=structuredClone(design);proposal.overlay={preset:"dots",opacity:.3};proposal.nodes[4].label="AI rename";
  const applied=applySuggestion(design,proposal);assert.deepEqual(applied.overlay,design.overlay);assert.equal(applied.nodes[4].label,"Dashboard");
  assert.throws(()=>designSchema.parse({...design,overlay:{preset:"city",opacity:.31}}));assert.throws(()=>designSchema.parse({...design,overlay:{preset:"javascript",opacity:.1}}));
+});
+test("portrait showcase uses fixed reference proportions and retains source files through template changes",()=>{
+ const original=makeDesign("phone","Nama aplikasi","Deskripsi aplikasi","/images/logo.png",["/images/screen.png"],"#D78019","showcase");
+ assert.equal(original.width,1200);assert.equal(original.height,1712);assert.equal(original.presentation,"showcase");assert.equal(original.nodes.filter(node=>node.type==="screenshot").length,1);assert.equal(original.nodes.find(node=>node.id==="accent")!.locked,true);assert.doesNotThrow(()=>designSchema.parse(original));
+ const desktop=changeTemplate(original,"browser");assert.equal(desktop.nodes.find(node=>node.id==="screen-0")!.asset,"/images/screen.png");assert.deepEqual(desktop.showcase,original.showcase);
+ const classic=changePresentation(original,"classic");assert.equal(classic.width,1600);assert.equal(classic.height,1000);assert.doesNotThrow(()=>designSchema.parse(classic));
+ const next=structuredClone(original);next.showcase.headline="AI changed copy";assert.deepEqual(applySuggestion(original,next).showcase,original.showcase);
+ assert.throws(()=>designSchema.parse({...original,height:1000}));assert.throws(()=>designSchema.parse({...original,showcase:{...original.showcase,prototypeUrl:"javascript:alert(1)"}}));
 });
 test("PostgreSQL policies isolate drafts, protect admin membership, and publish snapshots atomically",async()=>{
  const db=new PGlite();

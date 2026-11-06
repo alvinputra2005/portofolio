@@ -89,9 +89,11 @@ Draft dan bahan mockup ada di `portfolio-media` (privat). Media preview memakai 
 
 ## 6. Membuat cover proyek
 
-Simpan proyek dahulu, lalu pilih **Mockup**. Unggah logo dan 1–3 screenshot, isi judul/deskripsi, pilih Browser/Ponsel/Gabungan layar, kemudian terapkan template. Atur posisi/ukuran dengan mouse atau panel angka. Crop, warna, rotasi, font, urutan depan, dan kunci elemen dapat diedit.
+Buka **Proyek → Edit → Mockup**. Template default **Wave Showcase** memakai kanvas portrait 1200×1712, header berwarna tema aplikasi, pita gelombang, dua perangkat utama, kartu pop-up, dan headline penutup. Unggah screenshot asli; satu screenshot otomatis ditampilkan pada kedua perangkat. Pilih Desktop, Mobile, atau gabungan melalui dropdown. Frame perangkat dirender dengan Three.js saat WebGL tersedia, dengan tampilan cadangan yang tetap dapat diekspor.
 
-**Simpan desain** mempertahankan JSON yang dapat diedit ulang. **Simpan salinan** membuat alternatif. **Unduh PNG** menghasilkan 1600×1000. **Pasang ke proyek** menaruh PNG ke slot galeri draft yang dipilih; publikasikan proyek secara terpisah.
+Logo, judul, nama screenshot, crop, warna, subtitle, teks penutup, dan kartu pop-up dapat diatur. Gelombang mengikuti bentuk template. Overlay hanya muncul pada area putih dan tidak menutupi grafis berwarna. QR Prototype dan Case Study ditampilkan jika tautannya diisi; pembuat QR tidak mengunjungi tautan tersebut. Desain lama tetap dapat dibuka; pilihan Klasik mempertahankan kanvas horizontal.
+
+**Simpan desain** mempertahankan JSON yang dapat diedit ulang. **Simpan salinan** membuat alternatif. **Unduh PNG** menghasilkan 1200×1712 untuk Wave Showcase, atau 1600×1000 untuk Klasik. **Pasang ke proyek** menaruh PNG ke slot galeri draft yang dipilih; publikasikan proyek secara terpisah.
 
 Logo/screenshot tidak digambar ulang oleh AI. Tulis arahan, klik **Minta usulan**, tinjau, lalu **Terapkan** atau **Batal**. Elemen terkunci dan referensi aset dipertahankan oleh server. Tanpa Gemini key, editor manual tetap berfungsi. Permintaan dibatasi 5 per menit per admin pada proses server lokal; reset ketika server restart. Tidak ada biaya AI saat hanya mengedit manual. Ketika meminta usulan, gambar terpilih dan arahan dikirim ke Gemini.
 

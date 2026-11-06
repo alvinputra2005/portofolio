@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import {createServer} from "node:http";
 import {spawn} from "node:child_process";
-import {mkdir,readFile} from "node:fs/promises";
+import {mkdir,readFile,writeFile} from "node:fs/promises";
 import {setTimeout as delay} from "node:timers/promises";
 import {chromium} from "@playwright/test";
 import sharp from "sharp";
@@ -60,7 +60,7 @@ const server=spawn(process.execPath,["node_modules/next/dist/bin/next","start","
 let browser;
 try{
  for(let i=0;i<80;i++){try{if((await fetch(origin)).ok)break;}catch{}if(i===79)throw new Error("Next preview did not start");await delay(150);}
- await mkdir("artifacts",{recursive:true});browser=await chromium.launch({executablePath:process.env.BROWSER_PATH||"C:/Program Files/Google/Chrome/Application/chrome.exe",headless:true});
+await mkdir("artifacts",{recursive:true});browser=await chromium.launch({executablePath:process.env.BROWSER_PATH||"C:/Program Files/Google/Chrome/Application/chrome.exe",headless:true,args:["--enable-unsafe-swiftshader"]});
  const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:"reduce",acceptDownloads:true});const page=await context.newPage();const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));
  assert.equal((await context.request.get(`${origin}/api/alvin-ganteng/entries`)).status(),401);
  assert.equal((await context.request.post(`${origin}/api/alvin-ganteng/entries`,{data:{},headers:{Origin:"https://evil.example"}})).status(),403);
@@ -106,6 +106,8 @@ try{
  assert.equal(await page.getByRole("tab",{name:"Form Data",exact:true}).getAttribute("aria-selected"),"true");assert.equal(await page.locator(".admin-content-list a").count(),0);
  await idFields.getByLabel("Deskripsi").fill("Catatan form yang belum dipublikasikan.");const formUrl=page.url();
  await page.getByRole("tab",{name:"Mockup",exact:true}).click();await page.locator(".konvajs-content canvas").waitFor();assert.equal(page.url(),formUrl);assert.equal(await page.locator("form form").count(),0);
+ assert.equal(await page.getByLabel("Gaya template",{exact:true}).inputValue(),"showcase");assert.equal(await page.getByLabel("Template mockup",{exact:true}).inputValue(),"phone");
+ await page.getByLabel("QR Prototype (opsional)",{exact:true}).fill("https://example.test/prototype");await page.getByLabel("QR Case study (opsional)",{exact:true}).fill("https://example.test/case-study");
  await page.locator(".admin-mockup-properties").getByLabel("Judul",{exact:true}).fill("Cover Tab Proyek");
  assert.equal(await page.getByLabel("Pilih elemen",{exact:true}).count(),0);assert.equal(await page.getByText(/^Desain tersimpan \(/).count(),0);assert.equal(await page.getByLabel("Jumlah screenshot",{exact:true}).count(),0);
  const firstScreen=page.locator('[data-screen-id="screen-0"]');await firstScreen.getByLabel("Nama screenshot 1",{exact:true}).fill("Halaman Utama");
@@ -116,6 +118,7 @@ try{
  await firstScreen.getByRole("button",{name:"Pilih dari pustaka",exact:true}).click();await firstScreen.getByLabel("Pilih Halaman Utama dari pustaka",{exact:true}).selectOption(uploaded.ref);
  await page.getByLabel("Template mockup",{exact:true}).selectOption("phone");assert.equal(await firstScreen.getByLabel("Perangkat Halaman Utama",{exact:true}).inputValue(),"phone");
  await page.getByLabel("Template mockup",{exact:true}).selectOption("browser");await firstScreen.getByLabel("Perangkat Halaman Utama",{exact:true}).selectOption("phone");await firstScreen.getByLabel("Perangkat Halaman Utama",{exact:true}).selectOption("browser");
+ await page.getByLabel("Template mockup",{exact:true}).selectOption("phone");
  for(const[preset,opacity]of [["grid","8"],["diagonal","7"],["dots","14"],["city","12"]]){await page.getByLabel("Pola overlay",{exact:true}).selectOption(preset);assert.equal(await page.getByLabel("Opasitas overlay",{exact:true}).inputValue(),opacity);}
  await page.getByLabel("Opasitas overlay",{exact:true}).focus();await page.keyboard.press("ArrowRight");await page.keyboard.press("ArrowRight");assert.equal(await page.getByLabel("Opasitas overlay",{exact:true}).inputValue(),"14");
  await page.getByRole("tab",{name:"Form Data",exact:true}).click();assert.equal(await idFields.getByLabel("Deskripsi").inputValue(),"Catatan form yang belum dipublikasikan.");
@@ -131,13 +134,25 @@ try{
  await page.goto(`${origin}/alvin-ganteng/mockup/${created.id}`);await page.locator(".konvajs-content canvas").waitFor();await page.getByRole("button",{name:"Simpan desain",exact:true}).click();await page.getByRole("status").filter({hasText:"Desain tersimpan"}).waitFor();assert.equal(designs.length,1);
  assert.equal(await page.getByLabel("Nama screenshot 1",{exact:true}).inputValue(),"Halaman Utama");assert.equal(await page.getByLabel("Pola overlay",{exact:true}).inputValue(),"city");assert.equal(await page.getByLabel("Opasitas overlay",{exact:true}).inputValue(),"14");
  const deleteInUse=await context.request.delete(`${origin}/api/alvin-ganteng/media/${uploaded.id}`,{headers:{Origin:origin}});assert.equal(deleteInUse.status(),409);
- const downloadPromise=page.waitForEvent("download");await page.getByRole("button",{name:"Unduh PNG"}).click();const download=await downloadPromise;const path=await download.path();assert(path);const metadata=await sharp(await readFile(path)).metadata();assert.equal(metadata.width,1600);assert.equal(metadata.height,1000);
- const overlayPixel=await sharp(await readFile(path)).extract({left:20,top:885,width:1,height:1}).removeAlpha().raw().toBuffer();assert(overlayPixel[0]<240,"City overlay is included in the exported PNG background");console.log("PASS simulated: named collapsible screenshots, image/slot removal, Desktop/Mobile templates, overlay defaults and opacity persist and render in PNG");
+ await page.waitForFunction(()=>document.querySelector('.admin-canvas-wrap [data-device-engine]')?.getAttribute("data-device-engine")==="three");
+ const downloadPromise=page.waitForEvent("download");await page.getByRole("button",{name:"Unduh PNG"}).click();const download=await downloadPromise;const path=await download.path();assert(path);const exported=await readFile(path);const metadata=await sharp(exported).metadata();assert.equal(metadata.width,1200);assert.equal(metadata.height,1712);await writeFile("artifacts/mockup-showcase-export.png",exported);
+ const overlayPixel=await sharp(exported).extract({left:20,top:1597,width:1,height:1}).removeAlpha().raw().toBuffer();assert(overlayPixel[0]<250,"City overlay is included in the exported white background");
+ const pixels=await sharp(exported).removeAlpha().raw().toBuffer();let originalBlue=0;for(let index=0;index<pixels.length;index+=3)if(pixels[index]===18&&pixels[index+1]===103&&pixels[index+2]===200)originalBlue++;assert(originalBlue>1000,"Original screenshot colours survive the Three.js render");
+ const qr=await sharp(exported).extract({left:60,top:316,width:106,height:106}).removeAlpha().raw().toBuffer();let black=0;for(let index=0;index<qr.length;index+=3)if(qr[index]<30&&qr[index+1]<30&&qr[index+2]<30)black++;assert(black>500,"Configured prototype URL exports a real QR code");
+ await page.getByLabel("Pola overlay",{exact:true}).selectOption("grid");await page.getByLabel("Opasitas overlay",{exact:true}).focus();await page.keyboard.press("End");
+ const gridDownload=page.waitForEvent("download");await page.getByRole("button",{name:"Unduh PNG",exact:true}).click();const gridPath=await(await gridDownload).path();assert(gridPath);const grid=await readFile(gridPath);
+ for(const[left,top]of [[1150,80],[620,445]]){const a=await sharp(exported).extract({left,top,width:1,height:1}).raw().toBuffer(),b=await sharp(grid).extract({left,top,width:1,height:1}).raw().toBuffer();assert.deepEqual(a,b,"Changing overlay does not affect coloured header or wave ribbon");}
+ const whiteA=await sharp(exported).extract({left:80,top:1200,width:1,height:1}).raw().toBuffer(),whiteB=await sharp(grid).extract({left:80,top:1200,width:1,height:1}).raw().toBuffer();assert(whiteB[0]<whiteA[0]-10,"Overlay changes the white area");
+ await page.getByLabel("Pola overlay",{exact:true}).selectOption("city");await page.getByLabel("Opasitas overlay",{exact:true}).focus();await page.keyboard.press("ArrowRight");await page.keyboard.press("ArrowRight");console.log("PASS simulated: Three.js devices and original screenshots, portrait PNG + QR, names and opacity persist; overlay is clipped out of coloured graphics");
  await page.reload();await page.locator(".konvajs-content canvas").waitFor();await page.getByRole("button",{name:"Simpan desain",exact:true}).waitFor();assert.equal(designs.length,1);
- await page.waitForFunction(()=>{const canvas=document.querySelector(".konvajs-content canvas") as HTMLCanvasElement;const pixel=canvas.getContext("2d")!.getImageData(Math.floor(canvas.width*.7),Math.floor(canvas.height*.5),1,1).data;return pixel[0]===18&&pixel[1]===103&&pixel[2]===200;});
+ await page.waitForFunction(()=>document.querySelector('.admin-canvas-wrap [data-device-engine]')?.getAttribute("data-device-engine")==="three");
  await page.screenshot({path:"artifacts/admin-mockup.png"});
  page.once("dialog",d=>d.accept());await page.getByRole("button",{name:"Pasang ke proyek",exact:true}).click();await page.getByRole("status").filter({hasText:"galeri draft"}).waitFor();assert.notEqual((entries.find(e=>e.id===created.id)!.draft.id.photos as string[])[0],uploaded.ref);
- console.log("PASS simulated: upload validates bytes, referenced media protected, Konva saves/reopens, PNG 1600x1000 exports and attaches to draft");
+ console.log("PASS simulated: upload validates bytes, referenced media protected, Konva + Three.js saves/reopens, PNG 1200x1712 exports and attaches to draft");
+ const fallbackContext=await browser.newContext({storageState:await context.storageState(),viewport:{width:1280,height:900},acceptDownloads:true});
+ await fallbackContext.addInitScript(()=>{const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(this:HTMLCanvasElement,type:string,...args:unknown[]){if(type==="webgl2")return null;return Reflect.apply(original,this,[type,...args]);} as typeof original;});
+ const fallbackPage=await fallbackContext.newPage();const fallbackErrors:string[]=[];fallbackPage.on("pageerror",error=>fallbackErrors.push(error.message));await fallbackPage.goto(`${origin}/alvin-ganteng/mockup/${created.id}`);
+ await fallbackPage.waitForFunction(()=>document.querySelector('.admin-canvas-wrap [data-device-engine]')?.getAttribute("data-device-engine")==="fallback");const fallbackDownload=fallbackPage.waitForEvent("download");await fallbackPage.getByRole("button",{name:"Unduh PNG",exact:true}).click();const fallbackPath=await(await fallbackDownload).path();assert(fallbackPath);const fallbackMeta=await sharp(await readFile(fallbackPath)).metadata();assert.equal(fallbackMeta.width,1200);assert.equal(fallbackMeta.height,1712);assert.deepEqual(fallbackErrors,[]);await fallbackContext.close();console.log("PASS simulated: browsers without WebGL retain manual preview and exact-size PNG export");
  const unavailableAI=await context.request.post(`${origin}/api/alvin-ganteng/mockups/suggest`,{headers:{Origin:origin},data:{prompt:"Tata ulang",design:designs[0].design}});assert.equal(unavailableAI.status(),503);
  const conflict=await context.request.patch(`${origin}/api/alvin-ganteng/entries/${created.id}`,{headers:{Origin:origin},data:{draft:payload,expected:"2000-01-01T00:00:00Z"}});assert.equal(conflict.status(),409);
  const after=entries.find(e=>e.id===created.id)!;assert.equal((await context.request.post(`${origin}/api/alvin-ganteng/entries/${created.id}`,{headers:{Origin:origin},data:{action:"unpublish",expected:after.updated_at}})).status(),200);assert(!publications.some(p=>p.id===created.id));
