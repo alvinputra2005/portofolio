@@ -14,6 +14,7 @@
     "db:check": "tsx scripts/seed-supabase.ts --check",
     "db:seed": "tsx scripts/seed-supabase.ts --execute",
     "test:cms": "tsx --test tests/cms.test.ts",
+    "test:order": "tsx --test tests/order-autosave.test.ts",
     "test:admin": "tsx scripts/verify-admin.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
