@@ -55,6 +55,8 @@ test("saved default phones grow without moving custom or locked layouts",()=>{
  const old=makeDesign("phone","Judul","Deskripsi","",["/images/one.png","/images/two.png"]);old.showcase.popups=true;
  Object.assign(old.nodes[4],{x:300,y:450,width:270,height:495,rotation:-7});Object.assign(old.nodes[5],{x:570,y:310,width:250,height:500,rotation:7});
  const larger=normalizeDesign(old);assert.equal(larger.showcase.popups,false);assert(larger.nodes[4].width>=old.nodes[4].width*1.3);assert(larger.nodes[5].width>=old.nodes[5].width*1.3);assert.deepEqual(larger.nodes.map(node=>node.asset),old.nodes.map(node=>node.asset));assert.deepEqual(normalizeDesign(larger),larger);
+ const formerLarge=structuredClone(larger);Object.assign(formerLarge.nodes[4],{x:205,y:360});Object.assign(formerLarge.nodes[5],{x:650,y:300});
+ const closer=normalizeDesign(formerLarge);assert(closer.nodes[5].x-closer.nodes[4].x<=360);assert(Math.abs(closer.nodes[5].y-closer.nodes[4].y)<=50);assert.deepEqual(closer.nodes.map(node=>node.asset),formerLarge.nodes.map(node=>node.asset));assert.deepEqual(normalizeDesign(closer),closer);
  old.nodes[4].x=120;old.nodes[5].locked=true;const custom=normalizeDesign(old);assert.deepEqual(custom.nodes[4],old.nodes[4]);assert.deepEqual(custom.nodes[5],old.nodes[5]);
 });
 test("city photo remains subtle and user overlays and names survive AI revisions",()=>{

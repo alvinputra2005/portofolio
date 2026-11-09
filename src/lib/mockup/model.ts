@@ -19,7 +19,7 @@ export function showcaseSlot(layout:MockupDesign["layout"],index:number){
  if(layout==="browser")return index===0?{x:175,y:590,width:730,height:440,rotation:-6,frame:"browser" as const}:{x:400,y:365,width:620,height:410,rotation:7,frame:"browser" as const};
  if(layout==="combined"&&index===0)return {x:155,y:585,width:720,height:440,rotation:-6,frame:"browser" as const};
  if(layout==="combined")return {x:760,y:320,width:320,height:588,rotation:7,frame:"phone" as const};
- return index===0?{x:205,y:360,width:370,height:680,rotation:-7,frame:"phone" as const}:{x:650,y:300,width:350,height:643,rotation:7,frame:"phone" as const};
+ return index===0?{x:250,y:360,width:370,height:680,rotation:-7,frame:"phone" as const}:{x:600,y:315,width:350,height:643,rotation:7,frame:"phone" as const};
 }
 export function makeDesign(layout:MockupDesign["layout"],title:string,description:string,logo:string,screens:string[],accent="#0074B5"):MockupDesign{
  const node=(id:string,type:MockupNode["type"],x:number,y:number,width:number,height:number,extra:Partial<MockupNode>={}):MockupNode=>({id,type,x,y,width,height,rotation:0,locked:false,text:"",fontSize:36,color:"#133347",asset:"",frame:"none",fit:"contain",cropY:50,...extra});
@@ -35,8 +35,8 @@ export function normalizeDesign(input:unknown):MockupDesign{
   let index=0;
   return {...current.data,showcase:{...current.data.showcase,popups:false},nodes:current.data.nodes.map(node=>{
    if(node.type!=="screenshot")return node;
-   const slot=index++,former=slot===0?{x:300,y:450,width:270,height:495,rotation:-7}:{x:570,y:310,width:250,height:500,rotation:7};
-   const unchanged=!node.locked&&node.frame==="phone"&&(current.data.layout==="phone"||current.data.layout==="combined"&&slot===1)&&(Object.keys(former) as (keyof typeof former)[]).every(key=>node[key]===former[key]);
+   const slot=index++,former=slot===0?[{x:300,y:450,width:270,height:495,rotation:-7},{x:205,y:360,width:370,height:680,rotation:-7}]:[{x:570,y:310,width:250,height:500,rotation:7},{x:650,y:300,width:350,height:643,rotation:7}];
+   const unchanged=!node.locked&&node.frame==="phone"&&(current.data.layout==="phone"||current.data.layout==="combined"&&slot===1)&&former.some(position=>(Object.keys(position) as (keyof typeof position)[]).every(key=>node[key]===position[key]));
    return unchanged?{...node,...showcaseSlot(current.data.layout,slot)}:node;
   })};
  }

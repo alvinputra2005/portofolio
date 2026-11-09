@@ -1,4 +1,5 @@
 import {z} from "zod";
+import sharp from "sharp";
 import {requireAdmin,ApiError} from "@/lib/supabase/server";
 import {endpoint,result} from "@/lib/cms/http";
 import {mediaIds} from "@/lib/cms/model";
@@ -6,6 +7,12 @@ type Context={params:Promise<{id:string}>};
 export async function GET(request:Request,context:Context){return endpoint(request,async()=>{
  const{client}=await requireAdmin();const{id}=await context.params;z.uuid().parse(id);
  const{data:m}=await client.from("portfolio_media").select("*").eq("id",id).single();if(!m)throw new ApiError("Media tidak ditemukan.",404);
+ if(new URL(request.url).searchParams.get("thumbnail")==="1"){
+  if(!m.mime.startsWith("image/"))throw new ApiError("Preview hanya tersedia untuk gambar.");
+  const{data,error}=await client.storage.from(m.public_path?"portfolio-public":"portfolio-media").download(m.public_path||m.private_path);if(error||!data)throw new ApiError("Preview media belum dapat dimuat.",503);
+  const thumbnail=await sharp(Buffer.from(await data.arrayBuffer()),{limitInputPixels:60000000}).rotate().resize({width:256,height:180,fit:"inside",withoutEnlargement:true}).webp({quality:80}).toBuffer();
+  return new Response(new Uint8Array(thumbnail),{headers:{"Content-Type":"image/webp","Cache-Control":"private, no-store","X-Content-Type-Options":"nosniff"}});
+ }
  if(m.public_path)return new Response(null,{status:302,headers:{Location:client.storage.from("portfolio-public").getPublicUrl(m.public_path).data.publicUrl,"Cache-Control":"private, no-store"}});
  // Signed URL is generated on demand; private drafts never enter page source as permanent URLs.
  const{data,error}=await client.storage.from("portfolio-media").createSignedUrl(m.private_path,60);if(error||!data)throw new ApiError("Media belum dapat dibuka.",503);

@@ -35,7 +35,7 @@ export function MockupSettings({design,onChange,busy}:{design:MockupDesign;onCha
    </details>
   <section className="admin-screenshot-settings"><h3>Mockup</h3>
    {shots.map((node,index)=>{const name=`Mockup ${index+1}`;return <details className="admin-screenshot-card" key={node.id} open={index===0} data-screen-id={node.id}><summary><span className="admin-screen-name">{name}</span></summary><div className="admin-screenshot-fields">
-    <MediaField label={name} value={node.asset} uploadLabel="Unggah foto" libraryLabel="Pilih dari galeri" removeIcon disabled={node.locked} onChange={asset=>image(node.id,asset,index)}/>
+    <MediaField label={name} value={node.asset} uploadLabel="Unggah foto" singlePicker removeIcon disabled={node.locked} onChange={asset=>image(node.id,asset,index)}/>
     <label className="admin-checkbox"><input type="checkbox" checked={node.locked} onChange={event=>update(node.id,{locked:event.target.checked})}/>Kunci mockup</label>
    </div></details>;})}
   </section>

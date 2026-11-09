@@ -47,7 +47,11 @@ const fixture=createServer(async(req,res)=>{try{
  if(path.startsWith("/storage/v1/object/")){
   const raw=path.slice("/storage/v1/object/".length).replace(/^(authenticated|public|sign)\//,"");
   if(req.method==="DELETE"){for(const prefix of body.prefixes as string[]||[])blobs.delete(`${raw}/${prefix}`);return send([]);}
-  if(req.method==="POST"||req.method==="PUT"){blobs.set(raw,{bytes,mime:String(req.headers["content-type"]||"image/png")});return send({Key:raw});}
+  if(req.method==="POST"||req.method==="PUT"){
+   let storedBytes=bytes,mime=String(req.headers["content-type"]||"image/png");
+   if(mime.startsWith("multipart/form-data")){const form=await new Request(`${storage}${path}`,{method:"POST",headers:{"Content-Type":mime},body:new Uint8Array(bytes)}).formData();const file=[...form.values()].find(part=>typeof part!=="string");if(!file||typeof file==="string")return send({message:"missing file"},400);storedBytes=Buffer.from(await file.arrayBuffer());mime=file.type;}
+   blobs.set(raw,{bytes:storedBytes,mime});return send({Key:raw});
+  }
   const blob=blobs.get(raw);if(!blob)return send({message:"missing"},404);res.writeHead(200,{"Content-Type":blob.mime,"Access-Control-Allow-Origin":"*","Cache-Control":"no-store"});return res.end(blob.bytes);
  }
  return send({message:"fixture endpoint missing"},404);
@@ -101,6 +105,8 @@ await mkdir("artifacts",{recursive:true});browser=await chromium.launch({executa
  await page.getByRole("navigation",{name:"Menu pengelolaan"}).getByRole("link",{name:"Proyek",exact:true}).click();await page.locator(".admin-content-list article").filter({hasText:"Proyek Uji Admin Revisi"}).waitFor();console.log("PASS simulated: published revision remains fresh after navigating away and back through prefetched menus");
  const uploaded=await page.evaluate(async()=>{const canvas=document.createElement("canvas");canvas.width=1440;canvas.height=2880;const ctx=canvas.getContext("2d")!;ctx.fillStyle="#1267c8";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#fff";ctx.font="72px sans-serif";ctx.fillText("SCREENSHOT ASLI",100,220);ctx.font="36px sans-serif";for(let row=0;row<32;row++)ctx.fillText(`Detail layar ${row+1} · Kalender dan ruang`,100,400+row*64);const blob=await new Promise<Blob>(r=>canvas.toBlob(v=>r(v!),"image/png"));const form=new FormData();form.set("file",new File([blob],"screenshot-uji.png",{type:"image/png"}));const response=await fetch("/api/alvin-ganteng/media",{method:"POST",body:form});return response.json();});assert(uploaded.ref);
  const badFile=await context.request.post(`${origin}/api/alvin-ganteng/media`,{headers:{Origin:origin},multipart:{file:{name:"bad.png",mimeType:"image/png",buffer:Buffer.from("not an image")}}});assert.equal(badFile.status(),400);
+ const thumbnail=await context.request.get(`${origin}/api/alvin-ganteng/media/${uploaded.id}/?thumbnail=1`);assert.equal(thumbnail.status(),200);assert.match(thumbnail.headers()["content-type"],/image\/webp/);const thumbnailSize=await sharp(await thumbnail.body()).metadata();assert(thumbnailSize.width!<=256&&thumbnailSize.height!<=180);
+ const original=await context.request.get(`${origin}/api/alvin-ganteng/media/${uploaded.id}/`);assert.equal((await sharp(await original.body()).metadata()).width,1440);
  const current=entries.find(e=>e.id===created.id)!;const payload=structuredClone(current.draft);payload.id.photos=[uploaded.ref];await context.request.patch(`${origin}/api/alvin-ganteng/entries/${created.id}`,{headers:{Origin:origin},data:{draft:payload,expected:current.updated_at}});
  await page.goto(`${origin}/alvin-ganteng/konten/project`);await page.locator(".admin-content-list article").filter({hasText:"Proyek Uji Admin Revisi"}).getByRole("button",{name:"Edit",exact:true}).click();
  assert.equal(await page.getByRole("tablist",{name:"Editor proyek"}).count(),0);assert.equal(await page.locator(".admin-mockup-entry").count(),1);assert.equal(await page.locator(".admin-gallery-fields").count(),0);assert.equal(await page.locator(".admin-kicker").count(),0);
@@ -129,11 +135,13 @@ await mkdir("artifacts",{recursive:true});browser=await chromium.launch({executa
  assert.equal(await properties.getByLabel("Tampilkan kartu pop-up",{exact:true}).count(),0);
  const firstScreen=page.locator('[data-screen-id="screen-0"]');assert.equal(await properties.getByLabel(/^Nama mockup/).count(),0);assert.equal(await properties.getByLabel(/^Perangkat /).count(),0);
  await firstScreen.getByRole("button",{name:"Hapus gambar Mockup 1",exact:true}).click();assert.equal(await page.locator(".admin-screenshot-card").count(),2);
- await firstScreen.getByRole("button",{name:"Pilih dari galeri",exact:true}).click();await firstScreen.getByLabel("Pilih Mockup 1 dari pustaka",{exact:true}).selectOption(uploaded.ref);
+ assert.equal(await firstScreen.getByRole("button").count(),1);assert.equal(await firstScreen.locator(".admin-upload:visible").count(),0);
+ await firstScreen.getByRole("button",{name:"Pilih gambar Mockup 1",exact:true}).click();const firstPicker=page.getByRole("dialog",{name:"Pilih gambar Mockup 1",exact:true});await firstPicker.getByRole("button",{name:"Pilih screenshot-uji.png",exact:true}).click();await firstPicker.waitFor({state:"hidden"});
  const secondScreen=page.locator('[data-screen-id="screen-1"]');await secondScreen.locator("summary").click();
  const photo=await sharp({create:{width:1440,height:2880,channels:3,background:"#1267c8"}}).png().toBuffer();
- await secondScreen.getByLabel("Unggah Mockup 2",{exact:true}).setInputFiles({name:"foto-mockup-2.png",mimeType:"image/png",buffer:photo});
- await secondScreen.getByRole("img",{name:"Mockup 2",exact:true}).waitFor();await secondScreen.getByText("Mengunggah…",{exact:true}).waitFor({state:"hidden"});
+ await secondScreen.getByRole("button",{name:/^(Pilih|Ganti) gambar Mockup 2$/}).click();const secondPicker=page.getByRole("dialog",{name:"Pilih gambar Mockup 2",exact:true});
+ await secondPicker.getByLabel("Unggah Mockup 2",{exact:true}).setInputFiles({name:"foto-mockup-2.png",mimeType:"image/png",buffer:photo});
+ await secondPicker.waitFor({state:"hidden"});await secondScreen.getByRole("img",{name:"Mockup 2",exact:true}).waitFor();
  await page.screenshot({path:"artifacts/admin-mockup-photo-import.png"});
  await page.getByRole("combobox",{name:"Template mockup",exact:true}).selectOption("browser");
  await page.waitForFunction(()=>document.querySelector('.admin-canvas-wrap [data-device-engine]')?.getAttribute("data-device-engine")==="three");
@@ -188,7 +196,11 @@ await mkdir("artifacts",{recursive:true});browser=await chromium.launch({executa
  await page.locator(".admin-canvas-wrap").evaluate(element=>{element.scrollLeft=340;element.scrollTop=600;});
  await page.locator(".admin-canvas-wrap").screenshot({path:"artifacts/admin-empty-phones-200-percent.png"});
  await page.getByLabel("Pembesaran preview",{exact:true}).selectOption("fit");await page.waitForFunction(()=>{const canvas=document.querySelector<HTMLCanvasElement>(".konvajs-content canvas");return canvas&&canvas.getBoundingClientRect().width<1200;});
- await openSettings("Template mockup");const emptyFirst=page.locator('[data-screen-id="screen-0"]');await emptyFirst.getByRole("button",{name:"Pilih dari galeri",exact:true}).click();await emptyFirst.getByLabel("Pilih Mockup 1 dari pustaka",{exact:true}).selectOption(uploaded.ref);await page.getByRole("button",{name:"Pasang ke proyek",exact:true}).click();await page.getByRole("status").filter({hasText:"galeri draft"}).waitFor();assert(designs.some(item=>item.project_id===tabDraft.id));assert(!publications.some(entry=>entry.id===tabDraft.id));
+ await page.locator(".admin-canvas-wrap").screenshot({path:"artifacts/admin-close-phone-layout.png"});
+ await openSettings("Template mockup");const emptyFirst=page.locator('[data-screen-id="screen-0"]');await emptyFirst.getByRole("button",{name:"Pilih gambar Mockup 1",exact:true}).click();
+ await page.setViewportSize({width:390,height:844});const mobilePicker=page.getByRole("dialog",{name:"Pilih gambar Mockup 1",exact:true});await mobilePicker.getByRole("button",{name:"Pilih screenshot-uji.png",exact:true}).waitFor();await mobilePicker.locator("img").evaluateAll(images=>Promise.all(images.map(element=>{const image=element as HTMLImageElement;image.loading="eager";return image.decode();})));assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));await mobilePicker.screenshot({path:"artifacts/admin-mockup-picker-mobile.png"});
+ await page.keyboard.press("Escape");await mobilePicker.waitFor({state:"hidden"});await page.setViewportSize({width:1440,height:1000});
+ await emptyFirst.getByRole("button",{name:"Pilih gambar Mockup 1",exact:true}).click();await page.getByRole("dialog",{name:"Pilih gambar Mockup 1",exact:true}).getByRole("button",{name:"Pilih screenshot-uji.png",exact:true}).click();await page.getByRole("button",{name:"Pasang ke proyek",exact:true}).click();await page.getByRole("status").filter({hasText:"galeri draft"}).waitFor();assert(designs.some(item=>item.project_id===tabDraft.id));assert(!publications.some(entry=>entry.id===tabDraft.id));
  await page.setViewportSize({width:390,height:844});await page.getByRole("button",{name:"Kembali ke data proyek",exact:true}).scrollIntoViewIfNeeded();await page.screenshot({path:"artifacts/admin-mockup-mobile.png"});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
  await page.getByRole("button",{name:"Kembali ke data proyek",exact:true}).focus();await page.keyboard.press("Enter");assert.equal(await page.getByRole("button",{name:/Buka editor mockup/}).isVisible(),true);assert.equal(await idFields.getByLabel("Nama aplikasi").inputValue(),"Proyek Draft Tab Baru");
  page.once("dialog",d=>d.accept());await page.getByRole("button",{name:"Delete",exact:true}).click();await page.getByRole("status").filter({hasText:"Konten dihapus"}).waitFor();await page.setViewportSize({width:1440,height:1000});
