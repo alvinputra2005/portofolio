@@ -15,7 +15,6 @@ export function MockupSettings({design,onChange,busy}:{design:MockupDesign;onCha
  const shots=design.nodes.filter(node=>node.type==="screenshot"),title=design.nodes.find(node=>node.type==="title"),logo=design.nodes.find(node=>node.type==="logo");
  function update(id:string,change:Partial<MockupNode>){onChange(current=>({...current,nodes:current.nodes.map(node=>node.id!==id||node.locked&&!("locked"in change)&&!("label"in change)?node:{...node,...change})}));}
  function image(id:string,asset:string,index:number){onChange(current=>({...current,nodes:current.nodes.map(node=>node.type!=="screenshot"||node.locked?node:node.id===id||index===0&&asset&&!node.asset?{...node,asset}:node)}));}
- function device(node:MockupNode,frame:MockupNode["frame"]){if(frame==="none"){update(node.id,{frame});return;}const width=frame==="phone"?270:730,height=frame==="phone"?495:440;update(node.id,{frame,width,height,x:Math.max(0,Math.min(design.width-width,node.x+node.width/2-width/2)),y:Math.max(0,Math.min(design.height-height,node.y+node.height/2-height/2))});}
  return <aside className="admin-mockup-properties"><fieldset className="admin-mockup-controls" disabled={busy}>
   <SettingsAccordion id={`${accordionId}-identity`} label="Identitas proyek" open={openSection==="identity"} onToggle={()=>toggle("identity")}>
    <label>Judul<input value={title?.text||""} disabled={title?.locked} onChange={event=>title&&update(title.id,{text:event.target.value})}/></label>
@@ -36,10 +35,8 @@ export function MockupSettings({design,onChange,busy}:{design:MockupDesign;onCha
     <label>QR Case study<input type="url" value={design.showcase.caseStudyUrl} placeholder="https://…" onChange={event=>{const caseStudyUrl=event.target.value;onChange(current=>({...current,showcase:{...current.showcase,caseStudyUrl}}));}}/></label>
    </details>
   <section className="admin-screenshot-settings"><h3>Mockup</h3>
-   {shots.map((node,index)=>{const name=node.label||`Mockup ${index+1}`;return <details className="admin-screenshot-card" key={node.id} open={index===0} data-screen-id={node.id}><summary><span className="admin-screen-name">{name}</span></summary><div className="admin-screenshot-fields">
-    <label>Nama mockup<input aria-label={`Nama mockup ${index+1}`} maxLength={80} value={node.label??`Mockup ${index+1}`} onChange={event=>update(node.id,{label:event.target.value})}/></label>
-    <MediaField label={name} value={node.asset} libraryOnly removeIcon disabled={node.locked} onChange={asset=>image(node.id,asset,index)}/>
-    <label>Perangkat<select aria-label={`Perangkat ${name}`} disabled={node.locked} value={node.frame} onChange={event=>device(node,event.target.value as MockupNode["frame"])}><option value="browser">Desktop</option><option value="phone">Mobile</option><option value="none">Tanpa frame</option></select></label>
+   {shots.map((node,index)=>{const name=`Mockup ${index+1}`;return <details className="admin-screenshot-card" key={node.id} open={index===0} data-screen-id={node.id}><summary><span className="admin-screen-name">{name}</span></summary><div className="admin-screenshot-fields">
+    <MediaField label={name} value={node.asset} uploadLabel="Unggah foto" libraryLabel="Pilih dari galeri" removeIcon disabled={node.locked} onChange={asset=>image(node.id,asset,index)}/>
     <label className="admin-checkbox"><input type="checkbox" checked={node.locked} onChange={event=>update(node.id,{locked:event.target.checked})}/>Kunci mockup</label>
    </div></details>;})}
   </section>

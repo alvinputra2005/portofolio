@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
-import {Group,Rect,Shape,Text,Image as CanvasImage,Path} from "react-konva";
+import {Group,Rect,Shape,Text,Image as CanvasImage} from "react-konva";
 import type {Context} from "konva/lib/Context";
 import type {MockupDesign} from "@/lib/mockup/model";
 import {MockupOverlay} from "./mockup-overlay";
@@ -41,6 +41,5 @@ export function ShowcasePopups({design}:{design:MockupDesign}){
  if(!design.showcase.popups)return null;
  return <Group listening={false} name="showcase-popups">
   {image&&[-12,2,18].map((rotation,index)=><Group key={index} x={610+index*59} y={470-index*6} rotation={rotation} scaleX={.78} scaleY={.78}><Rect width={215} height={250} fill="#FFFFFF" cornerRadius={12} shadowColor="#263542" shadowBlur={24} shadowOpacity={.19} shadowOffsetY={10}/><Rect width={215} height={12} fill={index===1?tint(design.accent,.25):design.accent} cornerRadius={[12,12,0,0]}/><CanvasImage image={image} x={12} y={24} width={191} height={139} crop={{x:0,y:0,width:image.naturalWidth,height:Math.min(image.naturalHeight,image.naturalWidth*.73)}}/><Text text={shots[index]?.label||["Product preview","Screen detail","Interface"][index]} x={16} y={182} width={183} align="center" fontFamily="Poppins" fontStyle="bold" fontSize={17} fill="#273540"/><Text text="Designed with care" x={16} y={216} width={183} align="center" fontFamily="Poppins" fontSize={12} fill="#8A969F"/></Group>)}
-  {[{x:195,y:540,w:242,text:"Interface Preview"},{x:750,y:760,w:230,text:"Project Details"},{x:245,y:930,w:226,text:"Made for You"}].map((pill,index)=><Group key={pill.text} x={pill.x} y={pill.y} scaleX={.8} scaleY={.8}><Rect width={pill.w} height={46} fill="#FFFFFF" cornerRadius={23} shadowColor="#2C4253" shadowBlur={16} shadowOpacity={.14} shadowOffsetY={6}/><Path data={index===0?"M18 10 C8 0 0 8 0 15 C0 23 18 34 18 34 C18 34 36 23 36 15 C36 8 28 0 18 10Z":"M18 0 L23 12 L36 18 L23 23 L18 36 L12 23 L0 18 L12 12Z"} x={16} y={10} scaleX={.7} scaleY={.7} fill={design.accent}/><Text text={pill.text} x={52} y={14} width={pill.w-64} height={26} fontFamily="Poppins" fontStyle="bold" fontSize={17} fill="#80909C"/></Group>)}
  </Group>;
 }
