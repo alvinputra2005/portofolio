@@ -3,14 +3,14 @@ import {useEffect,useId,useRef,useState,type FormEvent} from "react";
 import {Reorder} from "motion/react";
 import dynamic from "next/dynamic";
 import {useRouter} from "next/navigation";
-import {Plus,Search,Trash2} from "lucide-react";
+import {ArrowLeft,PanelsTopLeft,Plus,Search,Trash2} from "lucide-react";
 import {definitions,emptyPayload,entryTitle,type ContentKind,type ContentEntry,type Payload,type Field} from "@/lib/cms/model";
 import {api,assetUrl,renewMediaImage} from "./api";
 import {MediaField} from "./media-field";
 import {AdminMediaProvider} from "./media-urls";
 import {SortableRow} from "./sortable-row";
 import {browserOrderAutosave,type OrderAutosave,type OrderEntry} from "@/lib/admin/order-autosave";
-import {ProjectEditorTabs,type ProjectTab} from "./project-editor-tabs";
+import type {ProjectTab} from "./project-editor-tabs";
 const MockupEditor=dynamic(()=>import("./mockup-editor").then(module=>module.MockupEditor),{ssr:false,loading:()=> <div className="admin-empty" role="status">Menyiapkan editor mockup…</div>});
 
 export function ContentManager({kind,initialEntries,initialMediaUrls={},aiAvailable=false}:{kind:ContentKind;initialEntries?:ContentEntry[];initialMediaUrls?:Record<string,string>;aiAvailable?:boolean}){
@@ -19,8 +19,9 @@ export function ContentManager({kind,initialEntries,initialMediaUrls={},aiAvaila
  const[dragging,setDragging]=useState<string|null>(null);
  const orderQueue=useRef<OrderAutosave|null>(null),initialOrder=useRef(initialEntries||[]);
  const[orderSaving,setOrderSaving]=useState(false),[orderStatus,setOrderStatus]=useState("");
- const tabsId=useId(),formRef=useRef<HTMLFormElement>(null);
+ const tabsId=useId(),formRef=useRef<HTMLFormElement>(null),editorHeadingRef=useRef<HTMLHeadingElement>(null);
  const[editorTab,setEditorTab]=useState<ProjectTab>("data"),[mockupVisited,setMockupVisited]=useState(false),[mockupBusy,setMockupBusy]=useState(false),[mockupDirty,setMockupDirty]=useState(false);
+ useEffect(()=>{editorHeadingRef.current?.focus({preventScroll:true});editorHeadingRef.current?.scrollIntoView({block:"start"});},[editorTab]);
  const[entries,setEntries]=useState<ContentEntry[]>(initialEntries||[]);const[mediaUrls,setMediaUrls]=useState(initialMediaUrls);const[selected,setSelected]=useState<ContentEntry|null>(null);const[draft,setDraft]=useState<Payload|null>(null);const[search,setSearch]=useState("");const[loading,setLoading]=useState(!initialEntries);const[busy,setBusy]=useState(false);const[error,setError]=useState("");const[notice,setNotice]=useState("");
  const displayUrl=(ref:string)=>mediaUrls[ref]||assetUrl(ref);
  const def=definitions[kind];const items=entries.filter(e=>e.kind===kind).sort((a,b)=>a.position-b.position||a.id.localeCompare(b.id));
@@ -90,16 +91,15 @@ export function ContentManager({kind,initialEntries,initialMediaUrls={},aiAvaila
  }
  return <AdminMediaProvider urls={mediaUrls}><header className="admin-page-heading"><div className="admin-heading-row"><div><h1>{def.label}</h1><p>{def.singleton?"Perbarui identitas dan informasi portofoliomu.":"Kelola kontenmu, lalu publikasikan perubahan saat sudah siap."}</p></div>{(!def.singleton||!items.length)&&<button className="admin-button" disabled={blocked} onClick={()=>edit(null)}><Plus size={17}/>{def.singleton?"Isi data":"Tambah data"}</button>}</div></header>
  {error&&<p className="admin-error" role="alert">{error}</p>}{notice&&<p className="admin-success" role="status">{notice}</p>}
- {draft?<section className="admin-editor"><div className="admin-editor-top"><h2>{selected?"Edit konten":"Konten baru"}</h2><button className="admin-button secondary small" type="button" disabled={busy||mockupBusy} onClick={close}>Tutup formulir</button></div>
- {kind==="project"&&<ProjectEditorTabs id={tabsId} active={editorTab} onChange={tab=>void changeTab(tab)} disabled={busy||mockupBusy}/>}
- <div className="admin-editor-tabpanel" id={`${tabsId}-data-panel`} role={kind==="project"?"tabpanel":undefined} aria-labelledby={kind==="project"?`${tabsId}-data-tab`:undefined} hidden={editorTab!=="data"}>
+ {draft?<section className="admin-editor"><div className="admin-editor-top"><h2 ref={editorHeadingRef} tabIndex={-1}>{editorTab==="mockup"?"Mockup proyek":selected?"Edit konten":"Konten baru"}</h2><div className="admin-editor-navigation">{editorTab==="mockup"&&<button className="admin-button secondary small" type="button" disabled={busy||mockupBusy} onClick={()=>void changeTab("data")}><ArrowLeft size={16}/>Kembali ke data proyek</button>}<button className="admin-button secondary small" type="button" disabled={busy||mockupBusy} onClick={close}>Tutup formulir</button></div></div>
+ <div className="admin-editor-tabpanel" id={`${tabsId}-data-panel`} hidden={editorTab!=="data"}>
  <form ref={formRef} onSubmit={submit} aria-busy={busy}>
- <div className="admin-form-columns"><section><h3>Bahasa Indonesia <small>utama</small></h3>{def.fields.map(field=><FieldInput key={field.key} field={field} value={draft.id[field.key]} onChange={v=>setField(field.key,v,"id")}/>)}</section>
+ <div className="admin-form-columns"><section><h3>Bahasa Indonesia <small>utama</small></h3>{def.fields.map(field=>kind==="project"&&field.type==="gallery"?<div className="admin-field" key={field.key}><span>Dokumentasi</span><button type="button" className="admin-mockup-entry" disabled={busy||mockupBusy} aria-controls={`${tabsId}-mockup-panel`} onClick={()=>void changeTab("mockup")}>{(draft.id.photos as (string|null)[]||[]).find(Boolean)?<img src={displayUrl((draft.id.photos as (string|null)[]).find(Boolean)!)} alt="Preview dokumentasi proyek"/>:<PanelsTopLeft size={30}/>}<span><strong>Buka editor mockup</strong><small>Atur gambar dan tampilan dokumentasi proyek.</small></span></button></div>:<FieldInput key={field.key} field={field} value={draft.id[field.key]} onChange={v=>setField(field.key,v,"id")}/>)}</section>
  <section><h3>English <small>opsional</small></h3><p className="admin-help">Kosongkan untuk memakai isi bahasa Indonesia.</p>{def.fields.filter(f=>f.translate).map(field=><FieldInput key={field.key} field={{...field,required:false}} value={draft.en[field.key]} onChange={v=>setField(field.key,v,"en")}/>)}</section></div>
  {kind==="experience"&&Boolean(draft.id.photo)&&<div className="admin-crop-preview"><h3>Preview crop foto</h3><img src={displayUrl(String(draft.id.photo))} alt="Preview crop" style={{objectPosition:`center ${draft.id.cropY??50}%`}}/></div>}
  <div className="admin-form-actions"><button className="admin-button publish" disabled={busy||mockupBusy} type="submit">{busy?"Memproses…":"Publikasikan"}</button><button className="admin-button secondary danger" disabled={busy||mockupBusy||!selected||Boolean(def.singleton)} type="button" title={def.singleton?"Profil dan pengaturan hanya dapat diperbarui.":undefined} onClick={()=>{if(selected)void remove(selected);}}><Trash2 size={16}/>Delete</button></div>
  </form></div>
- {kind==="project"&&<div className="admin-editor-tabpanel" id={`${tabsId}-mockup-panel`} role="tabpanel" aria-labelledby={`${tabsId}-mockup-tab`} hidden={editorTab!=="mockup"}>{mockupVisited&&selected?<MockupEditor key={selected.id} project={{...selected,draft}} aiAvailable={aiAvailable} embedded onAttach={attachMockup} onBusyChange={setMockupBusy} onDirtyChange={setMockupDirty}/>:<div className="admin-empty" role="status">Menyiapkan proyek untuk mockup…</div>}</div>}
+ {kind==="project"&&<div className="admin-editor-tabpanel" id={`${tabsId}-mockup-panel`} role="region" aria-label="Editor mockup proyek" hidden={editorTab!=="mockup"}>{mockupVisited&&selected?<MockupEditor key={selected.id} project={{...selected,draft}} aiAvailable={aiAvailable} embedded onAttach={attachMockup} onBusyChange={setMockupBusy} onDirtyChange={setMockupDirty}/>:<div className="admin-empty" role="status">Menyiapkan proyek untuk mockup…</div>}</div>}
  </section>:<><div className="admin-list-toolbar"><label className="admin-search"><Search size={17}/><input placeholder="Cari konten…" aria-label="Cari konten" value={search} disabled={blocked} onChange={e=>setSearch(e.target.value)}/></label>{items.length>1&&!def.singleton&&<button className="admin-button secondary small" disabled={blocked} onClick={()=>reorder(items.map(e=>e.id),true)}>Terbitkan urutan</button>}</div>
  {loading?<div className="admin-empty">Memuat konten…</div>:!items.length?<div className="admin-empty"><h2>Halaman baru dimulai di sini.</h2><p>Tambahkan data pertama atau jalankan migrasi untuk mengambil konten lama.</p></div>:<><p id={sortInstructions} className="admin-sort-help">{!def.singleton&&"Geser pegangan tiga garis untuk mengatur urutan. Gunakan panah atas/bawah saat pegangan difokuskan."}</p>
  {!def.singleton&&<p className="admin-order-status" role="status" aria-live="polite" data-pending={orderSaving}>{orderStatus}</p>}
