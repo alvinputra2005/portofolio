@@ -50,6 +50,13 @@ test("legacy portrait and classic designs migrate to square without losing sourc
   const migrated=normalizeDesign(old);assert.equal(migrated.width,1200);assert.equal(migrated.height,1200);assert.equal(migrated.nodes.filter(node=>node.type==="screenshot").length,2);assert.deepEqual(migrated.archivedAssets,["/images/three.png"]);assert.equal(migrated.showcase.footer,"Deskripsi");assert(!("headline"in migrated.showcase));assert(!("tagline"in migrated.showcase));assert.doesNotThrow(()=>designSchema.parse(migrated));
  }
 });
+
+test("saved default phones grow without moving custom or locked layouts",()=>{
+ const old=makeDesign("phone","Judul","Deskripsi","",["/images/one.png","/images/two.png"]);old.showcase.popups=true;
+ Object.assign(old.nodes[4],{x:300,y:450,width:270,height:495,rotation:-7});Object.assign(old.nodes[5],{x:570,y:310,width:250,height:500,rotation:7});
+ const larger=normalizeDesign(old);assert.equal(larger.showcase.popups,false);assert(larger.nodes[4].width>=old.nodes[4].width*1.3);assert(larger.nodes[5].width>=old.nodes[5].width*1.3);assert.deepEqual(larger.nodes.map(node=>node.asset),old.nodes.map(node=>node.asset));assert.deepEqual(normalizeDesign(larger),larger);
+ old.nodes[4].x=120;old.nodes[5].locked=true;const custom=normalizeDesign(old);assert.deepEqual(custom.nodes[4],old.nodes[4]);assert.deepEqual(custom.nodes[5],old.nodes[5]);
+});
 test("city photo remains subtle and user overlays and names survive AI revisions",()=>{
  const design=makeDesign("phone","Judul","Deskripsi","",["/images/one.png"]);assert.equal(design.cityPhoto.opacity,.1);assert.equal(design.cityPhoto.cropY,70);assert.equal(design.nodes[5].asset,"/images/one.png");
  design.overlay={preset:"city",opacity:.12};design.nodes[4].label="Dashboard";const proposal=structuredClone(design);proposal.cityPhoto.opacity=.2;proposal.overlay={preset:"dots",opacity:.3};proposal.nodes[4].label="AI rename";proposal.showcase.footer="AI changed footer";

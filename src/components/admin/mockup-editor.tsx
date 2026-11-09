@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import {useCallback,useEffect,useRef,useState} from "react";
 import type Konva from "konva";
 import {makeDesign,designSchema,applySuggestion,normalizeDesign,type MockupDesign} from "@/lib/mockup/model";
+import {mockupExportPixelRatio} from "@/lib/mockup/quality";
 import {mediaIds,type ContentEntry} from "@/lib/cms/model";
 import {api,assetUrl} from "./api";
 import {MockupSettings} from "./mockup-settings";
@@ -38,10 +39,10 @@ export function MockupEditor({project,aiAvailable,embedded=false,onAttach,onBusy
   const transform=canvas.find("Transformer");const emptyLogos=design.nodes.filter(n=>n.type==="logo"&&!n.asset).map(n=>canvas.findOne(`#${n.id}`)).filter(Boolean) as Konva.Node[];
   const previous={width:canvas.width(),height:canvas.height(),scaleX:canvas.scaleX(),scaleY:canvas.scaleY()};
   [...transform,...emptyLogos].forEach(node=>node.hide());
-  let url="";
-  try{canvas.size({width:design.width,height:design.height});canvas.scale({x:1,y:1});canvas.draw();url=canvas.toDataURL({width:design.width,height:design.height,pixelRatio:1});}
+  let blob:Blob;
+  try{canvas.size({width:design.width,height:design.height});canvas.scale({x:1,y:1});canvas.draw();blob=await canvas.toBlob({width:design.width,height:design.height,pixelRatio:mockupExportPixelRatio,mimeType:"image/png",imageSmoothingEnabled:true});}
   finally{canvas.size({width:previous.width,height:previous.height});canvas.scale({x:previous.scaleX,y:previous.scaleY});[...transform,...emptyLogos].forEach(node=>node.show());canvas.draw();}
-  const blob=await(await fetch(url)).blob();return {url,blob};}
+  return {blob};}
  async function attach(){const slot=0;await save();const{blob}=await exportPng();const file=new File([blob],"cover-mockup.png",{type:"image/png"});const form=new FormData();form.set("file",file);const uploaded=await api<{ref:string}>("/media",{method:"POST",body:form});if(onAttach){await onAttach(uploaded.ref,slot);setNotice("Mockup disimpan ke galeri draft. Kembali ke data proyek untuk mempublikasikan proyek.");return;}const{entries}=await api<{entries:ContentEntry[]}>("/entries?kind=project");const fresh=entries.find(e=>e.id===project.id);if(!fresh)throw new Error("Proyek tidak ditemukan.");const photos=Array.from({length:4},(_,i)=>(fresh.draft.id.photos as (string|null)[])[i]||null);photos[slot]=uploaded.ref;await api(`/entries/${project.id}`,{method:"PATCH",body:JSON.stringify({draft:{...fresh.draft,id:{...fresh.draft.id,photos}},expected:fresh.updated_at})});setNotice("Mockup disimpan ke galeri draft. Publikasikan proyek saat sudah siap.");}
  return <><header className={embedded?"admin-mockup-heading":"admin-page-heading"}>{embedded?<h2>Editor mockup</h2>:<h1>Editor mockup</h1>}</header>
  {error&&<p className="admin-error" role="alert">{error}</p>}{notice&&<p className="admin-success" role="status">{notice}</p>}

@@ -23,7 +23,7 @@ export function ShowcaseBackground({design}:{design:MockupDesign}){
 }
 function QrTile({url,label,x}:{url:string;label:string;x:number}){
  const[image,setImage]=useState<{url:string;canvas:HTMLCanvasElement}|null>(null);
- useEffect(()=>{if(!url)return;let active=true;import("qrcode").then(async module=>{const canvas=document.createElement("canvas");await module.default.toCanvas(canvas,url,{width:256,margin:2,errorCorrectionLevel:"M",color:{dark:"#111111",light:"#FFFFFF"}});if(active)setImage({url,canvas});}).catch(()=>{});return()=>{active=false;};},[url]);
+ useEffect(()=>{if(!url)return;let active=true;import("qrcode").then(async module=>{const canvas=document.createElement("canvas");await module.default.toCanvas(canvas,url,{width:512,margin:2,errorCorrectionLevel:"M",color:{dark:"#111111",light:"#FFFFFF"}});if(active)setImage({url,canvas});}).catch(()=>{});return()=>{active=false;};},[url]);
  if(!url)return null;
  const ready=image?.url===url;
  return <Group x={x} y={170} listening={false} {...{qrReady:ready}}><Rect width={84} height={84} fill="#FFFFFF" cornerRadius={5}/>{ready&&<CanvasImage image={image.canvas} width={84} height={84}/>}<Text text={label} y={94} width={84} align="center" fontFamily="Poppins" fontSize={13} fill="#FFFFFF"/></Group>;
@@ -34,12 +34,5 @@ export function ShowcaseCopy({design}:{design:MockupDesign}){
   <Text text={design.showcase.subtitle} x={136} y={113} width={850} height={44} fontFamily="Poppins" fontSize={22} fontStyle="bold" fill="#FFFFFF"/>
   <QrTile url={design.showcase.prototypeUrl} label="Prototype" x={54}/><QrTile url={design.showcase.caseStudyUrl} label="Case study" x={190}/>
   <Text name="footer-description" text={footer} x={150} y={1070} width={900} height={120} align="center" fontFamily="Poppins" fontSize={footer.length>400?16:footer.length>260?20:24} lineHeight={1.22} fill="#596774"/>
- </Group>;
-}
-export function ShowcasePopups({design}:{design:MockupDesign}){
- const shots=design.nodes.filter(node=>node.type==="screenshot"),image=useMockupAsset(shots[0]?.asset||"");
- if(!design.showcase.popups)return null;
- return <Group listening={false} name="showcase-popups">
-  {image&&[-12,2,18].map((rotation,index)=><Group key={index} x={610+index*59} y={470-index*6} rotation={rotation} scaleX={.78} scaleY={.78}><Rect width={215} height={250} fill="#FFFFFF" cornerRadius={12} shadowColor="#263542" shadowBlur={24} shadowOpacity={.19} shadowOffsetY={10}/><Rect width={215} height={12} fill={index===1?tint(design.accent,.25):design.accent} cornerRadius={[12,12,0,0]}/><CanvasImage image={image} x={12} y={24} width={191} height={139} crop={{x:0,y:0,width:image.naturalWidth,height:Math.min(image.naturalHeight,image.naturalWidth*.73)}}/><Text text={shots[index]?.label||["Product preview","Screen detail","Interface"][index]} x={16} y={182} width={183} align="center" fontFamily="Poppins" fontStyle="bold" fontSize={17} fill="#273540"/><Text text="Designed with care" x={16} y={216} width={183} align="center" fontFamily="Poppins" fontSize={12} fill="#8A969F"/></Group>)}
  </Group>;
 }

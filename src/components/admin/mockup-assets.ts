@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useState} from "react";
 import type {MockupNode} from "@/lib/mockup/model";
+import {deviceRasterSize} from "@/lib/mockup/quality";
 import {assetUrl} from "./api";
 const assets=new Map<string,Promise<HTMLImageElement>>();
 export function imageAccent(image:HTMLImageElement){
@@ -15,8 +16,8 @@ export function useMockupAsset(asset:string){
  return state?.asset===asset?state.image:null;
 }
 export function useDeviceImage(image:HTMLImageElement|null,node:MockupNode,enabled:boolean){
- const key=`${image?.src||"empty"}|${node.frame}|${node.fit}|${node.cropY}|${enabled}`;
+ const size=deviceRasterSize(node),key=`${image?.src||"empty"}|${node.frame}|${node.fit}|${node.cropY}|${size.width}x${size.height}|${enabled}`;
  const[state,setState]=useState<{key:string;image:HTMLCanvasElement|null;engine:"three"|"fallback"}|null>(null);
- useEffect(()=>{if(!enabled||node.frame==="none"||node.asset&&!image)return;let active=true;import("./device-renderer").then(module=>{const rendered=module.renderDevice(image,node);if(active)setState({key,image:rendered,engine:rendered?"three":"fallback"});}).catch(()=>{if(active)setState({key,image:null,engine:"fallback"});});return()=>{active=false;};},[key,image,enabled,node.frame,node.asset,node.fit,node.cropY]);
+ useEffect(()=>{if(!enabled||node.frame==="none"||node.asset&&!image)return;let active=true;import("./device-renderer").then(module=>{const rendered=module.renderDevice(image,node);if(active)setState({key,image:rendered,engine:rendered?"three":"fallback"});}).catch(()=>{if(active)setState({key,image:null,engine:"fallback"});});return()=>{active=false;};},[key,image,enabled,node.frame,node.asset,node.fit,node.cropY,node.width]);
  return state?.key===key?state:{key,image:null,engine:enabled&&node.frame!=="none"?"loading" as const:"fallback" as const};
 }

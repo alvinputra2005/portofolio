@@ -156,7 +156,9 @@
 .admin-mockup-toolbar select { width:auto; }
 .admin-mockup-workspace { display:grid; grid-template-columns:minmax(0,1fr) 290px; gap:22px; align-items:start; }
 .admin-mockup-stage { min-width:0; }
-.admin-canvas-wrap { border:1px solid #d6e2eb; border-radius:12px; overflow:hidden; background:#fff; }
+.admin-canvas-wrap { border:1px solid #d6e2eb; border-radius:12px; overflow:auto; max-height:min(80dvh,900px); overscroll-behavior:contain; background:#fff; }
+.admin-canvas-zoom { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-bottom:10px; color:#64798b; font-size:11px; }
+.admin-shell .admin-canvas-zoom select { width:auto; padding:7px 10px; font-size:11px; }
 .admin-ai-panel { background:#fff; border:1px solid var(--admin-border); border-radius:12px; padding:24px; margin-top:28px; }
 .admin-ai-panel p { font-size:12px; margin:10px 0; }
 .admin-ai-panel .admin-button { margin-top:14px; }
