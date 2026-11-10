@@ -52,7 +52,7 @@
 .pill-mobile-nav { display: none; pointer-events: auto; }
 .reference-hero {
   background: transparent;
-  min-height: 100svh;
+  min-height: calc(100svh - 64px);
   display: flex;
   align-items: flex-start;
   overflow: hidden;
@@ -222,7 +222,7 @@ body {
   .footer-main p { font-size: 12px; margin-top: 13px; }
 }
 
-.reference-about { padding-block: 100px 105px; }
+.reference-about { padding-block: 76px 105px; }
 .reference-about .about-layout { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(55px, 7vw, 110px); align-items: center; }
 .reference-about-visual { position: relative; width: min(100%, 330px); height: 468px; justify-self: center; }
 .reference-about-card { position: absolute; inset: 15px 0; overflow: hidden; border-radius: 17px; background: linear-gradient(180deg, #4fc1ff, #0084c5 58%, #003958); isolation: isolate; }
@@ -256,7 +256,7 @@ body {
   .reference-about-visual { width: min(100%, 270px); height: 435px; }
 }
 @media (max-width: 1000px) {
-  .reference-about { padding-block: 80px; }
+  .reference-about { padding-block: 60px 80px; }
   .reference-about .about-layout { gap: 38px; }
   .reference-about-badge { font-size: 20px; margin-bottom: 20px; }
   .reference-about-copy h2 { font-size: 34px; margin-bottom: 21px; }
@@ -273,7 +273,7 @@ body {
   .reference-about .about-layout { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 650px) {
-  .reference-about { padding-block: 60px 65px; }
+  .reference-about { padding-block: 44px 65px; }
   .reference-about .about-layout { grid-template-columns: minmax(0, 1fr); gap: 37px; }
   .reference-about-visual { width: min(100% - 84px, 280px); height: min(calc((100vw - var(--portfolio-page-left) - var(--portfolio-page-right) - 64px) / .79), 380px); }
   .reference-about-card { inset-inline: 2.5px; }
